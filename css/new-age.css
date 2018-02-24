@@ -221,6 +221,24 @@ section.download .badges .badge-link img {
   height: 60px;
 }
 
+section.download ul.list-social li a {
+  font-size: 40px;
+  line-height: 80px;
+  display: block;
+  width: 80px;
+  height: 80px;
+  color: white;
+  border-radius: 100%;
+}
+
+section.download ul.list-social li.social-github a {
+  background-color: #1da1f2;
+}
+
+section.download ul.list-social li.social-github a:hover {
+  background-color: #0d95e8;
+}
+
 @media (min-width: 768px) {
   section.download .badges .badge-link {
     display: inline-block;
