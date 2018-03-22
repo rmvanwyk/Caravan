@@ -2,6 +2,7 @@ package com.caravan.caravan;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.amazonaws.mobile.auth.google.GoogleButton;
 import com.amazonaws.mobile.auth.ui.AuthUIConfiguration;
@@ -22,7 +23,6 @@ public class AuthenticatorActivity extends Activity {
                 AuthUIConfiguration config = new AuthUIConfiguration.Builder()
                         .signInButton(GoogleButton.class)
                         .build();
-
                 SignInUI signin = (SignInUI) AWSMobileClient.getInstance().getClient(AuthenticatorActivity.this, SignInUI.class);
                 signin.login(AuthenticatorActivity.this, NextActivity.class).execute();
             }
