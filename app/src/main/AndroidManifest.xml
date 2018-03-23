@@ -20,6 +20,14 @@
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
 
+        <activity
+            android:name=".MainActivity"
+            android:label="MainActivity"
+            android:exported="true"
+            android:theme="@style/AppTheme">
+        </activity>
+
+
         <!-- Meta-data and following activity are needed for FacebookLogin -->
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

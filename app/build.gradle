@@ -54,4 +54,7 @@ dependencies {
     compile('com.amazonaws:aws-android-sdk-auth-ui:2.6.+@aar') { transitive = true; }
     // Mobile Client for initializing the SDK
     compile('com.amazonaws:aws-android-sdk-mobile-client:2.6.+@aar') { transitive = true; }
+    //Bottom Nav Bar
+    compile 'com.android.support:design:27.+'
+    compile 'com.android.support:support-annotations:+'
 }
