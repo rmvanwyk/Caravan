@@ -59,4 +59,9 @@ dependencies {
     //Bottom Nav Bar
     compile 'com.android.support:design:27.+'
     compile 'com.android.support:support-annotations:+'
+
+    compile 'com.amazonaws:aws-android-sdk-ddb-mapper:2.6.+'
+    //FOR ALL ACTIVITIES THAT CALL DYNAMODB, USE THESE IMPORTS
+    // import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+
 }

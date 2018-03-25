@@ -13,16 +13,61 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+//AWS & DynamoDB imports
+import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobile.client.AWSStartupHandler;
+import com.amazonaws.mobile.client.AWSStartupResult;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
     public int currentViewID;
 
     protected BottomNavigationView bottomNavigationView;
+    // Declare a DynamoDBMapper object
+    DynamoDBMapper dynamoDBMapper;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_explore);
+
+        // AWSMobileClient enables AWS user credentials to access your table
+        AWSMobileClient.getInstance().initialize(this, new AWSStartupHandler() {
+
+            @Override
+            public void onComplete(AWSStartupResult awsStartupResult) {
+
+                // Add code to instantiate a AmazonDynamoDBClient
+                AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
+                this.dynamoDBMapper = DynamoDBMapper.builder()
+                        .dynamoDBClient(dynamoDBClient)
+                        .awsConfiguration(
+                                AWSMobileClient.getInstance().getConfiguration())
+                        .build();
+
+            }
+        }).execute();
+
+        /*
+
+        IMPORTANT NOTE!
+
+        Use Asynchronous Calls to DynamoDB
+
+        Since calls to DynamoDB are synchronous, they don't belong on your UI thread.
+        Use an asynchronous method like the Runnable wrapper to call DynamoDBObjectMapper in a separate thread.
+
+        Runnable runnable = new Runnable() {
+            public void run() {
+                //DynamoDB calls go here
+            }
+        };
+        Thread mythread = new Thread(runnable);
+        mythread.start();
+
+         */
 
         bottomNavigationView = findViewById(R.id.bottom_navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
