@@ -21,7 +21,6 @@ public class NextActivity extends AppCompatActivity {
         if (identityManager.isUserSignedIn()) {
             identityManager.signOut();
         }
-        Intent intent = new Intent(this, HomeActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, HomeActivity.class));
     }
 }

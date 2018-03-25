@@ -21,7 +21,7 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void goToSignIn(View view) {
-        Intent intent = new Intent(this, AuthenticatorActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, AuthenticatorActivity.class));
     }
+
 }

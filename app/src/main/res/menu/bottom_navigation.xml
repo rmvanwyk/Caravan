@@ -12,7 +12,8 @@
         android:enabled="true"
         android:icon="@drawable/ic_search_white_24px"
         android:title="Search"
-        app:showAsAction="ifRoom" />
+        app:showAsAction="ifRoom"
+        app:actionViewClass="android.widget.SearchView"/>
     <item
         android:id="@+id/action_my_blueprints"
         android:enabled="true"
