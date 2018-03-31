@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">Caravan</string>
-    <string name="search_hint">Enter the name or place of a guide you\'re looking for!</string>
+    <string name="search_hint">Search for a Place or Blueprint</string>
     <string name="title_activity_next">NextActivity</string>
     <string name="facebook_app_id">147021282791925</string>
     <string name="fb_login_protocol_scheme">fb147021282791925</string>
+    <string name="search">Search For</string>
+    <string name="title_activity_search_results">SearchResultsActivity</string>
 </resources>

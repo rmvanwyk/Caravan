@@ -13,26 +13,37 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".AuthenticatorActivity">
+
         </activity>
         <activity
             android:name=".NextActivity"
             android:label="@string/title_activity_next"
             android:theme="@style/AppTheme.NoActionBar">
         </activity>
-
-        <activity android:name=".SearchActivity">
-        <meta-data
-            android:name="android.app.searchable"
-            android:resource="@layout/activity_search" />
+        <activity android:name=".SearchableActivity"
+            android:label="Explore">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
-
+        <activity
+            android:name=".SearchResultsActivity"
+            android:label="@string/title_activity_search_results"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".MainActivity"
-            android:label="MainActivity"
             android:exported="true"
+            android:label="MainActivity"
             android:theme="@style/AppTheme">
-        </activity>
 
+        </activity>
 
         <!-- Meta-data and following activity are needed for FacebookLogin -->
         <meta-data
@@ -44,16 +55,22 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
+
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
         <activity android:name=".HomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".BlueprintActivity"
+            android:label="BlueprintActivity">
         </activity>
     </application>
 

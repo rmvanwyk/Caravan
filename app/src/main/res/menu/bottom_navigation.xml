@@ -2,18 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/action_explore"
+        android:id="@+id/action_home"
         android:enabled="true"
         android:icon="@drawable/ic_explore_white_24px"
-        android:title="Explore"
+        android:title="Home"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_search"
+        android:id="@+id/action_explore"
         android:enabled="true"
         android:icon="@drawable/ic_search_white_24px"
-        android:title="Search"
+        android:title="Explore"
         app:showAsAction="ifRoom"
-        app:actionViewClass="android.widget.SearchView"/>
+        app:actionViewClass="android.support.v7.widget.SearchView"/>
     <item
         android:id="@+id/action_my_blueprints"
         android:enabled="true"

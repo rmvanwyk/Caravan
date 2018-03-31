@@ -7,7 +7,7 @@ import android.util.Log;
 import android.view.View;
 
 
-public class HomeActivity extends AppCompatActivity {
+public class HomeActivity extends MainActivity {
     private static final String LOG_TAG = HomeActivity.class.getSimpleName();
 
     @Override

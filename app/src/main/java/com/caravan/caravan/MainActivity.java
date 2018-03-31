@@ -22,8 +22,6 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
-    public int currentViewID;
-
     protected BottomNavigationView bottomNavigationView;
     // Declare a DynamoDBMapper object
     DynamoDBMapper dynamoDBMapper;
@@ -31,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_explore);
+        setContentView(R.layout.activity_home);
 
         // AWSMobileClient enables AWS user credentials to access your table
         AWSMobileClient.getInstance().initialize(this, new AWSStartupHandler() {
@@ -73,12 +71,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
     }
 
-    @Override
-    protected void onStart() {
-        super.onStart();
-        updateNavigationBarState();
-    }
-
     // Remove inter-activity transition to avoid screen tossing on tapping bottom navigation items
     @Override
     public void onPause() {
@@ -89,18 +81,17 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         bottomNavigationView.postDelayed(() -> {
-            switch (item.getItemId()) {
-                case R.id.action_explore:
-                    //startActivity(new Intent(this, ExploreActivity.class));
-                    currentViewID = R.id.activity_explore;
+            int itemId = item.getItemId();
+            selectBottomNavigationBarItem(itemId);
+            switch (itemId) {
+                case R.id.action_home:
+                    startActivity(new Intent(this, HomeActivity.class));
                     break;
-                case R.id.action_search:
-                    startActivity(new Intent(this, SearchActivity.class));
-                    currentViewID = R.id.activity_search;
+                case R.id.action_explore:
+                    startActivity(new Intent(this, SearchableActivity.class));
                     break;
                 case R.id.action_my_blueprints:
-                    //startActivity(new Intent(this, BlueprintActivity.class));
-                    currentViewID = R.id.activity_blueprint;
+                    startActivity(new Intent(this, BlueprintActivity.class));
                     break;
             }
             finish();
@@ -108,20 +99,9 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return true;
     }
 
-    private void updateNavigationBarState(){
-        selectBottomNavigationBarItem(currentViewID);
-    }
-
     void selectBottomNavigationBarItem(int itemId) {
-        Menu menu = bottomNavigationView.getMenu();
-        for (int i = 0, size = menu.size(); i < size; i++) {
-            MenuItem item = menu.getItem(i);
-            boolean shouldBeChecked = item.getItemId() == itemId;
-            if (shouldBeChecked) {
-                item.setChecked(true);
-                break;
-            }
-        }
+        MenuItem item = bottomNavigationView.getMenu().findItem(itemId);
+        item.setChecked(true);
     }
 
 }
