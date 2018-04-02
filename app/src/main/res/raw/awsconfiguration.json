@@ -38,5 +38,10 @@
   "FacebookSignIn": {
     "AppId": "147021282791925",
     "Permissions": "public_profile,email"
+  },
+  "DynamoDBObjectMapper":{
+    "Default": {
+      "Region": "us-east-1"
+    }
   }
 }

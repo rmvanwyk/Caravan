@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
                 // Add code to instantiate a AmazonDynamoDBClient
                 AmazonDynamoDBClient dynamoDBClient = new AmazonDynamoDBClient(AWSMobileClient.getInstance().getCredentialsProvider());
-                this.dynamoDBMapper = DynamoDBMapper.builder()
+                dynamoDBMapper = DynamoDBMapper.builder()
                         .dynamoDBClient(dynamoDBClient)
                         .awsConfiguration(
                                 AWSMobileClient.getInstance().getConfiguration())
