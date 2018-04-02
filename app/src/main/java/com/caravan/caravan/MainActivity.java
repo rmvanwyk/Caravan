@@ -24,7 +24,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     protected BottomNavigationView bottomNavigationView;
     // Declare a DynamoDBMapper object
-    DynamoDBMapper dynamoDBMapper;
+    private DynamoDBMapper dynamoDBMapper;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {

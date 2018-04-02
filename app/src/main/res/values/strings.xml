@@ -6,4 +6,7 @@
     <string name="fb_login_protocol_scheme">fb147021282791925</string>
     <string name="search">Search For</string>
     <string name="title_activity_search_results">SearchResultsActivity</string>
+    <string name="title_activity_dbtesting">DBTesting</string>
+    <string name="hint">hint</string>
+    <string name="button">Button</string>
 </resources>

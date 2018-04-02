@@ -1,9 +1,12 @@
-package com.amazonaws.models.nosql;
+package com.caravan.caravan;
+
+import android.util.Log;
 
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexHashKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexRangeKey;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 
@@ -11,23 +14,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@DynamoDBTable(tableName = "caravan-mobilehub-2012693532-Neighborhood")
+@DynamoDBTable(tableName = "caravan-mobilehub-2012693532-Neighborhoods")
 
 public class NeighborhoodDO {
-    private String _neighborhoodId;
     private String _neighborhoodName;
+    private String _neighborhoodCity;
+    private Map<String, String> _blueprintList;
+    private Map<String, String> _locationList;
 
-    @DynamoDBHashKey(attributeName = "neighborhoodId")
-    @DynamoDBAttribute(attributeName = "neighborhoodId")
-    public String getNeighborhoodId() {
-        return _neighborhoodId;
+    public NeighborhoodDO(String key, String range) {
+        this.setNeighborhoodName(key);
+        this.setNeighborhoodCity(range);
     }
 
-    public void setNeighborhoodId(final String _neighborhoodId) {
-        this._neighborhoodId = _neighborhoodId;
-    }
-    @DynamoDBRangeKey(attributeName = "neighborhoodName")
-    @DynamoDBIndexHashKey(attributeName = "neighborhoodName", globalSecondaryIndexName = "name")
+    public NeighborhoodDO() {}
+
+    private DynamoDBMapper dynamoDBMapper;
+
+    @DynamoDBHashKey(attributeName = "neighborhoodName")
+    @DynamoDBAttribute(attributeName = "neighborhoodName")
     public String getNeighborhoodName() {
         return _neighborhoodName;
     }
@@ -35,5 +40,45 @@ public class NeighborhoodDO {
     public void setNeighborhoodName(final String _neighborhoodName) {
         this._neighborhoodName = _neighborhoodName;
     }
+    @DynamoDBRangeKey(attributeName = "neighborhoodCity")
+    @DynamoDBAttribute(attributeName = "neighborhoodCity")
+    public String getNeighborhoodCity() {
+        return _neighborhoodCity;
+    }
 
+    public void setNeighborhoodCity(final String _neighborhoodCity) {
+        this._neighborhoodCity = _neighborhoodCity;
+    }
+    @DynamoDBAttribute(attributeName = "blueprintList")
+    public Map<String, String> getBlueprintList() {
+        return _blueprintList;
+    }
+
+    public void setBlueprintList(final Map<String, String> _blueprintList) {
+        this._blueprintList = _blueprintList;
+    }
+    @DynamoDBAttribute(attributeName = "locationList")
+    public Map<String, String> getLocationList() {
+        return _locationList;
+    }
+
+    public void setLocationList(final Map<String, String> _locationList) {
+        this._locationList = _locationList;
+    }
+
+    public void read(String name, String city) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                com.caravan.caravan.NeighborhoodDO neighborhoodItem = dynamoDBMapper.load(
+                        com.caravan.caravan.NeighborhoodDO.class,
+                        name,       // Partition key (hash key)
+                        city);    // Sort key (range key)
+
+                // Item read
+                Log.d("Neighborhood Item:", neighborhoodItem.toString());
+            }
+        }).start();
+    }
 }

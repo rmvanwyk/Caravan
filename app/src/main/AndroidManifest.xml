@@ -12,8 +12,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".AuthenticatorActivity">
-
+        <activity android:name=".AuthenticatorActivity"
+            android:exported="true">
         </activity>
         <activity
             android:name=".NextActivity"
@@ -69,9 +69,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity android:name=".BlueprintActivity"
             android:label="BlueprintActivity">
         </activity>
+        <activity
+            android:exported="true"
+            android:name=".DBTesting"
+            android:label="@string/title_activity_dbtesting"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>
