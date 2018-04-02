@@ -12,11 +12,4 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true" >
     </ListView>
-
-    <include
-        layout="@layout/element_bottom_navigation"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="top"
-        />
 </RelativeLayout>

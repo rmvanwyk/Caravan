@@ -9,7 +9,7 @@ import android.widget.TextView;
  * Created by rmvanwyk on 3/29/18.
  */
 
-public class BlueprintActivity extends MainActivity {
+public class BlueprintActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {

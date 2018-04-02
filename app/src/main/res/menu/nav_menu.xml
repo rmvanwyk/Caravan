@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navbar_home"
+        android:icon="@drawable/ic_home_white_24dp"
+        android:title="@string/nav_home" />
+    <item
+        android:id="@+id/navbar_explore"
+        android:icon="@drawable/ic_search_white_24px"
+        android:title="@string/nav_explore" />
+    <item
+        android:id="@+id/navbar_account"
+        android:icon="@drawable/ic_account_box_white_24dp"
+        android:title="@string/nav_account" />
+</menu>
