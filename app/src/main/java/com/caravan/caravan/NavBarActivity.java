@@ -44,7 +44,8 @@ public class NavBarActivity extends AppCompatActivity {
                     setFragmentToFrame(homeFragment);
                     return true;
                 case R.id.navbar_explore:
-                    setFragmentToFrame(exploreFragment);
+                    //setFragmentToFrame(exploreFragment);
+                    startActivity(new Intent(this, SearchableActivity.class));
                     return true;
                 case R.id.navbar_account:
                     if(!isSignedIn()) {

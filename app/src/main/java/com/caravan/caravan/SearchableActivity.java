@@ -1,5 +1,6 @@
 package com.caravan.caravan;
 
+import android.annotation.TargetApi;
 import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Context;
@@ -8,11 +9,17 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.support.v7.widget.SearchView;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
+
+import com.amazonaws.mobile.auth.core.IdentityManager;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,7 +30,7 @@ import java.util.List;
  */
 
 public class SearchableActivity extends AppCompatActivity {
-
+    Button backButton;
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,10 +78,15 @@ public class SearchableActivity extends AppCompatActivity {
 
 
     @Override
+    @TargetApi(11)
     public boolean onCreateOptionsMenu(Menu menu) {
         //Inflate the options menu from XML
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.options_menu, menu);
+        getMenuInflater().inflate(R.menu.options_menu, menu);
+
+        backButton = (Button) findViewById(R.id.button_back);
+        backButton.setOnClickListener((buttonView) -> {
+            startActivity(new Intent(this, NavBarActivity.class));
+            });
 
         //Get the search view and set the searchable config
         SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
