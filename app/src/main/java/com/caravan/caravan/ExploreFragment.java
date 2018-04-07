@@ -33,13 +33,14 @@ public class ExploreFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.activity_explore, container, false);
+        return inflater.inflate(R.layout.fragment_explore, container, false);
     }
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
         // Get the intent, verify the action and get the query
-        Intent intent = getActivity().getIntent();
+        /*Intent intent = getActivity().getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             String query = intent.getStringExtra(SearchManager.QUERY);
             Log.d("Intent", query);
@@ -47,7 +48,7 @@ public class ExploreFragment extends Fragment {
             LocationAdapter adapter = new LocationAdapter(getActivity(), results);
             ListView listview = (ListView) getView().findViewById(R.id.list);
             listview.setAdapter(adapter);
-        }
+        }*/
     }
 
     public ArrayList<SearchTest.Location> doMySearch(String query){
@@ -78,9 +79,12 @@ public class ExploreFragment extends Fragment {
         return results;
     }
 
+    @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.options_menu, menu);
         super.onCreateOptionsMenu(menu,inflater);
-        menu.clear();
+
+        /*menu.clear();
         inflater.inflate(R.menu.options_menu, menu);
 
         //Get the search view and set the searchable config
@@ -113,6 +117,6 @@ public class ExploreFragment extends Fragment {
 
                                           }
                                       }
-        );
+        );*/
     }
 }
