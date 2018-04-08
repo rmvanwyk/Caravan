@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="recent_search_length">10</string>
+    <string name="search_suggestion_list_length">30</string>
+    <string name="search_suggestion_redraw_append_length">15</string>
+</resources>

@@ -21,7 +21,7 @@ public class SearchTest {
         this.locations.add(new Location("Los Angeles", "California", "Umami Burger", "Resturant"));
     }
 
-    public class Location {
+    public static class Location {
         public String state;
         public String city;
         public String name;
