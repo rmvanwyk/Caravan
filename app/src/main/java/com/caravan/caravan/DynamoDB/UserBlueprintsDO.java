@@ -1,20 +1,16 @@
-package com.caravan.caravan;
+package com.caravan.caravan.DynamoDB;
 
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexHashKey;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @DynamoDBTable(tableName = "caravan-mobilehub-2012693532-UserBlueprints")
 
-public class UserBlueprintsDO {
+public class UserBlueprintsDO implements Explorable{
 
     public UserBlueprintsDO(String key, String range) {
         //this.setLocationName(key);
@@ -92,4 +88,13 @@ public class UserBlueprintsDO {
         this._neighborhoodList = _neighborhoodList;
     }
 
+    @Override
+    public String getThumbnailPhoto() {
+        return "";
+    }
+
+    @Override
+    public String getDescription() {
+        return "";
+    }
 }

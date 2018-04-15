@@ -1,4 +1,4 @@
-package com.caravan.caravan;
+package com.caravan.caravan.DynamoDB;
 
 import android.util.Log;
 
@@ -10,13 +10,11 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @DynamoDBTable(tableName = "caravan-mobilehub-2012693532-Blueprints")
 
-public class BlueprintsDO {
+public class BlueprintsDO implements Explorable {
     private String _blueprintName;
     private String _blueprintCity;
     private Double _blueprintFollowerCount;
@@ -89,8 +87,8 @@ public class BlueprintsDO {
             @Override
             public void run() {
 
-                com.caravan.caravan.BlueprintsDO blueprintItem = dynamoDBMapper.load(
-                        com.caravan.caravan.BlueprintsDO.class,
+                BlueprintsDO blueprintItem = dynamoDBMapper.load(
+                        BlueprintsDO.class,
                         name,       // Partition key (hash key)
                         city);    // Sort key (range key)
 
@@ -98,6 +96,17 @@ public class BlueprintsDO {
                 Log.d("Blueprint Item:", blueprintItem.toString());
             }
         }).start();
+    }
+
+    @Override
+    public String getThumbnailPhoto() {
+        return "";
+    }
+
+    @Override
+    public String getDescription() {
+        return "";
+
     }
 }
 

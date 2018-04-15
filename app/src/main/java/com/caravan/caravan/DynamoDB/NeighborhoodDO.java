@@ -1,22 +1,18 @@
-package com.caravan.caravan;
+package com.caravan.caravan.DynamoDB;
 
 import android.util.Log;
 
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexHashKey;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 @DynamoDBTable(tableName = "caravan-mobilehub-2012693532-Neighborhoods")
 
-public class NeighborhoodDO {
+public class NeighborhoodDO implements Explorable{
     private String _neighborhoodName;
     private String _neighborhoodCity;
     private Map<String, String> _blueprintList;
@@ -71,8 +67,8 @@ public class NeighborhoodDO {
             @Override
             public void run() {
 
-                com.caravan.caravan.NeighborhoodDO neighborhoodItem = dynamoDBMapper.load(
-                        com.caravan.caravan.NeighborhoodDO.class,
+                NeighborhoodDO neighborhoodItem = dynamoDBMapper.load(
+                        NeighborhoodDO.class,
                         name,       // Partition key (hash key)
                         city);    // Sort key (range key)
 
@@ -80,5 +76,15 @@ public class NeighborhoodDO {
                 Log.d("Neighborhood Item:", neighborhoodItem.toString());
             }
         }).start();
+    }
+
+    @Override
+    public String getThumbnailPhoto() {
+        return "";
+    }
+
+    @Override
+    public String getDescription() {
+        return "";
     }
 }

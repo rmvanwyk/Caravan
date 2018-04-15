@@ -1,14 +1,9 @@
-package com.caravan.caravan;
+package com.caravan.caravan.DynamoDB;
 
-import android.app.Activity;
-import android.content.Context;
-import android.util.Log;
-import android.widget.TextView;
+import  android.util.Log;
 
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexHashKey;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBQueryExpression;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
@@ -20,18 +15,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.lang.reflect.Modifier;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.locks.Condition;
 
 @DynamoDBTable(tableName = "caravan-mobilehub-2012693532-Locations")
-public class LocationsDO extends DynamoCRUD {
-
-    /*Context context;
-    public LocationsDO(Context context){
-        this.context=context;
-    }*/
+public class LocationsDO extends DynamoCRUD implements Explorable {
 
     public LocationsDO(String key, String range) {
         this.setLocationName(key);
@@ -65,6 +52,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setLocationName(final String _locationName) {
         this._locationName = _locationName;
     }
+
     @DynamoDBRangeKey(attributeName = "locationCity")
     @DynamoDBAttribute(attributeName = "locationCity")
     public String getLocationCity() {
@@ -74,6 +62,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setLocationCity(final String _locationCity) {
         this._locationCity = _locationCity;
     }
+
     @DynamoDBAttribute(attributeName = "address")
     public String getAddress() {
         return _address;
@@ -82,6 +71,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setAddress(final String _address) {
         this._address = _address;
     }
+
     @DynamoDBAttribute(attributeName = "blueprintList")
     public Map<String, String> getBlueprintList() {
         return _blueprintList;
@@ -90,6 +80,8 @@ public class LocationsDO extends DynamoCRUD {
     public void setBlueprintList(final Map<String, String> _blueprintList) {
         this._blueprintList = _blueprintList;
     }
+
+    @Override
     @DynamoDBAttribute(attributeName = "description")
     public String getDescription() {
         return _description;
@@ -98,6 +90,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setDescription(final String _description) {
         this._description = _description;
     }
+
     @DynamoDBAttribute(attributeName = "email")
     public String getEmail() {
         return _email;
@@ -106,6 +99,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setEmail(final String _email) {
         this._email = _email;
     }
+
     @DynamoDBAttribute(attributeName = "foodDrinkRecommendation")
     public String getFoodDrinkRecommendation() {
         return _foodDrinkRecommendation;
@@ -114,6 +108,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setFoodDrinkRecommendation(final String _foodDrinkRecommendation) {
         this._foodDrinkRecommendation = _foodDrinkRecommendation;
     }
+
     @DynamoDBAttribute(attributeName = "locationId")
     public String getLocationId() {
         return _locationId;
@@ -122,6 +117,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setLocationId(final String _locationId) {
         this._locationId = _locationId;
     }
+
     @DynamoDBAttribute(attributeName = "neighborhoodList")
     public Map<String, String> getNeighborhoodList() {
         return _neighborhoodList;
@@ -130,6 +126,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setNeighborhoodList(final Map<String, String> _neighborhoodList) {
         this._neighborhoodList = _neighborhoodList;
     }
+
     @DynamoDBAttribute(attributeName = "phoneNumber")
     public String getPhoneNumber() {
         return _phoneNumber;
@@ -138,6 +135,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setPhoneNumber(final String _phoneNumber) {
         this._phoneNumber = _phoneNumber;
     }
+
     @DynamoDBAttribute(attributeName = "pricePoint")
     public String getPricePoint() {
         return _pricePoint;
@@ -146,6 +144,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setPricePoint(final String _pricePoint) {
         this._pricePoint = _pricePoint;
     }
+
     @DynamoDBAttribute(attributeName = "timeOfDay")
     public String getTimeOfDay() {
         return _timeOfDay;
@@ -154,6 +153,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setTimeOfDay(final String _timeOfDay) {
         this._timeOfDay = _timeOfDay;
     }
+
     @DynamoDBAttribute(attributeName = "website")
     public String getWebsite() {
         return _website;
@@ -189,8 +189,8 @@ public class LocationsDO extends DynamoCRUD {
             @Override
             public void run() {
 
-                com.caravan.caravan.LocationsDO locationItem = dynamoDBMapper.load(
-                        com.caravan.caravan.LocationsDO.class,
+                LocationsDO locationItem = dynamoDBMapper.load(
+                        LocationsDO.class,
                         name,       // Partition key (hash key)
                         city);    // Sort key (range key)
 
@@ -277,5 +277,10 @@ public class LocationsDO extends DynamoCRUD {
                 }
             }
         }).start();
+    }
+
+    @Override
+    public String getThumbnailPhoto() {
+        return "";
     }
 }
