@@ -1,29 +1,18 @@
 package com.caravan.caravan;
 
 import android.annotation.TargetApi;
-import android.app.ListActivity;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.support.v7.widget.SearchView;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import com.amazonaws.mobile.auth.core.IdentityManager;
-
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 /**
  * Created by rmvanwyk on 3/24/18.
@@ -81,7 +70,7 @@ public class SearchableActivity extends AppCompatActivity {
     @TargetApi(11)
     public boolean onCreateOptionsMenu(Menu menu) {
         //Inflate the options menu from XML
-        getMenuInflater().inflate(R.menu.options_menu, menu);
+        getMenuInflater().inflate(R.menu.explore_options_menu, menu);
 
         backButton = (Button) findViewById(R.id.button_back);
         backButton.setOnClickListener((buttonView) -> {

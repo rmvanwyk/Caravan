@@ -80,7 +80,7 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.options_menu, menu);
+        inflater.inflate(R.menu.explore_options_menu, menu);
         MenuItem item = menu.findItem(R.id.searchActionBarItem);
         item.setOnActionExpandListener(this);
         SearchView searchView = (SearchView) item.getActionView();

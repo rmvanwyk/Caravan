@@ -47,7 +47,6 @@ public class NavBarActivity extends AppCompatActivity {
                     return true;
                 case R.id.navbar_explore:
                     setFragmentToFrame(exploreFragment);
-                    //startActivity(new Intent(this, SearchableActivity.class));
                     return true;
                 case R.id.navbar_account:
                     if(!isSignedIn()) {
@@ -63,9 +62,9 @@ public class NavBarActivity extends AppCompatActivity {
         });
     }
 
-    void setFragmentToFrame(Fragment fragment) {
+    void setFragmentToFrame(Fragment newFragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_frame, fragment);
+        fragmentTransaction.replace(R.id.main_frame, newFragment);
         fragmentTransaction.commit();
     }
 
@@ -74,5 +73,17 @@ public class NavBarActivity extends AppCompatActivity {
         if(identityManager == null)
             return false;
         return identityManager.isUserSignedIn();
+    }
+
+    public HomeFragment getHomeFragment() {
+        return homeFragment;
+    }
+
+    public ExploreFragment getExploreFragment() {
+        return exploreFragment;
+    }
+
+    public AccountFragment getAccountFragment() {
+        return accountFragment;
     }
 }
