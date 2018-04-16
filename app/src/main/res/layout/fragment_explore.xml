@@ -14,6 +14,6 @@
         android:id="@id/android:empty"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Explore Fragment!" />
+        android:text="No search results" />
 
 </LinearLayout>

@@ -12,7 +12,7 @@ import java.util.Map;
 
 @DynamoDBTable(tableName = "caravan-mobilehub-2012693532-Neighborhoods")
 
-public class NeighborhoodDO implements Explorable{
+public class NeighborhoodDO {
     private String _neighborhoodName;
     private String _neighborhoodCity;
     private Map<String, String> _blueprintList;
@@ -76,15 +76,5 @@ public class NeighborhoodDO implements Explorable{
                 Log.d("Neighborhood Item:", neighborhoodItem.toString());
             }
         }).start();
-    }
-
-    @Override
-    public String getThumbnailPhoto() {
-        return "";
-    }
-
-    @Override
-    public String getDescription() {
-        return "";
     }
 }

@@ -14,7 +14,7 @@ import java.util.Map;
 
 @DynamoDBTable(tableName = "caravan-mobilehub-2012693532-Blueprints")
 
-public class BlueprintsDO implements Explorable {
+public class BlueprintsDO {
     private String _blueprintName;
     private String _blueprintCity;
     private Double _blueprintFollowerCount;
@@ -96,17 +96,6 @@ public class BlueprintsDO implements Explorable {
                 Log.d("Blueprint Item:", blueprintItem.toString());
             }
         }).start();
-    }
-
-    @Override
-    public String getThumbnailPhoto() {
-        return "";
-    }
-
-    @Override
-    public String getDescription() {
-        return "";
-
     }
 }
 

@@ -6,11 +6,12 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 
+
 import java.util.Map;
 
 @DynamoDBTable(tableName = "caravan-mobilehub-2012693532-UserBlueprints")
 
-public class UserBlueprintsDO implements Explorable{
+public class UserBlueprintsDO{
 
     public UserBlueprintsDO(String key, String range) {
         //this.setLocationName(key);
@@ -86,15 +87,5 @@ public class UserBlueprintsDO implements Explorable{
 
     public void setNeighborhoodList(final Map<String, String> _neighborhoodList) {
         this._neighborhoodList = _neighborhoodList;
-    }
-
-    @Override
-    public String getThumbnailPhoto() {
-        return "";
-    }
-
-    @Override
-    public String getDescription() {
-        return "";
     }
 }

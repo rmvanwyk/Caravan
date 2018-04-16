@@ -12,15 +12,25 @@ public abstract class RecentHistoryDatabase extends RoomDatabase {
     public abstract RecentHistoryDAO recentHistoryDAO();
 
     private static RecentHistoryDatabase INSTANCE;
+    private static RecentHistoryDatabase IN_MEMORY_INSTANCE;
 
     public static RecentHistoryDatabase getInstance(Context context) {
-        if(INSTANCE == null) {
-            return Room.inMemoryDatabaseBuilder(context.getApplicationContext(), RecentHistoryDatabase.class).build();
-        }
+        if(INSTANCE == null)
+            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), RecentHistoryDatabase.class, "").build();
         return INSTANCE;
     }
 
-    public static void destoryInstance() {
+    public static RecentHistoryDatabase getInMemoryInstance(Context context) {
+        if(IN_MEMORY_INSTANCE == null)
+            IN_MEMORY_INSTANCE = Room.inMemoryDatabaseBuilder(context.getApplicationContext(), RecentHistoryDatabase.class).build();
+        return IN_MEMORY_INSTANCE;
+    }
+
+    public static void destroyInstance() {
         INSTANCE = null;
+    }
+
+    public static void destroyInMemoryInstance() {
+        IN_MEMORY_INSTANCE = null;
     }
 }

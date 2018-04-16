@@ -18,7 +18,7 @@ import java.lang.reflect.Modifier;
 import java.util.Map;
 
 @DynamoDBTable(tableName = "caravan-mobilehub-2012693532-Locations")
-public class LocationsDO extends DynamoCRUD implements Explorable {
+public class LocationsDO extends DynamoCRUD {
 
     public LocationsDO(String key, String range) {
         this.setLocationName(key);
@@ -81,7 +81,6 @@ public class LocationsDO extends DynamoCRUD implements Explorable {
         this._blueprintList = _blueprintList;
     }
 
-    @Override
     @DynamoDBAttribute(attributeName = "description")
     public String getDescription() {
         return _description;
@@ -277,10 +276,5 @@ public class LocationsDO extends DynamoCRUD implements Explorable {
                 }
             }
         }).start();
-    }
-
-    @Override
-    public String getThumbnailPhoto() {
-        return "";
     }
 }

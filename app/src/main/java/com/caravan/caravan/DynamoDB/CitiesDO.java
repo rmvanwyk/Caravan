@@ -10,7 +10,7 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 
 @DynamoDBTable(tableName = "caravan-mobilehub-2012693532-Cities")
 
-public class CitiesDO extends DynamoCRUD implements Explorable {
+public class CitiesDO extends DynamoCRUD {
     private String _cityId;
     private String _cityName;
 
@@ -57,15 +57,4 @@ public class CitiesDO extends DynamoCRUD implements Explorable {
             }
         }).start();
     }
-
-    @Override
-    public String getThumbnailPhoto() {
-        return "";
-    }
-
-    @Override
-    public String getDescription() {
-        return "";
-    }
-
 }
