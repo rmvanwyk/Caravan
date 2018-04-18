@@ -15,7 +15,10 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.PaginatedList;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
+import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -24,15 +27,19 @@ import java.util.concurrent.locks.Condition;
 @DynamoDBTable(tableName = "caravan-mobilehub-2012693532-Cities")
 
 public class CitiesDO extends DynamoCRUD {
-    private String _cityId;
-    private String _cityName;
+    public String _cityId;
+    public String _cityName;
+    public ArrayList<String> _blueprintList;
+    public String city_results;
 
-    public CitiesDO(String key, String range) {
+    public CitiesDO(String key, String range, ArrayList<String> _blueprintList) {
         this.setCityId(key);
         this.setCityName(range);
+        this._blueprintList = _blueprintList;
     }
 
-    public CitiesDO() {}
+    public CitiesDO() {
+    }
 
     private DynamoDBMapper dynamoDBMapper;
 
@@ -45,6 +52,7 @@ public class CitiesDO extends DynamoCRUD {
     public void setCityId(final String _cityId) {
         this._cityId = _cityId;
     }
+
     @DynamoDBRangeKey(attributeName = "cityName")
     @DynamoDBAttribute(attributeName = "cityName")
     public String getCityName() {
@@ -69,5 +77,44 @@ public class CitiesDO extends DynamoCRUD {
                 Log.d("City Item:", cityItem.toString());
             }
         }).start();
+    }
+
+    public String queryCities(DynamoDBMapper dynamoDBMapper, String name) {
+        Log.d("query", name);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                CitiesDO obj = new CitiesDO();
+                obj.setCityName(name);
+
+                com.amazonaws.services.dynamodbv2.model.Condition rangeKeyCondition = new com.amazonaws.services.dynamodbv2.model.Condition()
+                        .withComparisonOperator(ComparisonOperator.BEGINS_WITH)
+                        .withAttributeValueList(new AttributeValue().withS("7c331a5d-265b-4771-aae3-d33cac2c8451"));
+
+                DynamoDBQueryExpression queryExpression = new DynamoDBQueryExpression()
+                        .withHashKeyValues(obj)
+                        .withRangeKeyCondition("cityId", (com.amazonaws.services.dynamodbv2.model.Condition) rangeKeyCondition)
+                        .withConsistentRead(false);
+
+                PaginatedList<CitiesDO> result = dynamoDBMapper.query(CitiesDO.class, queryExpression);
+                if (result.isEmpty()) {
+                    Log.d("result", "is empty");
+                } else {
+                    Log.d("result", "not empty");
+                }
+                GsonBuilder builder = new GsonBuilder();
+                builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
+                Gson gson = builder.create();
+                String jsonFormOfItem = gson.toJson(result);
+                city_results = "{\"cities\":" + jsonFormOfItem + "}";
+                Log.d("City result: ", city_results);
+
+                if (result.isEmpty()) {
+                    Log.d("Query result: ", "No Results!\n");
+                    // There were no items matching your query.
+                }
+            }
+        }).start();
+        return city_results;
     }
 }

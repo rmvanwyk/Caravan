@@ -23,7 +23,10 @@ import java.lang.reflect.Modifier;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.Callable;
 import java.util.concurrent.locks.Condition;
+
+import static android.os.SystemClock.sleep;
 
 @DynamoDBTable(tableName = "caravan-mobilehub-2012693532-Locations")
 public class LocationsDO extends DynamoCRUD {
@@ -33,28 +36,45 @@ public class LocationsDO extends DynamoCRUD {
         this.context=context;
     }*/
 
-    public LocationsDO(String key, String range) {
+    public String location_results;
+
+    public LocationsDO(String key, String range, String _address, String _description, String _email,
+                       String _foodDrinkRecommendation, String _locationId, String _phoneNumber,
+                       String _pricePoint, String _timeOfDay, String _website) {
         this.setLocationName(key);
         this.setLocationCity(range);
+        this._address = _address;
+        this._description = _description;
+        this._email = _email;
+        this._foodDrinkRecommendation = _foodDrinkRecommendation;
+        this._locationId = _locationId;
+        this._phoneNumber = _phoneNumber;
+        this._pricePoint = _pricePoint;
+        this._timeOfDay = _timeOfDay;
+        this._website = _website;
     }
 
-    public LocationsDO() {}
+    public LocationsDO(String name, String city) {
+        this.setLocationName(name);
+        this.setLocationCity(city);
+    }
 
-    private DynamoDBMapper dynamoDBMapper;
+    public LocationsDO() {
+    }
 
-    private String _locationName;
-    private String _locationCity;
-    private String _address;
-    private Map<String, String> _blueprintList;
-    private String _description;
-    private String _email;
-    private String _foodDrinkRecommendation;
-    private String _locationId;
-    private Map<String, String> _neighborhoodList;
-    private String _phoneNumber;
-    private String _pricePoint;
-    private String _timeOfDay;
-    private String _website;
+    public String _locationName;
+    public String _locationCity;
+    public String _address;
+    public Map<String, String> _blueprintList;
+    public String _description;
+    public String _email;
+    public String _foodDrinkRecommendation;
+    public String _locationId;
+    public Map<String, String> _neighborhoodList;
+    public String _phoneNumber;
+    public String _pricePoint;
+    public String _timeOfDay;
+    public String _website;
 
     @DynamoDBHashKey(attributeName = "locationName")
     @DynamoDBAttribute(attributeName = "locationName")
@@ -65,6 +85,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setLocationName(final String _locationName) {
         this._locationName = _locationName;
     }
+
     @DynamoDBRangeKey(attributeName = "locationCity")
     @DynamoDBAttribute(attributeName = "locationCity")
     public String getLocationCity() {
@@ -74,6 +95,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setLocationCity(final String _locationCity) {
         this._locationCity = _locationCity;
     }
+
     @DynamoDBAttribute(attributeName = "address")
     public String getAddress() {
         return _address;
@@ -82,6 +104,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setAddress(final String _address) {
         this._address = _address;
     }
+
     @DynamoDBAttribute(attributeName = "blueprintList")
     public Map<String, String> getBlueprintList() {
         return _blueprintList;
@@ -90,6 +113,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setBlueprintList(final Map<String, String> _blueprintList) {
         this._blueprintList = _blueprintList;
     }
+
     @DynamoDBAttribute(attributeName = "description")
     public String getDescription() {
         return _description;
@@ -98,6 +122,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setDescription(final String _description) {
         this._description = _description;
     }
+
     @DynamoDBAttribute(attributeName = "email")
     public String getEmail() {
         return _email;
@@ -106,6 +131,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setEmail(final String _email) {
         this._email = _email;
     }
+
     @DynamoDBAttribute(attributeName = "foodDrinkRecommendation")
     public String getFoodDrinkRecommendation() {
         return _foodDrinkRecommendation;
@@ -114,6 +140,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setFoodDrinkRecommendation(final String _foodDrinkRecommendation) {
         this._foodDrinkRecommendation = _foodDrinkRecommendation;
     }
+
     @DynamoDBAttribute(attributeName = "locationId")
     public String getLocationId() {
         return _locationId;
@@ -122,6 +149,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setLocationId(final String _locationId) {
         this._locationId = _locationId;
     }
+
     @DynamoDBAttribute(attributeName = "neighborhoodList")
     public Map<String, String> getNeighborhoodList() {
         return _neighborhoodList;
@@ -130,6 +158,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setNeighborhoodList(final Map<String, String> _neighborhoodList) {
         this._neighborhoodList = _neighborhoodList;
     }
+
     @DynamoDBAttribute(attributeName = "phoneNumber")
     public String getPhoneNumber() {
         return _phoneNumber;
@@ -138,6 +167,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setPhoneNumber(final String _phoneNumber) {
         this._phoneNumber = _phoneNumber;
     }
+
     @DynamoDBAttribute(attributeName = "pricePoint")
     public String getPricePoint() {
         return _pricePoint;
@@ -146,6 +176,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setPricePoint(final String _pricePoint) {
         this._pricePoint = _pricePoint;
     }
+
     @DynamoDBAttribute(attributeName = "timeOfDay")
     public String getTimeOfDay() {
         return _timeOfDay;
@@ -154,6 +185,7 @@ public class LocationsDO extends DynamoCRUD {
     public void setTimeOfDay(final String _timeOfDay) {
         this._timeOfDay = _timeOfDay;
     }
+
     @DynamoDBAttribute(attributeName = "website")
     public String getWebsite() {
         return _website;
@@ -236,8 +268,8 @@ public class LocationsDO extends DynamoCRUD {
         }).start();
     }*/
 
-    public void queryLocations(DynamoDBMapper dynamoDBMapper, String name) {
-
+    public String queryLocations(DynamoDBMapper dynamoDBMapper, String name) {
+        Log.d("query", name);
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -254,28 +286,27 @@ public class LocationsDO extends DynamoCRUD {
                         .withConsistentRead(false);
 
                 PaginatedList<LocationsDO> result = dynamoDBMapper.query(LocationsDO.class, queryExpression);
-
+                if (result.isEmpty()) {
+                    Log.d("result", "is empty");
+                } else {
+                    Log.d("result", "not empty");
+                }
                 GsonBuilder builder = new GsonBuilder();
                 builder.excludeFieldsWithModifiers(Modifier.FINAL, Modifier.TRANSIENT, Modifier.STATIC);
                 Gson gson = builder.create();
-                StringBuilder stringBuilder = new StringBuilder();
-
-                // Loop through query results
-                for (int i = 0; i < result.size(); i++) {
-                    String jsonFormOfItem = gson.toJson(result.get(i));
-                    stringBuilder.append(jsonFormOfItem + "\n\n");
-                }
-                // Add your code here to deal with the data result
-                Log.d("Query result: ", stringBuilder.toString());
-                //TextView display = (TextView) ((Activity)context).findViewById(R.id.textViewQuery);
-                //display.setText(stringBuilder.toString());
-
+                String jsonFormOfItem = gson.toJson(result);
+                location_results = "{\"location\":" + jsonFormOfItem + "}";
+                Log.d("Query result: ",location_results);
 
                 if (result.isEmpty()) {
                     Log.d("Query result: ", "No Results!\n");
                     // There were no items matching your query.
                 }
             }
+
         }).start();
+        sleep(1000);
+        Log.d("Query result: ",location_results);
+        return location_results;
     }
 }

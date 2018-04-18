@@ -15,7 +15,7 @@ public class DynamoCRUD {
     public DynamoCRUD () {
 
     }
-    private DynamoDBMapper dynamoDBMapper;
+    public DynamoDBMapper dynamoDBMapper;
 
     public void create(Class<Object> type, String key, String range) throws NoSuchMethodException, InvocationTargetException {
         Object obj = null;

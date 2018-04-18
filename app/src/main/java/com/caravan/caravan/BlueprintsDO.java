@@ -10,6 +10,8 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -17,16 +19,21 @@ import java.util.Set;
 @DynamoDBTable(tableName = "caravan-mobilehub-2012693532-Blueprints")
 
 public class BlueprintsDO {
-    private String _blueprintName;
-    private String _blueprintCity;
-    private Double _blueprintFollowerCount;
-    private String _blueprintId;
-    private Map<String, String> _locationList;
-    private Map<String, String> _neighborhoodList;
+    public String _blueprintName;
+    public String _blueprintCity;
+    public Double _blueprintFollowerCount;
+    public String _blueprintId;
+    public ArrayList<String> _locationList;
+    public String _description;
 
-    public BlueprintsDO(String key, String range) {
+    public BlueprintsDO(String key, String range, Double _blueprintFollowerCount,
+                        String _blueprintId, ArrayList<String> _locationList, String _description) {
         this.setBlueprintName(key);
         this.setBlueprintCity(range);
+        this._blueprintFollowerCount = _blueprintFollowerCount;
+        this._blueprintId = _blueprintId;
+        this._locationList = _locationList;
+        this._description = _description;
     }
 
     public BlueprintsDO() {}
@@ -68,20 +75,12 @@ public class BlueprintsDO {
         this._blueprintId = _blueprintId;
     }
     @DynamoDBAttribute(attributeName = "locationList")
-    public Map<String, String> getLocationList() {
+    public ArrayList<String> getLocationList() {
         return _locationList;
     }
 
-    public void setLocationList(final Map<String, String> _locationList) {
+    public void setLocationList(final ArrayList<String> _locationList) {
         this._locationList = _locationList;
-    }
-    @DynamoDBAttribute(attributeName = "neighborhoodList")
-    public Map<String, String> getNeighborhoodList() {
-        return _neighborhoodList;
-    }
-
-    public void setNeighborhoodList(final Map<String, String> _neighborhoodList) {
-        this._neighborhoodList = _neighborhoodList;
     }
 
     public void read(String name, String city) {

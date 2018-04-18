@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="60dp">
+
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
@@ -10,6 +11,7 @@
         android:paddingStart="6dp"
         android:paddingEnd="6dp"
         android:text="Name" />
+
     <TextView
         android:id="@+id/city"
         android:layout_width="wrap_content"
@@ -17,16 +19,5 @@
         android:paddingStart="10dp"
         android:paddingEnd="6dp"
         android:text="City" />
-    <TextView
-        android:id="@+id/state"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingStart="10dp"
-        android:paddingEnd="6dp"
-        android:text="State" />
-    <TextView
-        android:id="@+id/type"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Type" />
+
 </LinearLayout>
