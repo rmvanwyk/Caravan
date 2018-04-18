@@ -13,6 +13,10 @@ import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.amazonaws.mobile.auth.core.IdentityManager;
+import com.caravan.caravan.RecentHistoryDB.RecentHistoryDatabase;
+import com.caravan.caravan.RecentHistoryDB.RecentHistoryItem;
+
+import java.util.List;
 
 import javax.inject.Inject;
 
@@ -32,6 +36,11 @@ public class NavBarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navbar);
         ButterKnife.bind(this);
+        /*RecentHistoryDatabase recentHistoryDatabase = RecentHistoryDatabase.getInstance(getApplicationContext());
+        recentHistoryDatabase.recentHistoryDAO().insertItem(new RecentHistoryItem(1,2));
+        List<RecentHistoryItem> recentHistory = recentHistoryDatabase.recentHistoryDAO().loadRecentHistory();
+        for(RecentHistoryItem item: recentHistory)
+            Log.d("asdfasdf", String.valueOf(item.getDate()));*/
 
         //TO-DO: Fix injection with dagger 2.0
         exploreFragment = new ExploreFragment();
@@ -47,7 +56,6 @@ public class NavBarActivity extends AppCompatActivity {
                     return true;
                 case R.id.navbar_explore:
                     setFragmentToFrame(exploreFragment);
-                    //startActivity(new Intent(this, SearchableActivity.class));
                     return true;
                 case R.id.navbar_account:
                     if(!isSignedIn()) {
@@ -63,9 +71,9 @@ public class NavBarActivity extends AppCompatActivity {
         });
     }
 
-    void setFragmentToFrame(Fragment fragment) {
+    void setFragmentToFrame(Fragment newFragment) {
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
-        fragmentTransaction.replace(R.id.main_frame, fragment);
+        fragmentTransaction.replace(R.id.main_frame, newFragment);
         fragmentTransaction.commit();
     }
 
@@ -74,5 +82,17 @@ public class NavBarActivity extends AppCompatActivity {
         if(identityManager == null)
             return false;
         return identityManager.isUserSignedIn();
+    }
+
+    public HomeFragment getHomeFragment() {
+        return homeFragment;
+    }
+
+    public ExploreFragment getExploreFragment() {
+        return exploreFragment;
+    }
+
+    public AccountFragment getAccountFragment() {
+        return accountFragment;
     }
 }

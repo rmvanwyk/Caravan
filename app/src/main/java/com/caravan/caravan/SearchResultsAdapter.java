@@ -7,6 +7,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.caravan.caravan.DynamoDB.BlueprintsDO;
+import com.caravan.caravan.DynamoDB.CitiesDO;
+import com.caravan.caravan.DynamoDB.LocationsDO;
+
 import java.util.ArrayList;
 
 /**

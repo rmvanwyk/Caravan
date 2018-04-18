@@ -1,14 +1,8 @@
-package com.caravan.caravan;
+package com.caravan.caravan.DynamoDB;
 
-import android.app.Activity;
-import android.content.Context;
-import android.util.Log;
-import android.widget.TextView;
-
+import  android.util.Log;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexHashKey;
-import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBQueryExpression;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
@@ -18,25 +12,28 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-
 import java.lang.reflect.Modifier;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.util.concurrent.Callable;
-import java.util.concurrent.locks.Condition;
-
 import static android.os.SystemClock.sleep;
 
 @DynamoDBTable(tableName = "caravan-mobilehub-2012693532-Locations")
 public class LocationsDO extends DynamoCRUD {
 
-    /*Context context;
-    public LocationsDO(Context context){
-        this.context=context;
-    }*/
 
     public String location_results;
+    public String _locationName;
+    public String _locationCity;
+    public String _address;
+    public Map<String, String> _blueprintList;
+    public String _description;
+    public String _email;
+    public String _foodDrinkRecommendation;
+    public String _locationId;
+    public Map<String, String> _neighborhoodList;
+    public String _phoneNumber;
+    public String _pricePoint;
+    public String _timeOfDay;
+    public String _website;
 
     public LocationsDO(String key, String range, String _address, String _description, String _email,
                        String _foodDrinkRecommendation, String _locationId, String _phoneNumber,
@@ -62,19 +59,7 @@ public class LocationsDO extends DynamoCRUD {
     public LocationsDO() {
     }
 
-    public String _locationName;
-    public String _locationCity;
-    public String _address;
-    public Map<String, String> _blueprintList;
-    public String _description;
-    public String _email;
-    public String _foodDrinkRecommendation;
-    public String _locationId;
-    public Map<String, String> _neighborhoodList;
-    public String _phoneNumber;
-    public String _pricePoint;
-    public String _timeOfDay;
-    public String _website;
+
 
     @DynamoDBHashKey(attributeName = "locationName")
     @DynamoDBAttribute(attributeName = "locationName")
@@ -195,34 +180,13 @@ public class LocationsDO extends DynamoCRUD {
         this._website = _website;
     }
 
-    //================================================================================
-    //CRUD OPERATIONS
-
-    //================================================================================
-    //CRUD OPERATIONS
-    /*
-    public void createLocation(String id, String name) {
-        final com.caravan.caravan.LocationsDO locationItem = new com.caravan.caravan.LocationsDO();
-
-        locationItem.setLocationId(id);
-        locationItem.setLocationName(name);
-
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                dynamoDBMapper.save(locationItem);
-                // Item saved
-            }
-        }).start();
-    }
-*/
     public void read(String name, String city) {
         new Thread(new Runnable() {
             @Override
             public void run() {
 
-                com.caravan.caravan.LocationsDO locationItem = dynamoDBMapper.load(
-                        com.caravan.caravan.LocationsDO.class,
+                LocationsDO locationItem = dynamoDBMapper.load(
+                        LocationsDO.class,
                         name,       // Partition key (hash key)
                         city);    // Sort key (range key)
 

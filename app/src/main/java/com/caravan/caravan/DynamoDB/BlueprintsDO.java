@@ -1,7 +1,6 @@
-package com.caravan.caravan;
+package com.caravan.caravan.DynamoDB;
 
 import android.util.Log;
-
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexHashKey;
@@ -9,12 +8,7 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexRan
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
-
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 @DynamoDBTable(tableName = "caravan-mobilehub-2012693532-Blueprints")
 
@@ -88,8 +82,8 @@ public class BlueprintsDO {
             @Override
             public void run() {
 
-                com.caravan.caravan.BlueprintsDO blueprintItem = dynamoDBMapper.load(
-                        com.caravan.caravan.BlueprintsDO.class,
+                BlueprintsDO blueprintItem = dynamoDBMapper.load(
+                        BlueprintsDO.class,
                         name,       // Partition key (hash key)
                         city);    // Sort key (range key)
 

@@ -1,8 +1,6 @@
 package com.caravan.caravan;
 
-
 import android.app.Activity;
-import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ListFragment;
@@ -15,28 +13,24 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.caravan.caravan.DynamoDB.BlueprintsDO;
+import com.caravan.caravan.DynamoDB.CitiesDO;
+import com.caravan.caravan.DynamoDB.LocationsDO;
 import com.google.gson.Gson;
-import com.google.gson.internal.bind.ArrayTypeAdapter;
 import com.google.gson.reflect.TypeToken;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static com.facebook.FacebookSdk.getApplicationContext;
-
 
 public class ExploreFragment extends ListFragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
     private Activity parentActivity;
@@ -50,7 +44,6 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //Log.d("asdf", getListView().toString());
         return inflater.inflate(R.layout.fragment_explore, container, false);
     }
     @Override
@@ -245,7 +238,7 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.options_menu, menu);
+        inflater.inflate(R.menu.explore_options_menu, menu);
         MenuItem item = menu.findItem(R.id.searchActionBarItem);
         item.setOnActionExpandListener(this);
         SearchView searchView = (SearchView) item.getActionView();
