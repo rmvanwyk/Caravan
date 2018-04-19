@@ -9,13 +9,17 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.amazonaws.mobile.client.AWSMobileClient;
+import com.amazonaws.mobileconnectors.dynamodbv2.document.datatype.Document;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.caravan.caravan.R;
 
+import java.util.List;
+
 public class DBTesting extends AppCompatActivity {
 
     DynamoDBMapper dynamoDBMapper;
+    List<Document> memos;
 
     public DBTesting () {}
 
@@ -40,10 +44,15 @@ public class DBTesting extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String query = text.getText().toString();
+                /*String query = text.getText().toString();
                 Log.d("EditText Result:", query);
                 LocationsDO loc = new LocationsDO();
-                loc.queryLocations(dynamoDBMapper, query);
+                loc.queryLocations(dynamoDBMapper, query);*/
+                DatabaseAccess task = DatabaseAccess.getInstance(DBTesting.this);
+                task.Query("Lo");
+
+                Log.d("Query Results: ", String.valueOf(task.results.size()));
+
             }
         });
     }

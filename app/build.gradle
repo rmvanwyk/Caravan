@@ -50,6 +50,8 @@ dependencies {
     //Social media logins
     implementation 'com.google.android.gms:play-services-auth:11.8.0'
     implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+    implementation ('com.amazonaws:aws-android-sdk-mobile-client:2.6.+@aar') { transitive = true }
+
     // Amazon Cognito UserPools, Google SignIn, and Facebook SignIn
     compile 'com.android.support:support-v4:27.+'
     compile('com.amazonaws:aws-android-sdk-auth-userpools:2.6.+@aar') { transitive = true; }
@@ -62,7 +64,21 @@ dependencies {
     //Bottom Nav Bar
     compile 'com.android.support:design:27.+'
     compile 'com.android.support:support-annotations:+'
-    compile 'com.amazonaws:aws-android-sdk-ddb-mapper:2.6.+'
+    //compile 'com.amazonaws:aws-android-sdk-ddb-mapper:2.6.+'
+    compile 'com.amazonaws:aws-android-sdk-ddb-document:2.6.+'
+
+    implementation 'com.amazonaws:aws-android-sdk-core:2.6.+'
+    implementation 'com.amazonaws:aws-android-sdk-auth-core:2.6.+@aar'
+    implementation 'com.amazonaws:aws-android-sdk-auth-ui:2.6.+@aar'
+    implementation 'com.amazonaws:aws-android-sdk-auth-userpools:2.6.+@aar'
+    implementation 'com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.6.+'
+    implementation 'com.amazonaws:aws-android-sdk-pinpoint:2.6.+'
+
+    // Amazon DynamoDB for NoSQL tables
+    implementation 'com.amazonaws:aws-android-sdk-ddb:2.6.+'
+    implementation 'com.amazonaws:aws-android-sdk-ddb-mapper:2.6.+'
+
+
     //FOR ALL ACTIVITIES THAT CALL DYNAMODB, USE THESE IMPORTS
     // import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 
