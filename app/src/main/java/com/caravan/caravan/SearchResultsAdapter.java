@@ -7,10 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
-import com.caravan.caravan.DynamoDB.BlueprintsDO;
-import com.caravan.caravan.DynamoDB.CitiesDO;
-import com.caravan.caravan.DynamoDB.LocationsDO;
-
 import java.util.ArrayList;
 
 /**
@@ -53,7 +49,7 @@ public class SearchResultsAdapter extends BaseAdapter {
 
     @Override
     public int getItemViewType(int position) {
-        if (getItem(position) instanceof LocationsDO) {
+        /*if (getItem(position) instanceof LocationsDO) {
             return TYPE_LOCATION;
         } else if (getItem(position) instanceof BlueprintsDO) {
             return TYPE_GUIDE;
@@ -61,7 +57,9 @@ public class SearchResultsAdapter extends BaseAdapter {
             return TYPE_CITY;
         } else {
             return TYPE_DIVIDER;
-        }
+        }*/
+       //DELETE THIS LATER
+        return 0;
     }
 
     @Override
@@ -92,29 +90,29 @@ public class SearchResultsAdapter extends BaseAdapter {
         }
         switch (type) {
             case TYPE_LOCATION: {
-                LocationsDO location_obj = (LocationsDO) getItem(position);
+                //LocationsDO location_obj = (LocationsDO) getItem(position);
                 // Lookup view for data population
                 TextView name = (TextView) convertView.findViewById(R.id.name);
                 TextView city = (TextView) convertView.findViewById(R.id.city);
                 TextView description = (TextView) convertView.findViewById(R.id.description);
                 // Populate the data into the template view using the data object
-                name.setText(location_obj._locationName);
-                city.setText(location_obj._locationCity);
-                description.setText(location_obj._description);
+                //name.setText(location_obj._locationName);
+                //city.setText(location_obj._locationCity);
+                //description.setText(location_obj._description);
                 break; }
             case TYPE_CITY: {
-                CitiesDO city_obj = (CitiesDO) getItem(position);
+                //CitiesDO city_obj = (CitiesDO) getItem(position);
                 TextView city = (TextView) convertView.findViewById(R.id.name);
-                city.setText(city_obj._cityName);
+                //city.setText(city_obj._cityName);
                 break; }
             case TYPE_GUIDE: {
-                BlueprintsDO blueprint_obj = (BlueprintsDO) getItem(position);
+                //BlueprintsDO blueprint_obj = (BlueprintsDO) getItem(position);
                 TextView name = (TextView) convertView.findViewById(R.id.name);
                 TextView city = (TextView) convertView.findViewById(R.id.city);
                 TextView description = (TextView) convertView.findViewById(R.id.description);
-                name.setText(blueprint_obj._blueprintName);
-                city.setText(blueprint_obj._blueprintCity);
-                description.setText(blueprint_obj._description);
+                //name.setText(blueprint_obj._blueprintName);
+                //city.setText(blueprint_obj._blueprintCity);
+                //description.setText(blueprint_obj._description);
                 break; }
             case TYPE_DIVIDER: {
                 TextView title = (TextView) convertView.findViewById(R.id.headerTitle);

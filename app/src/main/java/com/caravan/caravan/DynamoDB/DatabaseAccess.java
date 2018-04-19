@@ -1,4 +1,4 @@
-package com.caravan.caravan;
+package com.caravan.caravan.DynamoDB;
 
 import android.content.Context;
 import android.os.AsyncTask;

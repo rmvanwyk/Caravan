@@ -19,9 +19,6 @@ import android.widget.Toast;
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
-import com.caravan.caravan.DynamoDB.BlueprintsDO;
-import com.caravan.caravan.DynamoDB.CitiesDO;
-import com.caravan.caravan.DynamoDB.LocationsDO;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.json.JSONArray;
@@ -78,7 +75,7 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
                 ArrayList<String> blueprintList = new Gson().fromJson(blueprintJSON.toString(), new TypeToken<List<Object>>(){}.getType());
                 Log.d("list", blueprintList.toString());
                 Log.d("list size", Integer.toString(blueprintList.size()));
-                cityList.add(new CitiesDO(id, name, blueprintList));
+                //cityList.add(new CitiesDO(id, name, blueprintList));
             }
         } catch (JSONException e) {
             Toast.makeText(getApplicationContext(), "Error" + e.toString(), Toast.LENGTH_SHORT).show();
@@ -103,7 +100,7 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
                 String description = jsonChildNode.optString("_description");
                 JSONArray locationJSON = jsonChildNode.optJSONArray("_locationList");
                 ArrayList<String> locationsList = new Gson().fromJson(locationJSON.toString(), new TypeToken<List<Object>>(){}.getType());
-                blueprintList.add(new BlueprintsDO(name, city, followers, id, locationsList, description));
+                //blueprintList.add(new BlueprintsDO(name, city, followers, id, locationsList, description));
             }
         } catch (JSONException e) {
             Toast.makeText(getApplicationContext(), "Error" + e.toString(), Toast.LENGTH_SHORT).show();
@@ -136,8 +133,8 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
                 ArrayList<String> hoodList = new Gson().fromJson(hoodJSON.toString(), new TypeToken<List<Object>>(){}.getType());
                 JSONArray blueprintJSON = jsonChildNode.optJSONArray("_blueprintList");
                 ArrayList<String> blueprintList = new Gson().fromJson(blueprintJSON.toString(), new TypeToken<List<Object>>(){}.getType());
-                locationList.add(new LocationsDO(name, city, address, description, email, recommendation,
-                                                 id, phone_number, price_point, time, website));
+                //locationList.add(new LocationsDO(name, city, address, description, email, recommendation,
+                                                 //id, phone_number, price_point, time, website));
             }
         }
         catch(JSONException e){
@@ -156,9 +153,11 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
                 .awsConfiguration(
                         AWSMobileClient.getInstance().getConfiguration())
                 .build();
-        LocationsDO loc = new LocationsDO();
-        CitiesDO cit = new CitiesDO();
-        BlueprintsDO blu = new BlueprintsDO();
+        //LocationsDO loc = new LocationsDO();
+        //CitiesDO cit = new CitiesDO();
+        //BlueprintsDO blu = new BlueprintsDO();
+
+
         //cit.queryCities(dynamoDBMapper, query);
         //blu.queryBlueprints(dynamoDBMapper, query);
         //loc.queryLocations(dynamoDBMapper, query);
@@ -284,11 +283,11 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
     private void loadRecentSearchHistory() {
         //Should be replaced by recent search history cache pulled from database; hardcoded for now
         ArrayList<Object> recentSearches = new ArrayList<>();
-        recentSearches.add(new LocationsDO("Nashville", "name1"));
-        recentSearches.add(new LocationsDO("Denver", "name2"));
-        recentSearches.add(new LocationsDO("Portland","name3"));
-        recentSearches.add(new LocationsDO("San Diego","name4"));
-        recentSearches.add(new LocationsDO("Chicago","name5"));
+        //recentSearches.add(new LocationsDO("Nashville", "name1"));
+        //recentSearches.add(new LocationsDO("Denver", "name2"));
+        //recentSearches.add(new LocationsDO("Portland","name3"));
+        //recentSearches.add(new LocationsDO("San Diego","name4"));
+        //recentSearches.add(new LocationsDO("Chicago","name5"));
         setListAdapter(new SearchResultsAdapter(getActivity(), recentSearches));
     }
 
