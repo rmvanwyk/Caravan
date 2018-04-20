@@ -154,9 +154,9 @@ header.masthead {
   padding-top: 150px;
   padding-bottom: 100px;
   color: white;
-  background: url("../img/bg-pattern.png"), #222222;
-  background: url("../img/bg-pattern.png"), -webkit-linear-gradient(to left, #222222, #222222);
-  background: url("../img/bg-pattern.png"), linear-gradient(to left, #222222, #222222);
+  background: url("../img/bg-pattern.png"), #C1E4DE;
+  background: url("../img/bg-pattern.png"), -webkit-linear-gradient(to left, #C1E4DE, #C1E4DE);
+  background: url("../img/bg-pattern.png"), linear-gradient(to left, #C1E4DE, #C1E4DE);
 }
 
 header.masthead .header-content {
