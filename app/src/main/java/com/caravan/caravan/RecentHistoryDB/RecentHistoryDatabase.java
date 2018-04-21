@@ -7,7 +7,7 @@ import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
 @Database(entities = {RecentHistoryItem.class}, version = 1)
-@TypeConverters({Converters.class})
+@TypeConverters({RecentHistoryConverters.class})
 public abstract class RecentHistoryDatabase extends RoomDatabase {
     public abstract RecentHistoryDAO recentHistoryDAO();
 

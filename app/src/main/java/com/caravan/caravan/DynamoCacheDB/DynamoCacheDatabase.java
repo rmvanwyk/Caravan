@@ -3,9 +3,17 @@ package com.caravan.caravan.DynamoCacheDB;
 import android.arch.persistence.room.Database;
 import android.arch.persistence.room.Room;
 import android.arch.persistence.room.RoomDatabase;
+import android.arch.persistence.room.TypeConverters;
 import android.content.Context;
 
-@Database(entities = {Blueprint.class, BlueprintLocationRelationship.class, Location.class}, version = 1)
+import com.caravan.caravan.DynamoCacheDB.Entity.CuratedBlueprint;
+import com.caravan.caravan.DynamoCacheDB.Entity.CuratedBlueprintLocationPairing;
+import com.caravan.caravan.DynamoCacheDB.Entity.Location;
+import com.caravan.caravan.DynamoCacheDB.Entity.UserBlueprint;
+import com.caravan.caravan.DynamoCacheDB.Entity.UserBlueprintLocationPairing;
+
+@Database(entities = {CuratedBlueprint.class, CuratedBlueprintLocationPairing.class, Location.class, UserBlueprint.class, UserBlueprintLocationPairing.class}, version = 1)
+@TypeConverters({DynamoCacheConverters.class})
 public abstract class DynamoCacheDatabase extends RoomDatabase {
     public abstract DynamoCacheDAO dynamoCacheDAO();
 

@@ -1,5 +1,7 @@
 package com.caravan.caravan.DynamoDB;
 
+import android.arch.persistence.room.Entity;
+
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
@@ -7,8 +9,10 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 
 import java.util.List;
 
-@DynamoDBTable(tableName = "caravan-mobilehub-2012693532-Curated")
+import lombok.AllArgsConstructor;
 
+@DynamoDBTable(tableName = "caravan-mobilehub-2012693532-Curated")
+@Entity
 public class CuratedDO {
     private String _type;
     private String _name;
@@ -24,6 +28,26 @@ public class CuratedDO {
     private String _timeOfDay;
     private String _website;
     private String _phoneNumber;
+
+    public CuratedDO(){}
+
+    public CuratedDO(String _type, String _name, String _address, List<String> _blueprintList, String _city, String _description, String _foodDrinkRecommendation,
+                     String _id, List<String> _locationList, List<String> _neighborhoodList, String _pricePoint, String _timeOfDay, String _website, String _phoneNumber) {
+        this._type=_type;
+        this._name=_name;
+        this._address=_address;
+        this._blueprintList=_blueprintList;
+        this._city=_city;
+        this._description=_description;
+        this._foodDrinkRecommendation=_foodDrinkRecommendation;
+        this._id=_id;
+        this._locationList=_locationList;
+        this._neighborhoodList=_neighborhoodList;
+        this._pricePoint=_pricePoint;
+        this._timeOfDay=_timeOfDay;
+        this._website=_website;
+        this._phoneNumber=_phoneNumber;
+    }
 
     @DynamoDBHashKey(attributeName = "type")
     @DynamoDBAttribute(attributeName = "type")
@@ -140,5 +164,30 @@ public class CuratedDO {
         this._phoneNumber = _phoneNumber;
     }
 
+    @Override
+    public boolean equals(final Object obj)
+    {
+        if ( obj == null || obj == this || !(obj instanceof CuratedDO) )
+            return false;
+
+        CuratedDO otherCuratedDO = (CuratedDO) obj;
+
+        if (!otherCuratedDO._type.equals(this._type)) return false;
+        if (!otherCuratedDO._name.equals(this._name))   return false;
+        if (!otherCuratedDO._address.equals(this._address)) return false;
+        if (!otherCuratedDO._blueprintList.equals(this._blueprintList)) return false;
+        if (!otherCuratedDO._city.equals(this._city))   return false;
+        if (!otherCuratedDO._description.equals(this._description)) return false;
+        if (!otherCuratedDO._foodDrinkRecommendation.equals(this._foodDrinkRecommendation)) return false;
+        if (!otherCuratedDO._id.equals(this._id))   return false;
+        if (!otherCuratedDO._locationList.equals(this._locationList)) return false;
+        if (!otherCuratedDO._neighborhoodList.equals(this._neighborhoodList)) return false;
+        if (!otherCuratedDO._pricePoint.equals(this._pricePoint))   return false;
+        if (!otherCuratedDO._timeOfDay.equals(this._timeOfDay)) return false;
+        if (!otherCuratedDO._website.equals(this._website)) return false;
+        if (!otherCuratedDO._phoneNumber.equals(this._phoneNumber))   return false;
+
+        return true;
+    }
 }
 

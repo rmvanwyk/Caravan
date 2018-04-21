@@ -1,5 +1,7 @@
 package com.caravan.caravan.DynamoDB;
 
+import android.arch.persistence.room.Entity;
+
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
@@ -8,7 +10,7 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 import java.util.List;
 
 @DynamoDBTable(tableName = "caravan-mobilehub-2012693532-User")
-
+@Entity
 public class UserDO {
     private String _userId;
     private String _name;
@@ -23,6 +25,25 @@ public class UserDO {
     private String _timeOfDay;
     private String _type;
     private String _website;
+
+    public UserDO(){}
+
+    public UserDO(String _userId, String _name, String _address, String _city, String _description, String _foodDrinkRecommendation, String _id,
+                  List<String> _locationList, String _phoneNumber, String _pricePoint, String _timeOfDay, String _type, String _website) {
+        this._userId=_userId;
+        this._name=_name;
+        this._address=_address;
+        this._city=_city;
+        this._description=_description;
+        this._foodDrinkRecommendation=_foodDrinkRecommendation;
+        this._id=_id;
+        this._locationList=_locationList;
+        this._phoneNumber=_phoneNumber;
+        this._pricePoint=_pricePoint;
+        this._timeOfDay=_timeOfDay;
+        this._type=_type;
+        this._website=_website;
+    }
 
     @DynamoDBHashKey(attributeName = "userId")
     @DynamoDBAttribute(attributeName = "userId")

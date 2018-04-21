@@ -3,7 +3,6 @@ package com.caravan.caravan.RecentHistoryDB;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.core.internal.deps.guava.collect.ImmutableSet;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import com.caravan.caravan.DynamoDB.Table;
 
@@ -34,14 +33,14 @@ public class RecentHistoryDatabaseTest {
     public void testSize() {
         final int exptectedTableSize = 8;
         dao.deleteTable();
-        dao.insertItem(new RecentHistoryItem("1", new Date(), Table.Blueprints));
-        dao.insertItem(new RecentHistoryItem("2", new Date(), Table.Locations));
-        dao.insertItem(new RecentHistoryItem("3", new Date(), Table.Cities));
-        dao.insertItem(new RecentHistoryItem("4", new Date(), Table.Blueprints));
-        dao.insertItem(new RecentHistoryItem("5", new Date(), Table.Blueprints));
-        dao.insertItem(new RecentHistoryItem("6", new Date(), Table.Blueprints));
-        dao.insertItem(new RecentHistoryItem("7", new Date(), Table.Blueprints));
-        dao.insertItem(new RecentHistoryItem("8", new Date(), Table.Locations));
+        dao.insertItem(new RecentHistoryItem("1", new Date(), Table.blueprint));
+        dao.insertItem(new RecentHistoryItem("2", new Date(), Table.location));
+        dao.insertItem(new RecentHistoryItem("3", new Date(), Table.city));
+        dao.insertItem(new RecentHistoryItem("4", new Date(), Table.blueprint));
+        dao.insertItem(new RecentHistoryItem("5", new Date(), Table.blueprint));
+        dao.insertItem(new RecentHistoryItem("6", new Date(), Table.blueprint));
+        dao.insertItem(new RecentHistoryItem("7", new Date(), Table.blueprint));
+        dao.insertItem(new RecentHistoryItem("8", new Date(), Table.location));
         assertEquals(exptectedTableSize, dao.getTableSize());
     }
 
@@ -50,13 +49,13 @@ public class RecentHistoryDatabaseTest {
         boolean outputIsExpected = true;
         final Set<String> expectedOutputIds = ImmutableSet.<String>builder().add("4").add("5").add("6").add("7").build();
         dao.deleteTable();
-        dao.insertItem(new RecentHistoryItem("1", new Date(1), Table.Locations));
-        dao.insertItem(new RecentHistoryItem("2", new Date(2), Table.Locations));
-        dao.insertItem(new RecentHistoryItem("3", new Date(3), Table.Cities));
-        dao.insertItem(new RecentHistoryItem("4", new Date(4), Table.Locations));
-        dao.updateRecentHistory("5", new Date(5), Table.Blueprints);
-        dao.updateRecentHistory("6", new Date(6), Table.Blueprints);
-        dao.updateRecentHistory("7", new Date(7), Table.Blueprints);
+        dao.insertItem(new RecentHistoryItem("1", new Date(1), Table.location));
+        dao.insertItem(new RecentHistoryItem("2", new Date(2), Table.location));
+        dao.insertItem(new RecentHistoryItem("3", new Date(3), Table.city));
+        dao.insertItem(new RecentHistoryItem("4", new Date(4), Table.location));
+        dao.updateRecentHistory("5", new Date(5), Table.blueprint);
+        dao.updateRecentHistory("6", new Date(6), Table.blueprint);
+        dao.updateRecentHistory("7", new Date(7), Table.blueprint);
 
         List<RecentHistoryItem> searchHistory = dao.loadRecentHistory();
         for (RecentHistoryItem item : searchHistory) {

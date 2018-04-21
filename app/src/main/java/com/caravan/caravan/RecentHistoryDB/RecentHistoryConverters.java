@@ -7,7 +7,7 @@ import com.caravan.caravan.DynamoDB.Table;
 
 import java.util.Date;
 
-public class Converters {
+public class RecentHistoryConverters {
     @TypeConverter
     public static Date dateFromTimestamp(Long value) {
         return value == null ? null : new Date(value);
