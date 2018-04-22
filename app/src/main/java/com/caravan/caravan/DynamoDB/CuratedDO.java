@@ -175,13 +175,32 @@ public class CuratedDO {
         if (!otherCuratedDO._type.equals(this._type)) return false;
         if (!otherCuratedDO._name.equals(this._name))   return false;
         if (!otherCuratedDO._address.equals(this._address)) return false;
-        if (!otherCuratedDO._blueprintList.equals(this._blueprintList)) return false;
+
+        if(this._blueprintList != null) {
+            if (!otherCuratedDO._blueprintList.equals(this._blueprintList)) return false;
+        }
+        else {
+            if (otherCuratedDO._blueprintList != null) return false;
+        }
+
         if (!otherCuratedDO._city.equals(this._city))   return false;
         if (!otherCuratedDO._description.equals(this._description)) return false;
         if (!otherCuratedDO._foodDrinkRecommendation.equals(this._foodDrinkRecommendation)) return false;
         if (!otherCuratedDO._id.equals(this._id))   return false;
-        if (!otherCuratedDO._locationList.equals(this._locationList)) return false;
-        if (!otherCuratedDO._neighborhoodList.equals(this._neighborhoodList)) return false;
+
+        if(this._locationList != null) {
+            if (!otherCuratedDO._locationList.equals(this._locationList)) return false;
+        }
+        else {
+            if(otherCuratedDO._locationList != null) return false;
+        }
+
+        if(this._neighborhoodList != null) {
+            if (!otherCuratedDO._neighborhoodList.equals(this._neighborhoodList)) return false;
+        }
+            else {
+            if(otherCuratedDO._neighborhoodList != null) return false;
+        }
         if (!otherCuratedDO._pricePoint.equals(this._pricePoint))   return false;
         if (!otherCuratedDO._timeOfDay.equals(this._timeOfDay)) return false;
         if (!otherCuratedDO._website.equals(this._website)) return false;

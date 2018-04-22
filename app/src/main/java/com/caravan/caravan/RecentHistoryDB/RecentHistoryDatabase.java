@@ -16,13 +16,13 @@ public abstract class RecentHistoryDatabase extends RoomDatabase {
 
     public static RecentHistoryDatabase getInstance(Context context) {
         if(INSTANCE == null)
-            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), RecentHistoryDatabase.class, "").build();
+            INSTANCE = Room.databaseBuilder(context.getApplicationContext(), RecentHistoryDatabase.class, "recent_history_db").allowMainThreadQueries().build();
         return INSTANCE;
     }
 
     public static RecentHistoryDatabase getInMemoryInstance(Context context) {
         if(IN_MEMORY_INSTANCE == null)
-            IN_MEMORY_INSTANCE = Room.inMemoryDatabaseBuilder(context.getApplicationContext(), RecentHistoryDatabase.class).build();
+            IN_MEMORY_INSTANCE = Room.inMemoryDatabaseBuilder(context.getApplicationContext(), RecentHistoryDatabase.class).allowMainThreadQueries().build();
         return IN_MEMORY_INSTANCE;
     }
 

@@ -2,6 +2,7 @@ package com.caravan.caravan;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.Debug;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ListFragment;
 import android.support.v7.widget.SearchView;
@@ -19,12 +20,17 @@ import android.widget.Toast;
 import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.caravan.caravan.DynamoDB.Table;
+import com.caravan.caravan.RecentHistoryDB.RecentHistoryDAO;
+import com.caravan.caravan.RecentHistoryDB.RecentHistoryDatabase;
+import com.caravan.caravan.RecentHistoryDB.RecentHistoryItem;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import static com.facebook.FacebookSdk.getApplicationContext;

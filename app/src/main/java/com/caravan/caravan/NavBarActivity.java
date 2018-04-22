@@ -1,22 +1,16 @@
 package com.caravan.caravan;
 
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
 import com.amazonaws.mobile.auth.core.IdentityManager;
-import com.caravan.caravan.RecentHistoryDB.RecentHistoryDatabase;
-import com.caravan.caravan.RecentHistoryDB.RecentHistoryItem;
-
-import java.util.List;
 
 import javax.inject.Inject;
 
@@ -36,11 +30,6 @@ public class NavBarActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_navbar);
         ButterKnife.bind(this);
-        /*RecentHistoryDatabase recentHistoryDatabase = RecentHistoryDatabase.getInstance(getApplicationContext());
-        recentHistoryDatabase.recentHistoryDAO().insertItem(new RecentHistoryItem(1,2));
-        List<RecentHistoryItem> recentHistory = recentHistoryDatabase.recentHistoryDAO().loadRecentHistory();
-        for(RecentHistoryItem item: recentHistory)
-            Log.d("asdfasdf", String.valueOf(item.getDate()));*/
 
         //TO-DO: Fix injection with dagger 2.0
         exploreFragment = new ExploreFragment();
