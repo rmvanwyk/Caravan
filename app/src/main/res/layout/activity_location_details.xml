@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/loc_image"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/scrollView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@color/Pink" />
+
+    <ScrollView
+        android:id="@+id/scrollView3"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/loc_image">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/White">
+
+
+                <TextView
+                    android:id="@+id/loc_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/Blue"
+                    android:text="\nLocation Name\n"
+                    android:textColorLink="@color/Grey"
+                    android:textSize="18sp"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="284dp" />
+
+                <ImageButton
+                    android:id="@+id/loc_save"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="19dp"
+                    android:background="@color/Blue"
+                    android:clickable="true"
+                    android:contextClickable="false"
+                    android:onClick="saveClick"
+                    android:scaleX="2"
+                    android:scaleY="2"
+                    app:srcCompat="@drawable/ic_save_white_24px" />
+
+                <TextView
+                    android:id="@+id/loc_details"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/loc_name"
+                    android:background="@color/White"
+                    android:text="Time of Day - $$$"
+                    android:textColorLink="@color/Grey"
+                    android:textSize="18sp"
+                    tools:layout_editor_absoluteX="0dp"
+                    tools:layout_editor_absoluteY="352dp" />
+
+                <ImageView
+                    android:id="@+id/call_button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_below="@id/loc_details"
+                    android:layout_marginRight="48dp"
+                    android:layout_toLeftOf="@id/site_button"
+                    android:tint="@color/Orange"
+                    app:srcCompat="@drawable/ic_phone_white_24px" />
+
+                <ImageView
+                    android:id="@+id/site_button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_below="@id/loc_details"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginLeft="48dp"
+                    android:layout_marginRight="48dp"
+                    android:tint="@color/Orange"
+                    app:srcCompat="@drawable/ic_web_white_24px" />
+
+                <ImageView
+                    android:id="@+id/map_button"
+                    android:layout_width="48dp"
+                    android:layout_height="48dp"
+                    android:layout_below="@id/loc_details"
+                    android:layout_marginLeft="48dp"
+                    android:layout_toRightOf="@id/site_button"
+                    android:tint="@color/Orange"
+                    app:srcCompat="@drawable/ic_pin_drop_white_24px" />
+
+                <TextView
+                    android:id="@+id/desc_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/site_button"
+                    android:layout_centerHorizontal="true"
+                    android:textAlignment="center"
+                    android:background="@color/White"
+                    android:text="\n- Description -\n"
+                    android:textColorLink="@color/Grey"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/loc_desc"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/desc_header"
+                    android:layout_centerHorizontal="true"
+                    android:textAlignment="center"
+                    android:background="@color/White"
+                    android:text="This is a location description"
+                    android:textColorLink="@color/Grey"
+                    android:textSize="15sp" />
+
+
+                <TextView
+                    android:id="@+id/rec_header"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/loc_desc"
+                    android:layout_centerHorizontal="true"
+                    android:textAlignment="center"
+                    android:background="@color/White"
+                    android:text="\n- Recommendation -\n"
+                    android:textColorLink="@color/Grey"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/loc_rec"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rec_header"
+                    android:layout_centerHorizontal="true"
+                    android:textAlignment="center"
+                    android:background="@color/White"
+                    android:text="This is a location recommmendation"
+                    android:textColorLink="@color/Grey"
+                    android:textSize="15sp" />
+            </RelativeLayout>
+        </LinearLayout>
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

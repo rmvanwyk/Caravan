@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:layout_editor_absoluteY="25dp">
+
+    <TextView
+        android:id="@+id/neighborhood_name"
+        android:layout_width="0dp"
+        android:layout_height="60dp"
+        android:background="@color/Green"
+        android:text="\n-Neighborhood-"
+        android:textAlignment="center"
+        android:textColor="@color/Grey"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/neighborhood_block_container"
+        android:layout_width="368dp"
+        android:layout_height="491dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="68dp"></LinearLayout>
+
+
+</android.support.constraint.ConstraintLayout>
