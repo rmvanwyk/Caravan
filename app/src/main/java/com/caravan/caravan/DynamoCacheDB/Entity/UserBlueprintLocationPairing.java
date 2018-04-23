@@ -1,12 +1,23 @@
 package com.caravan.caravan.DynamoCacheDB.Entity;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.ForeignKey;
 import android.support.annotation.NonNull;
 
 import lombok.Data;
 
 @Data
-@Entity(tableName = "user_pairings", primaryKeys = {"blueprint_id", "location_id"})
+@Entity(tableName = "user_pairings", primaryKeys = {"blueprint_id", "location_id"},
+        foreignKeys = {
+                @ForeignKey(entity = UserBlueprint.class,
+                        parentColumns = "id",
+                        childColumns = "blueprint_id",
+                        onDelete = ForeignKey.CASCADE),
+                @ForeignKey(entity = BlueprintLocation.class,
+                        parentColumns = "id",
+                        childColumns = "location_id",
+                        onDelete = ForeignKey.CASCADE)
+        })
 public class UserBlueprintLocationPairing {
     @NonNull
     private String blueprint_id;

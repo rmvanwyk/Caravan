@@ -33,7 +33,6 @@ public class RecentHistoryDatabaseTest {
     public void testSize() {
         final int exptectedTableSize = 8;
         dao.deleteTable();
-<<<<<<< e34db5ed83235435c89344b61f980daadc3609c6
         dao.insertItem(new RecentHistoryItem("1", new Date(), Table.blueprint));
         dao.insertItem(new RecentHistoryItem("2", new Date(), Table.location));
         dao.insertItem(new RecentHistoryItem("3", new Date(), Table.city));
@@ -42,16 +41,6 @@ public class RecentHistoryDatabaseTest {
         dao.insertItem(new RecentHistoryItem("6", new Date(), Table.blueprint));
         dao.insertItem(new RecentHistoryItem("7", new Date(), Table.blueprint));
         dao.insertItem(new RecentHistoryItem("8", new Date(), Table.location));
-=======
-        dao.insertItem(new RecentHistoryItem("1", new Date(), Table.Blueprints));
-        dao.insertItem(new RecentHistoryItem("1", new Date(), Table.Locations));
-        dao.insertItem(new RecentHistoryItem("3", new Date(), Table.Cities));
-        dao.insertItem(new RecentHistoryItem("4", new Date(), Table.Blueprints));
-        dao.insertItem(new RecentHistoryItem("5", new Date(), Table.Blueprints));
-        dao.insertItem(new RecentHistoryItem("6", new Date(), Table.Blueprints));
-        dao.insertItem(new RecentHistoryItem("7", new Date(), Table.Blueprints));
-        dao.insertItem(new RecentHistoryItem("8", new Date(), Table.Locations));
->>>>>>> Connected database queries to search functionality. Integrated chosen search result caching. Almost completed displaying cached queries.
         assertEquals(exptectedTableSize, dao.getTableSize());
     }
 

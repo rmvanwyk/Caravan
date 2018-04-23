@@ -216,6 +216,7 @@ public class CuratedDO {
         if (!otherCuratedDO._timeOfDay.equals(this._timeOfDay)) return false;
         if (!otherCuratedDO._website.equals(this._website)) return false;
         if (!otherCuratedDO._phoneNumber.equals(this._phoneNumber))   return false;
+        if (otherCuratedDO._followerCount != this._followerCount) return false;
 
         return true;
     }

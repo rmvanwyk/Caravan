@@ -7,18 +7,16 @@ import android.support.annotation.NonNull;
 import lombok.Data;
 
 @Data
-@Entity(tableName = "curated_parings", primaryKeys = {"blueprint_id", "location_id"},
+@Entity(tableName = "curated_pairings", primaryKeys = {"blueprint_id", "location_id"},
         foreignKeys = {
             @ForeignKey(entity = CuratedBlueprint.class,
                         parentColumns = "id",
                         childColumns = "blueprint_id",
-                        onDelete = ForeignKey.CASCADE,
-                        onUpdate = ForeignKey.CASCADE),
+                        onDelete = ForeignKey.CASCADE),
             @ForeignKey(entity = BlueprintLocation.class,
                         parentColumns = "id",
                         childColumns = "location_id",
-                        onDelete = ForeignKey.CASCADE,
-                        onUpdate = ForeignKey.CASCADE)
+                        onDelete = ForeignKey.CASCADE)
         })
 public class CuratedBlueprintLocationPairing {
     @NonNull

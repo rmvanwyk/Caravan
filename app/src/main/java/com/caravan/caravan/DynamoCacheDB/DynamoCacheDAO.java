@@ -74,7 +74,7 @@ public interface DynamoCacheDAO {
     @Query("delete from curated_blueprints")
     void deleteCuratedBlueprintsTable();
 
-    @Query("delete from curated_parings")
+    @Query("delete from curated_pairings")
     void deleteCuratedPairingsTable();
 
     @Query("delete from locations")
@@ -118,6 +118,9 @@ public interface DynamoCacheDAO {
     @Query("select * from locations where id=:id")
     Location getLocationById(String id);
 
+    @Query("select * from blueprint_locations where id=:id")
+    BlueprintLocation getBlueprintLocationById(String id);
+
     @Query("select * from curated_blueprints where id=:id")
     CuratedBlueprint getCuratedBlueprintById(String id);
 
@@ -132,11 +135,20 @@ public interface DynamoCacheDAO {
     @Query("select * from locations")
     List<Location> getAllLocations();
 
+    @Query("select * from blueprint_locations")
+    List<BlueprintLocation> getAllBlueprintLocations();
+
     @Query("select * from curated_blueprints")
     List<CuratedBlueprint> getAllCuratedBlueprints();
 
     @Query("select * from user_blueprints")
     List<UserBlueprint> getAllUserBlueprints();
+
+    @Query("select * from user_pairings")
+    List<UserBlueprintLocationPairing> getAllUserBlueprintLocationPairings();
+
+    @Query("select * from curated_pairings")
+    List<CuratedBlueprintLocationPairing> getAllCuratedBlueprintLocationPairings();
 
     /*
         The next two methods return a list of the location objects associated with the blueprint id provided.
@@ -146,8 +158,8 @@ public interface DynamoCacheDAO {
      */
 
     @Query("select * from blueprint_locations where id in "
-            + "(select location_id from curated_parings inner join curated_blueprints "
-            + "on curated_blueprints.id = curated_parings.blueprint_id where :id = curated_blueprints.id)")
+            + "(select location_id from curated_pairings inner join curated_blueprints "
+            + "on curated_blueprints.id = curated_pairings.blueprint_id where :id = curated_blueprints.id)")
     List<BlueprintLocation> getLocationsFromCuratedBlueprintId(String id);
 
     @Query("select * from blueprint_locations where id in "
@@ -156,12 +168,13 @@ public interface DynamoCacheDAO {
     List<BlueprintLocation> getLocationsFromUserBlueprintId(String id);
 
     /*
-       The following methods should only have to be used in testing. If these end up being used in application code,
-       then delete this comment.
+       The following two methods return all rows from the specified pairing table that have the specified
+       blueprint_id.
     */
-    @Query("select * from blueprint_locations where id=:id")
-    BlueprintLocation getBlueprintLocationById(String id);
 
-    @Query("select * from curated_parings where blueprint_id=:blueprintId")
+    @Query("select * from curated_pairings where blueprint_id=:blueprintId")
     CuratedBlueprintLocationPairing getCuratedBlueprintLocationPairingsFromBlueprintId(String blueprintId);
+
+    @Query("select * from user_pairings where blueprint_id=:blueprintId")
+    UserBlueprintLocationPairing getUserBlueprintLocationPairingsFromBlueprintId(String blueprintId);
 }
