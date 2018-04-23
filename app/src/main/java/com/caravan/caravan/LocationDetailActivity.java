@@ -31,7 +31,7 @@ public class LocationDetailActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_location_details);
         String loc= getIntent().getStringExtra("location");
-        m_location = m_db.getCuratedItem("location", loc);
+        //m_location = m_db.getCuratedItem("location", loc);
 
         TextView name = (TextView) findViewById(R.id.loc_name);
         TextView details = (TextView) findViewById(R.id.loc_details);

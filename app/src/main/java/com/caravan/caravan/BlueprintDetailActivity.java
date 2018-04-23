@@ -39,7 +39,7 @@ public class BlueprintDetailActivity extends Activity{
         View locView;
         for (int i = 0; i < locList.size(); i++) {
             locView = inflater.inflate(R.layout.item_location_overview, locContainer, false);
-            loc = _db.getCuratedItem(locList.get(i), "location");
+            //loc = _db.getCuratedItem(locList.get(i), "location");
             TextView name = (TextView) locView.findViewById(R.id.overview_name);
             ImageView image = (ImageView) locView.findViewById(R.id.overview_image);
             TextView description = (TextView) locView.findViewById(R.id.overview_desc);

@@ -1,6 +1,7 @@
 package com.caravan.caravan;
 
 import android.app.Activity;
+import android.database.CursorIndexOutOfBoundsException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -157,7 +158,7 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
     public boolean onQueryTextChange(String newText) {
         if(newText == null || newText.length() == 0) {
             Log.d("Zero Text", "triggered");
-            //loadRecentSearchHistory();
+            loadRecentSearchHistory();
         }
         else {
             setListAdapter(new SearchResultsAdapter(getActivity(), doMySearch(newText)));
@@ -309,26 +310,64 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
         }
         ArrayList<Object> displayList = new ArrayList<>();
         DatabaseAccess task = DatabaseAccess.getInstance(getActivity());
-
         for (int i = 0; i < cached.size(); i ++) {
-            Future<List<Object>> future = task.Query(cached.get(i).getId());
-            try {
-                if (future.get() instanceof CuratedDO) {
-                    List<Object> display = future.get();
-                    CuratedDO item = (CuratedDO) display.get(0);
-                    displayList.add(item);
-                    Log.d("DISPLAY CASH:", item.getName());
+            Object display = null;
+            if (cached.get(i).getTable().equals(Table.blueprint)) {
+                Future<CuratedDO> item = task.getCuratedItem("blueprint", cached.get(i).getId());
+                try {
+                    display = (CuratedDO) item.get();
                 }
-                else {
-                    List<Object> display = future.get();
-                    UserDO item = (UserDO) display.get(0);
-                    displayList.add(item);
-                    Log.d("DISPLAY CASH:", item.getName());
-                }
-            } catch (ExecutionException e) {
+                catch (ExecutionException | InterruptedException e) {
 
-            } catch (InterruptedException e) {
-                future.cancel(true);
+                }
+            }
+            else if (cached.get(i).getTable().equals(Table.location)) {
+                Future<CuratedDO> item = task.getCuratedItem("location", cached.get(i).getId());
+                try {
+                    display = (CuratedDO) item.get();
+                }
+                catch (ExecutionException | InterruptedException e) {
+
+                }
+            }
+            else if (cached.get(i).getTable().equals(Table.city)) {
+                Future<CuratedDO> item = task.getCuratedItem("city", cached.get(i).getId());
+                try {
+                    display = (CuratedDO) item.get();
+                }
+                catch (ExecutionException | InterruptedException e) {
+
+                }
+            }
+            else if (cached.get(i).getTable().equals(Table.neighborhood)) {
+                Future<CuratedDO> item = task.getCuratedItem("neighborhood", cached.get(i).getId());
+                try {
+                    display = (CuratedDO) item.get();
+                }
+                catch (ExecutionException | InterruptedException e) {
+
+                }
+            }
+            else if (cached.get(i).getTable().equals(Table.userlocation)) {
+                Future<UserDO> item = task.getUserItem(cached.get(i).getId());
+                try {
+                    display = (UserDO) item.get();
+                } catch (ExecutionException | InterruptedException e) {
+
+                }
+            }
+            else {
+                Future<UserDO> item = task.getUserItem(cached.get(i).getId());
+                try {
+                    display = (UserDO) item.get();
+                }
+                catch (ExecutionException | InterruptedException e) {
+
+                }
+            }
+            if (display != null) {
+                displayList.add(display);
+                Log.d("DISPLAY CASH:","item added" );
             }
         }
         setListAdapter(new SearchResultsAdapter(getActivity(), displayList));

@@ -308,25 +308,29 @@ public class DatabaseAccess {
         return u;
     }
 
-    private CuratedDO getCuratedItem(String Type, String Name) {
-        CuratedDO s = null;
-        try {
-            s = dbMapper.load(CuratedDO.class, Type, Name);
-        } catch (Exception e) {
-            Log.d("ASYNC TASK ERROR: ", e.toString());
-        }
-        return s;
+    public Future<CuratedDO> getCuratedItem(String Type, String Name) {
+        return executor.submit(() -> {
+            CuratedDO s = null;
+            try {
+                s = dbMapper.load(CuratedDO.class, Type, Name);
+            } catch (Exception e) {
+                Log.d("ASYNC TASK ERROR: ", e.toString());
+            }
+            return s;
+        });
     }
 
-    private UserDO getUserItem(String Name) {
-        UserDO s = null;
-        try {
-            s = dbMapper.load(UserDO.class, credentialsProvider.getCachedIdentityId(), Name);
-        } catch (Exception e) {
-            Log.d("ASYNC TASK ERROR: ", e.toString());
-        }
-        Log.d("getItem:: ", s.getName());
-        return s;
+    public Future<UserDO> getUserItem(String Name) {
+        return executor.submit(() -> {
+            UserDO s = null;
+            try {
+                s = dbMapper.load(UserDO.class, credentialsProvider.getCachedIdentityId(), Name);
+            } catch (Exception e) {
+                Log.d("ASYNC TASK ERROR: ", e.toString());
+            }
+            Log.d("getItem:: ", s.getName());
+            return s;
+        });
     }
 
     @SuppressLint("StaticFieldLeak")

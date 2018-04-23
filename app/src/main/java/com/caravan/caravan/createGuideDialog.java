@@ -52,7 +52,7 @@ public class createGuideDialog extends DialogFragment {
                 public void onClick(DialogInterface dialog, int which) {
                     m_name = input.getText().toString();
                     m_db.createBlueprint(m_name);
-                    m_db.addLocationToBlueprint(m_name, m_loc);
+                    //m_db.addLocationToBlueprint(m_name, m_loc);
                 }
             });
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

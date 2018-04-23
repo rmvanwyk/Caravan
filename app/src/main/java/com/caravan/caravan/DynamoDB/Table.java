@@ -5,5 +5,6 @@ public enum Table {
     city,
     location,
     neighborhood,
-    userblueprint
+    userblueprint,
+    userlocation
     }
