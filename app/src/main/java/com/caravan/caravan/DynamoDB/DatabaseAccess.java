@@ -22,6 +22,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -83,8 +86,10 @@ public class DatabaseAccess {
     /**
      * The data returned by the AsyncTasks
      */
-    private List<Object> results;
-    protected String item;
+    public List<Object> results;
+    public List<UserDO> userdoResults;
+    public List<Object> curateddoResults;
+    protected Object item;
 
     /**
      * Creates a new DatabaseAccess instance.
@@ -116,6 +121,47 @@ public class DatabaseAccess {
         return instance;
     }
 
+    private UserDO convertCuratedDOToUserDO(CuratedDO C) {
+        UserDO user = new UserDO();
+
+        user.setUserId(credentialsProvider.getCachedIdentityId());
+        user.setId(C.getId());
+        user.setName(C.getName());
+        user.setType(C.getType());
+        user.setCity(C.getCity());
+        user.setFollowerCount(C.getFollowerCount());
+        if(C.getLocationList() != null) user.setLocationList(C.getLocationList());
+        if(C.getAddress() != null) user.setAddress(C.getAddress());
+        if(C.getDescription() != null) user.setDescription((C.getDescription()));
+        if(C.getFoodDrinkRecommendation() != null) user.setFoodDrinkRecommendation(C.getFoodDrinkRecommendation());
+        if(C.getPhoneNumber() != null) user.setPhoneNumber(C.getPhoneNumber());
+        if(C.getPricePoint() != null) user.setPricePoint(C.getPricePoint());
+        if(C.getTimeOfDay() != null) user.setTimeOfDay(C.getTimeOfDay());
+        if(C.getWebsite() != null) user.setWebsite(C.getWebsite());
+
+        return user;
+    }
+
+    public void userSaveBlueprint(CuratedDO BP) {
+        final UserDO blueprint = convertCuratedDOToUserDO(BP);
+        blueprint.setFollowerCount(BP.getFollowerCount()+1);
+        BP.setFollowerCount(BP.getFollowerCount()+1);
+
+        new Thread(() -> {
+            dbMapper.save(blueprint);
+            dbMapper.save(BP);
+            // Item saved
+        }).start();
+    }
+
+    public void userSaveLocation(CuratedDO LOC) {
+        final UserDO blueprint = convertCuratedDOToUserDO(LOC);
+        new Thread(() -> {
+            dbMapper.save(blueprint);
+            // Item saved
+        }).start();
+    }
+
     public void createBlueprint(String name) {
         final UserDO blueprint = new UserDO();
         List<String> locationList = new ArrayList<>();
@@ -132,22 +178,21 @@ public class DatabaseAccess {
         }).start();
     }
 
-    public void addLocationToBlueprint(String blueprintName, String locationName) {
-        final UserDO[] blueprint = {new UserDO()};
-
-        new Thread(() -> {
-            blueprint[0] = dbMapper.load(
-                    UserDO.class,
-                    credentialsProvider.getCachedIdentityId(),
-                    blueprintName);
-        }).start();
-
-        List<String> newList = blueprint[0].getLocationList();
+    public void addLocationToBlueprint(UserDO U, String locationName) {
+        List<String> newList = U.getLocationList();
         newList.add(locationName);
-        blueprint[0].setLocationList(newList);
+        U.setLocationList(newList);
 
         new Thread(() -> {
-            dbMapper.save(blueprint[0]);
+            dbMapper.save(U);
+            // Item saved
+        }).start();
+    }
+
+    public void renameUserBlueprint(UserDO U, String newName) {
+        U.setName(newName);
+        new Thread(() -> {
+            dbMapper.save(U);
             // Item saved
         }).start();
     }
@@ -178,23 +223,89 @@ public class DatabaseAccess {
         }).start();
     }
 
-    public List<String> getAllUserBlueprints() {
-        // Create a table reference
-        return new ArrayList<>();
+    public List<CuratedDO> getBlueprintLocations(Object obj) {
+        List<String> locationList = new ArrayList<>();
+        List<CuratedDO> results= new ArrayList<>();
+        if (obj instanceof CuratedDO) {
+            CuratedDO p = (CuratedDO) obj;
+            locationList = p.getLocationList();
+            for(int i = 0; i < locationList.size(); i++) {
+                results.add((CuratedDO) getItem(locationList.get(i), LOCATION_TYPE, CURATED_COLLECTION));
+            }
+        }
+        else if (obj instanceof UserDO) {
+            UserDO u = (UserDO) obj;
+            locationList = u.getLocationList();
+            for(int i = 0; i < locationList.size(); i++) {
+                results.add((CuratedDO) getItem(locationList.get(i), LOCATION_TYPE, CURATED_COLLECTION));
+            }
+        }
+        return results;
     }
 
-    public String getItem(String name, String type, String collection) {
+    public List<UserDO> getAllUserBlueprints() {
+        UserDO obj = new UserDO();
+        obj.setUserId(credentialsProvider.getCachedIdentityId());
+
+        Condition rangeKeyCondition = new Condition()
+                .withComparisonOperator(ComparisonOperator.EQ)
+                .withAttributeValueList(new AttributeValue().withS(BLUEPRINT_TYPE));
+
+        Map<String, Condition> rangeConds = new HashMap<>();
+        rangeConds.put("type", rangeKeyCondition);
+
+        DynamoDBQueryExpression<UserDO> queryExpression = new DynamoDBQueryExpression<>();
+        queryExpression.setHashKeyValues(obj);
+        queryExpression.setRangeKeyConditions(rangeConds);
+        queryExpression.withIndexName(USER_TYPE_INDEX);
+        queryExpression.withConsistentRead(false);
+
+        GetBPAsyncTask task = new GetBPAsyncTask(queryExpression);
+        try {
+            task.execute().get(10, TimeUnit.SECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            e.printStackTrace();
+        }
+        return task.getList();
+    }
+
+    @SuppressLint("StaticFieldLeak")
+    private class GetBPAsyncTask extends AsyncTask<Void, Void, List<UserDO>> {
+
+        private final DynamoDBQueryExpression<UserDO> expr;
+        private final List<UserDO> list;
+
+        GetBPAsyncTask (DynamoDBQueryExpression<UserDO> e) {
+            expr = e;
+            list = new ArrayList<>();
+        }
+
+        @Override
+        protected List<UserDO> doInBackground(Void... params) {
+            List<UserDO> result = null;
+            try {
+                result = dbMapper.query(UserDO.class, expr);
+            } catch (Exception e) {
+                Log.d("ASYNC TASK ERROR5: ", e.toString());
+            }
+            if (result != null) list.addAll(result);
+            return result;
+        }
+
+        protected List<UserDO> getList() {
+            return this.list;
+        }
+    }
+
+    public Object getItem(String name, String type, String collection) {
         GetItemAsyncTask task = new GetItemAsyncTask(name, type, collection);
         task.execute();
-        return this.item;
+        UserDO u = (UserDO) task.getResult();
+        if (u != null) Log.d("getItem:: ", u.getName());
+        return u;
     }
 
-    private void handleItemString(String s) {
-        this.item = s;
-    }
-
-    public CuratedDO getCuratedItem(String Type, String Name) {
-        dbTable = Table.loadTable(dbClient, CURATED_TABLE);
+    private CuratedDO getCuratedItem(String Type, String Name) {
         CuratedDO s = null;
         try {
             s = dbMapper.load(CuratedDO.class, Type, Name);
@@ -204,27 +315,30 @@ public class DatabaseAccess {
         return s;
     }
 
-    public UserDO getUserItem(String Type, String Name) {
-        dbTable = Table.loadTable(dbClient, USER_TABLE);
+    private UserDO getUserItem(String Name) {
         UserDO s = null;
         try {
-            s = dbMapper.load(UserDO.class, Type, Name);
+            s = dbMapper.load(UserDO.class, credentialsProvider.getCachedIdentityId(), Name);
         } catch (Exception e) {
             Log.d("ASYNC TASK ERROR: ", e.toString());
         }
+        Log.d("getItem:: ", s.getName());
         return s;
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class GetItemAsyncTask extends AsyncTask<Void, Void, Object> {
 
         private final String Name;
         private final String Type;
         private final String Collection;
+        private Object Result;
 
         GetItemAsyncTask (String query, String type, String collection) {
             Name = query;
             Type = type;
             Collection = collection;
+            Result = null;
         }
 
         @Override
@@ -232,14 +346,14 @@ public class DatabaseAccess {
             Log.d("doInBackground: ", Name);
             // Create a table reference
             Object s = null;
-            if (Collection == "curated") s = getCuratedItem(Type, Name);
-            if (Collection == "user") s = getUserItem(Type, Name);
+            if (Collection == CURATED_COLLECTION) s = getCuratedItem(Type, Name);
+            if (Collection == USER_COLLECTION) s = getUserItem(Name);
+            Result = s;
             return s;
         }
 
-        //@Override
-        protected void onPostExecute(String s) {
-            handleItemString(s);
+        private Object getResult() {
+            return Result;
         }
     }
 
@@ -306,6 +420,7 @@ public class DatabaseAccess {
         this.results = memos;
     }
 
+    @SuppressLint("StaticFieldLeak")
     private class GetQueryAsyncTask extends AsyncTask<Void, Void, List<Object>> {
 
         private final String Q;

@@ -7,9 +7,8 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import lombok.AllArgsConstructor;
 
 @DynamoDBTable(tableName = "caravan-mobilehub-2012693532-Curated")
 @Entity
@@ -28,11 +27,16 @@ public class CuratedDO {
     private String _timeOfDay;
     private String _website;
     private String _phoneNumber;
+    private int _followerCount;
 
-    public CuratedDO(){}
+    public CuratedDO(){
+        this._blueprintList = new ArrayList<>();
+        this._locationList = new ArrayList<>();
+        this._neighborhoodList = new ArrayList<>();
+    }
 
     public CuratedDO(String _type, String _name, String _address, List<String> _blueprintList, String _city, String _description, String _foodDrinkRecommendation,
-                     String _id, List<String> _locationList, List<String> _neighborhoodList, String _pricePoint, String _timeOfDay, String _website, String _phoneNumber) {
+                     String _id, List<String> _locationList, List<String> _neighborhoodList, String _pricePoint, String _timeOfDay, String _website, String _phoneNumber, int followerCount) {
         this._type=_type;
         this._name=_name;
         this._address=_address;
@@ -47,6 +51,7 @@ public class CuratedDO {
         this._timeOfDay=_timeOfDay;
         this._website=_website;
         this._phoneNumber=_phoneNumber;
+        this._followerCount = followerCount;
     }
 
     @DynamoDBHashKey(attributeName = "type")
@@ -162,6 +167,12 @@ public class CuratedDO {
 
     public void setPhoneNumber(final String _phoneNumber) {
         this._phoneNumber = _phoneNumber;
+    }
+    @DynamoDBAttribute(attributeName = "followerCount")
+    public int getFollowerCount() { return _followerCount; }
+
+    public void setFollowerCount(final int _followerCount) {
+        this._followerCount = _followerCount;
     }
 
     @Override

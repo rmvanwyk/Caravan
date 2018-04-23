@@ -47,7 +47,7 @@
         </activity>
         <activity
             android:exported="true"
-            android:name=".DynamoDB.DBTesting"
+            android:name=".DBTesting"
             android:label="@string/title_activity_dbtesting"
             android:theme="@style/AppTheme.NoActionBar">
          </activity>

@@ -6,6 +6,8 @@ import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribut
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexHashKey;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexRangeKey;
 
 import java.util.List;
 
@@ -25,11 +27,12 @@ public class UserDO {
     private String _timeOfDay;
     private String _type;
     private String _website;
+    private int _followerCount;
 
     public UserDO(){}
 
     public UserDO(String _userId, String _name, String _address, String _city, String _description, String _foodDrinkRecommendation, String _id,
-                  List<String> _locationList, String _phoneNumber, String _pricePoint, String _timeOfDay, String _type, String _website) {
+                  List<String> _locationList, String _phoneNumber, String _pricePoint, String _timeOfDay, String _type, String _website, int followerCount) {
         this._userId=_userId;
         this._name=_name;
         this._address=_address;
@@ -43,9 +46,11 @@ public class UserDO {
         this._timeOfDay=_timeOfDay;
         this._type=_type;
         this._website=_website;
+        this._followerCount = followerCount;
     }
 
     @DynamoDBHashKey(attributeName = "userId")
+    @DynamoDBIndexHashKey(attributeName = "userId", globalSecondaryIndexName = "uIDplusType")
     @DynamoDBAttribute(attributeName = "userId")
     public String getUserId() {
         return _userId;
@@ -136,6 +141,7 @@ public class UserDO {
         this._timeOfDay = _timeOfDay;
     }
     @DynamoDBAttribute(attributeName = "type")
+    @DynamoDBIndexRangeKey(attributeName = "type", globalSecondaryIndexName = "uIDplusType")
     public String getType() {
         return _type;
     }
@@ -150,6 +156,12 @@ public class UserDO {
 
     public void setWebsite(final String _website) {
         this._website = _website;
+    }
+    @DynamoDBAttribute(attributeName = "followerCount")
+    public int getFollowerCount() { return _followerCount; }
+
+    public void setFollowerCount(final int _followerCount) {
+        this._followerCount = _followerCount;
     }
 
 }

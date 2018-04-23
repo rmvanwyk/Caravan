@@ -2,8 +2,6 @@ package com.caravan.caravan.RecentHistoryDB;
 
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.core.internal.deps.guava.collect.ImmutableList;
-import android.support.test.espresso.core.internal.deps.guava.collect.ImmutableSet;
-import android.util.Log;
 
 import com.caravan.caravan.DynamoCacheDB.DynamoCacheDAO;
 import com.caravan.caravan.DynamoCacheDB.Entity.BlueprintLocation;
@@ -20,7 +18,6 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
-import java.util.Set;
 
 import static junit.framework.Assert.assertEquals;
 import static junit.framework.Assert.assertNull;
@@ -32,36 +29,36 @@ public class DynamoCacheDatabaseTest {
 
     private static final BlueprintLocation BLUEPRINT_LOCATION_1 = new BlueprintLocation("1", new CuratedDO("1","1","1", null, "1",
             "1","1", "1",null,null,
-            "1","1","1","1"));
+            "1","1","1","1", followerCount));
     private static final BlueprintLocation BLUEPRINT_LOCATION_2 = new BlueprintLocation("2", new CuratedDO("2","2","2", null, "2",
             "2","2","2", null,null,
-            "2","2","2","2"));
+            "2","2","2","2", followerCount));
     private static final BlueprintLocation BLUEPRINT_LOCATION_3 = new BlueprintLocation("3", new CuratedDO("3","3","3", null, "3",
             "3","3","3", null,null,
-            "3","3","3","3"));
+            "3","3","3","3", followerCount));
     private static final BlueprintLocation BLUEPRINT_LOCATION_4 = new BlueprintLocation("4", new CuratedDO("4","4","4", null, "4",
             "4","4","4", null,null,
-            "4","4","4","4"));
+            "4","4","4","4", followerCount));
     private static final BlueprintLocation BLUEPRINT_LOCATION_5 = new BlueprintLocation("5", new CuratedDO("5","5","5", null, "5",
             "5","5","5", null,null,
-            "5","5","5","5"));
+            "5","5","5","5", followerCount));
     private static final BlueprintLocation NEW_BLUEPRINT_LOCATION_1 = new BlueprintLocation("1", new CuratedDO("1","1","1", null, "1",
             "1","1", "1",null,null,
-            "1","1","2","2"));
+            "1","1","2","2", followerCount));
     private static final BlueprintLocation NEW_BLUEPRINT_LCATION_3 = new BlueprintLocation("3", new CuratedDO("3","3","3", null, "3",
             "3","3","3", null,null,
-            "3","3","4","4"));
+            "3","3","4","4", followerCount));
     private static final List<String> USER_BLUEPRINT_1_LOCATION_LIST = ImmutableList.<String>builder().add("1").add("3").add("5").build();
     private static final UserBlueprint USER_BLUEPRINT_1 = new UserBlueprint("1", new UserDO("1","1","1","1","1",
             "1","1",USER_BLUEPRINT_1_LOCATION_LIST,"1","1",
-            "1","1","1"));
+            "1","1","1", followerCount));
     private static final List<String> CURATED_BLUEPRINT_1_LOCATION_LIST = ImmutableList.<String>builder().add("1").add("2").build();
     private static final CuratedBlueprint CURATED_BLUEPRINT_1 = new CuratedBlueprint("1", new CuratedDO("1","1","1", null, "1",
             "1","1", "1",CURATED_BLUEPRINT_1_LOCATION_LIST,null,
-            "1","1","1","1"));
+            "1","1","1","1", followerCount));
     private static final CuratedBlueprint NEW_CURATED_BLUEPRINT_1 = new CuratedBlueprint("1", new CuratedDO("2","1","2", null, "2",
             "2","2", "1",ImmutableList.<String>builder().add("1").add("2").build(),null,
-            "2","2","2","2"));
+            "2","2","2","2", followerCount));
 
 
     @Before
