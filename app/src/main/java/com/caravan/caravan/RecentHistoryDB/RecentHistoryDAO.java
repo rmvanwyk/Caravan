@@ -23,6 +23,9 @@ public interface RecentHistoryDAO {
     @Query("delete from recent_history")
     void deleteTable();
 
+    @Query("select count(*) from recent_history where _id=:id")
+    int getCountOfRowsWithId(String id);
+
     @Insert
     void insertItem(RecentHistoryItem recentHistoryItem);
 }
