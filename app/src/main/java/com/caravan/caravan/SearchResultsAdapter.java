@@ -7,6 +7,9 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
+import com.caravan.caravan.DynamoDB.CuratedDO;
+import com.caravan.caravan.DynamoDB.UserDO;
+
 import java.util.ArrayList;
 
 /**
@@ -16,9 +19,12 @@ import java.util.ArrayList;
 public class SearchResultsAdapter extends BaseAdapter {
     private ArrayList<Object> display_items;
     private static final int TYPE_LOCATION = 0;
-    private static final int TYPE_GUIDE = 1;
+    private static final int TYPE_CURATEDBLUE = 1;
     private static final int TYPE_CITY = 2;
-    private static final int TYPE_DIVIDER = 3;
+    private static final int TYPE_HOOD = 3;
+    private static final int TYPE_USERBLUE = 4;
+    private static final int TYPE_USERLOC = 5;
+    private static final int TYPE_DIVIDER = 6;
     private LayoutInflater inflater;
 
     public SearchResultsAdapter(Context context, ArrayList<Object> search_results) {
@@ -44,21 +50,38 @@ public class SearchResultsAdapter extends BaseAdapter {
 
     @Override
     public int getViewTypeCount() {
-        return 4;
+        return 7;
     }
 
     @Override
     public int getItemViewType(int position) {
-        /*if (getItem(position) instanceof LocationsDO) {
-            return TYPE_LOCATION;
-        } else if (getItem(position) instanceof BlueprintsDO) {
-            return TYPE_GUIDE;
-        } else if (getItem(position) instanceof CitiesDO) {
-            return TYPE_CITY;
-        } else {
-            return TYPE_DIVIDER;
-        }*/
-       //DELETE THIS LATER
+        if (getItem(position) instanceof CuratedDO) {
+            CuratedDO item = (CuratedDO) getItem(position);
+            if (item.getType().equals("location")) {
+                return TYPE_LOCATION;
+            }
+            else if (item.getType().equals("blueprint")) {
+                return TYPE_CURATEDBLUE;
+            }
+            else if (item.getType().equals("city")) {
+                return TYPE_CITY;
+            }
+            else if (item.getType().equals("neighborhood")) {
+                return TYPE_HOOD;
+            }
+        }
+        else if (getItem(position) instanceof UserDO) {
+            UserDO item = (UserDO) getItem(position);
+            if (item.getType().equals("UserBlueprint")) {
+                return TYPE_USERBLUE;
+            }
+            else {
+                return TYPE_USERLOC;
+            }
+        }
+        else {
+             return TYPE_DIVIDER;
+        }
         return 0;
     }
 
@@ -80,39 +103,73 @@ public class SearchResultsAdapter extends BaseAdapter {
                 case TYPE_LOCATION:
                     convertView = inflater.inflate(R.layout.item_location, parent, false);
                     break;
+                case TYPE_USERLOC:
+                    convertView = inflater.inflate(R.layout.item_location, parent, false);
+                    break;
                 case TYPE_CITY:
                     convertView = inflater.inflate(R.layout.item_city, parent, false);
                     break;
-                case TYPE_GUIDE:
+                case TYPE_HOOD:
+                    convertView = inflater.inflate(R.layout.item_city, parent, false);
+                    break;
+                case TYPE_CURATEDBLUE:
+                    convertView = inflater.inflate(R.layout.item_blueprint, parent, false);
+                    break;
+                case TYPE_USERBLUE:
                     convertView = inflater.inflate(R.layout.item_blueprint, parent, false);
                     break;
             }
         }
         switch (type) {
             case TYPE_LOCATION: {
-                //LocationsDO location_obj = (LocationsDO) getItem(position);
+                CuratedDO location_obj = (CuratedDO) getItem(position);
                 // Lookup view for data population
                 TextView name = (TextView) convertView.findViewById(R.id.name);
                 TextView city = (TextView) convertView.findViewById(R.id.city);
                 TextView description = (TextView) convertView.findViewById(R.id.description);
                 // Populate the data into the template view using the data object
-                //name.setText(location_obj._locationName);
-                //city.setText(location_obj._locationCity);
-                //description.setText(location_obj._description);
+                name.setText(location_obj.getName());
+                city.setText(location_obj.getCity());
+                description.setText(location_obj.getDescription());
                 break; }
-            case TYPE_CITY: {
-                //CitiesDO city_obj = (CitiesDO) getItem(position);
-                TextView city = (TextView) convertView.findViewById(R.id.name);
-                //city.setText(city_obj._cityName);
-                break; }
-            case TYPE_GUIDE: {
-                //BlueprintsDO blueprint_obj = (BlueprintsDO) getItem(position);
+            case TYPE_USERLOC: {
+                CuratedDO location_obj = (CuratedDO) getItem(position);
+                // Lookup view for data population
                 TextView name = (TextView) convertView.findViewById(R.id.name);
                 TextView city = (TextView) convertView.findViewById(R.id.city);
                 TextView description = (TextView) convertView.findViewById(R.id.description);
-                //name.setText(blueprint_obj._blueprintName);
-                //city.setText(blueprint_obj._blueprintCity);
-                //description.setText(blueprint_obj._description);
+                // Populate the data into the template view using the data object
+                name.setText(location_obj.getName());
+                city.setText(location_obj.getCity());
+                description.setText(location_obj.getDescription());
+                break; }
+            case TYPE_CITY: {
+                CuratedDO city_obj = (CuratedDO) getItem(position);
+                TextView city = (TextView) convertView.findViewById(R.id.name);
+                city.setText(city_obj.getName());
+                break; }
+            case TYPE_HOOD: {
+                CuratedDO city_obj = (CuratedDO) getItem(position);
+                TextView hood = (TextView) convertView.findViewById(R.id.name);
+                hood.setText(city_obj.getName());
+                break; }
+            case TYPE_CURATEDBLUE: {
+                CuratedDO blueprint_obj = (CuratedDO) getItem(position);
+                TextView name = (TextView) convertView.findViewById(R.id.name);
+                TextView city = (TextView) convertView.findViewById(R.id.city);
+                TextView description = (TextView) convertView.findViewById(R.id.description);
+                name.setText(blueprint_obj.getName());
+                city.setText(blueprint_obj.getCity());
+                description.setText(blueprint_obj.getDescription());
+                break; }
+            case TYPE_USERBLUE: {
+                CuratedDO blueprint_obj = (CuratedDO) getItem(position);
+                TextView name = (TextView) convertView.findViewById(R.id.name);
+                TextView city = (TextView) convertView.findViewById(R.id.city);
+                TextView description = (TextView) convertView.findViewById(R.id.description);
+                name.setText(blueprint_obj.getName());
+                city.setText(blueprint_obj.getCity());
+                description.setText(blueprint_obj.getDescription());
                 break; }
             case TYPE_DIVIDER: {
                 TextView title = (TextView) convertView.findViewById(R.id.headerTitle);

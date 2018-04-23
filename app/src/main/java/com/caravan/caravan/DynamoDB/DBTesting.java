@@ -51,7 +51,7 @@ public class DBTesting extends AppCompatActivity {
                 DatabaseAccess task = DatabaseAccess.getInstance(DBTesting.this);
                 task.Query("Lo");
 
-                Log.d("Query Results: ", String.valueOf(task.results.size()));
+                //Log.d("Query Results: ", String.valueOf(task.results.size()));
 
             }
         });

@@ -15,11 +15,16 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
 
+import java.security.cert.PKIXRevocationChecker;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * Synchronous implementation for the DynamoDB table access using the Document API.
@@ -78,7 +83,7 @@ public class DatabaseAccess {
     /**
      * The data returned by the AsyncTasks
      */
-    protected List<Object> results;
+    private List<Object> results;
     protected String item;
 
     /**
@@ -238,9 +243,13 @@ public class DatabaseAccess {
         }
     }
 
-    public void Query(String Q) {
-        GetQueryAsyncTask task = new GetQueryAsyncTask(Q);
-        task.execute();
+    private ExecutorService executor = Executors.newSingleThreadExecutor();
+    public Future<List<Object>> Query(String Q) {
+        return executor.submit(() -> {
+            GetQueryAsyncTask task = new GetQueryAsyncTask(Q);
+            task.execute();
+            return this.results;
+        });
     }
 
     private List<CuratedDO> buildCuratedQuery(String query, String type) {
@@ -263,7 +272,7 @@ public class DatabaseAccess {
         try {
             result = dbMapper.query(CuratedDO.class, queryExpression);
         } catch (Exception e) {
-            Log.d("ASYNC TASK ERROR: ", e.toString());
+            Log.d("ASYNC TASK ERROR Cur: ", e.toString());
         }
     return result;
     }
@@ -288,17 +297,13 @@ public class DatabaseAccess {
         try {
             result = dbMapper.query(UserDO.class, queryExpression);
         } catch (Exception e) {
-            Log.d("ASYNC TASK ERROR: ", e.toString());
+            Log.d("ASYNC TASK ERROR Us: ", e.toString());
         }
         return result;
     }
 
     private void populateList(List<Object> memos) {
         this.results = memos;
-        Log.d("populateList: ", String.valueOf(memos.size()));
-        for (int i = 0; i < this.results.size(); i++) {
-            Log.d("Query result: ", this.results.get(i).toString());
-        }
     }
 
     private class GetQueryAsyncTask extends AsyncTask<Void, Void, List<Object>> {
@@ -313,21 +318,20 @@ public class DatabaseAccess {
         protected List<Object> doInBackground(Void... params) {
             Log.d("doInBackground: ", Q);
             List<Object> newList = new ArrayList<>();
-            newList.addAll(buildCuratedQuery(Q, LOCATION_TYPE));
-            newList.addAll(buildCuratedQuery(Q, BLUEPRINT_TYPE));
-            newList.addAll(buildCuratedQuery(Q, CITY_TYPE));
-            newList.addAll(buildCuratedQuery(Q, NEIGHBORHOOD_TYPE));
-            newList.addAll(buildUserQuery(Q, BLUEPRINT_TYPE));
-            newList.addAll(buildUserQuery(Q, LOCATION_TYPE));
+            Optional.ofNullable(buildCuratedQuery(Q, LOCATION_TYPE)).ifPresent(newList::addAll);
+            Optional.ofNullable(buildCuratedQuery(Q, BLUEPRINT_TYPE)).ifPresent(newList::addAll);
+            Optional.ofNullable(buildCuratedQuery(Q, CITY_TYPE)).ifPresent(newList::addAll);
+            Optional.ofNullable(buildCuratedQuery(Q, NEIGHBORHOOD_TYPE)).ifPresent(newList::addAll);
+            Optional.ofNullable(buildUserQuery(Q, BLUEPRINT_TYPE)).ifPresent(newList::addAll);
+            Optional.ofNullable(buildUserQuery(Q, LOCATION_TYPE)).ifPresent(newList::addAll);
             return newList;
         }
 
-        //@Override
+        @Override
         protected void onPostExecute(List<Object> newList) {
             Log.d("onPostExecute: SOA:", String.valueOf(newList.size()));
-            if (newList.size() != 0) {
-                populateList(newList);
-            }
+            populateList(newList);
+
         }
     }
 }
