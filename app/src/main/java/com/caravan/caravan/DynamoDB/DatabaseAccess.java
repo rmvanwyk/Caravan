@@ -188,7 +188,7 @@ public class DatabaseAccess {
         this.item = s;
     }
 
-    private CuratedDO getCuratedItem(String Type, String Name) {
+    public CuratedDO getCuratedItem(String Type, String Name) {
         dbTable = Table.loadTable(dbClient, CURATED_TABLE);
         CuratedDO s = null;
         try {
@@ -199,7 +199,7 @@ public class DatabaseAccess {
         return s;
     }
 
-    private UserDO getUserItem(String Type, String Name) {
+    public UserDO getUserItem(String Type, String Name) {
         dbTable = Table.loadTable(dbClient, USER_TABLE);
         UserDO s = null;
         try {
