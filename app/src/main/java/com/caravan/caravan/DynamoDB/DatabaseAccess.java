@@ -1,5 +1,6 @@
 package com.caravan.caravan.DynamoDB;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -15,7 +16,6 @@ import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
 
-import java.security.cert.PKIXRevocationChecker;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,11 +23,11 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 /**
  * Synchronous implementation for the DynamoDB table access using the Document API.
@@ -56,6 +56,9 @@ public class DatabaseAccess {
     private final String BLUEPRINT_TYPE = "blueprint";
     private final String NEIGHBORHOOD_TYPE = "neighborhood";
     private final String CITY_TYPE = "city";
+    private final String CURATED_COLLECTION = "curated";
+    private final String USER_COLLECTION = "user";
+    private final String USER_TYPE_INDEX = "uIDplusType";
 
     /**
      * The Android calling context
