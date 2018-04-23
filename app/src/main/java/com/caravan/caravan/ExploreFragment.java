@@ -157,7 +157,7 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
     public boolean onQueryTextChange(String newText) {
         if(newText == null || newText.length() == 0) {
             Log.d("Zero Text", "triggered");
-            loadRecentSearchHistory();
+            //loadRecentSearchHistory();
         }
         else {
             setListAdapter(new SearchResultsAdapter(getActivity(), doMySearch(newText)));
@@ -283,34 +283,12 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
          }
     }
 
-    private class LoadHistory extends AsyncTask<Void, Void,List<RecentHistoryItem>> {
-        RecentHistoryDatabase database = RecentHistoryDatabase.getInMemoryInstance(getActivity());
-        final RecentHistoryDAO dao = database.recentHistoryDAO();
-        private List<RecentHistoryItem> cached;
-
-        @Override
-        protected List<RecentHistoryItem> doInBackground(Void... params) {
-            return dao.loadRecentHistory();
-        }
-
-        @Override
-        protected void onPostExecute(List<RecentHistoryItem> results) {
-            this.cached = results;
-        }
-
-        private ExecutorService executor = Executors.newSingleThreadExecutor();
-        public Future<List<RecentHistoryItem>> retrieveHistory() {
-            return executor.submit(() -> {
-                this.execute();
-                return this.cached;
-            });
-        }
-    }
-
-
     private void loadRecentSearchHistory() {
         Log.d("LRSH", "Top");
-        Future<List<RecentHistoryItem>> cached = new LoadHistory().retrieveHistory();
+        RecentHistoryDatabase database = RecentHistoryDatabase.getInMemoryInstance(getActivity());
+        final RecentHistoryDAO dao = database.recentHistoryDAO();
+        List<RecentHistoryItem> cached = dao.loadRecentHistory();
+        /*Future<List<RecentHistoryItem>> cached = new LoadHistory().retrieveHistory();
         List<RecentHistoryItem> cachedResults = new ArrayList<>();
         try {
             cachedResults = cached.get();
@@ -321,29 +299,31 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
         }
         catch (InterruptedException e) {
             cached.cancel(true);
-        }
-        if (cachedResults == null) {
+        }*/
+        if (cached == null) {
             Log.d("NO CACHED", "RESULTS BITCH");
             return;
         }
         else {
-            Log.d("ITS LIT:", Integer.toString(cachedResults.size()));
+            Log.d("ITS LIT:", Integer.toString(cached.size()));
         }
         ArrayList<Object> displayList = new ArrayList<>();
         DatabaseAccess task = DatabaseAccess.getInstance(getActivity());
 
-        for (int i = 0; i < cachedResults.size(); i ++) {
-            Future<List<Object>> future = task.Query(cachedResults.get(i).getId());
+        for (int i = 0; i < cached.size(); i ++) {
+            Future<List<Object>> future = task.Query(cached.get(i).getId());
             try {
                 if (future.get() instanceof CuratedDO) {
-                    CuratedDO display = (CuratedDO) future.get();
-                    displayList.add(display);
-                    Log.d("DISPLAY CASH:", display.getName());
+                    List<Object> display = future.get();
+                    CuratedDO item = (CuratedDO) display.get(0);
+                    displayList.add(item);
+                    Log.d("DISPLAY CASH:", item.getName());
                 }
                 else {
-                    UserDO display = (UserDO) future.get();
-                    displayList.add(display);
-                    Log.d("DISPLAY CASH:", display.getName());
+                    List<Object> display = future.get();
+                    UserDO item = (UserDO) display.get(0);
+                    displayList.add(item);
+                    Log.d("DISPLAY CASH:", item.getName());
                 }
             } catch (ExecutionException e) {
 

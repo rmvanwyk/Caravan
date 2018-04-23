@@ -11,6 +11,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.amazonaws.mobile.auth.core.IdentityManager;
+import com.caravan.caravan.DynamoCacheDB.DynamoCacheDAO;
+import com.caravan.caravan.DynamoCacheDB.DynamoCacheDatabase;
 
 public class AccountFragment extends Fragment {
 
@@ -21,6 +23,7 @@ public class AccountFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        //loadBlueprintsAndLocations();
     }
 
     @Override
@@ -52,5 +55,11 @@ public class AccountFragment extends Fragment {
             return false;
         }
         return true;
+    }
+
+    private void loadBlueprintsAndLocations() {
+        DynamoCacheDatabase database = DynamoCacheDatabase.getInMemoryInstance(getActivity());
+        final DynamoCacheDAO dao = database.dynamoCacheDAO();
+
     }
 }
