@@ -79,6 +79,7 @@ public class UserDO {
         this._address = _address;
     }
     @DynamoDBAttribute(attributeName = "city")
+    @DynamoDBIndexRangeKey(attributeName = "city", globalSecondaryIndexName = "HtypeRcity")
     public String getCity() {
         return _city;
     }
@@ -144,6 +145,7 @@ public class UserDO {
     }
     @DynamoDBAttribute(attributeName = "type")
     @DynamoDBIndexRangeKey(attributeName = "type", globalSecondaryIndexName = "uIDplusType")
+    @DynamoDBIndexHashKey(attributeName = "type", globalSecondaryIndexName = "HtypeRcity")
     public String getType() {
         return _type;
     }

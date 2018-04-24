@@ -61,6 +61,7 @@ public class DatabaseAccess {
     private final String CURATED_COLLECTION = "curated";
     private final String USER_COLLECTION = "user";
     private final String USER_TYPE_INDEX = "uIDplusType";
+    private final String H_TYPE_R_CITY_INDEX = "HtypeRcity";
 
     /**
      * The Android calling context
@@ -93,7 +94,7 @@ public class DatabaseAccess {
      */
     public List<Object> results;
     public List<UserDO> userdoResults;
-    public List<Object> curateddoResults;
+    public List<CuratedDO> curateddoResults;
     public UserDO userDataObject;
     public CuratedDO curatedDataObject;
 
@@ -424,6 +425,32 @@ public class DatabaseAccess {
     return result;
     }
 
+    private List<CuratedDO> buildCuratedQueryIndex(String query, String type, String index, String attr) {
+        CuratedDO obj = new CuratedDO();
+        obj.setType(type);
+
+        Condition rangeKeyCondition = new Condition()
+                .withComparisonOperator(ComparisonOperator.BEGINS_WITH)
+                .withAttributeValueList(new AttributeValue().withS(query));
+
+        Map<String, Condition> rangeConds = new HashMap<>();
+        rangeConds.put(attr, rangeKeyCondition);
+
+        DynamoDBQueryExpression<CuratedDO> queryExpression = new DynamoDBQueryExpression<>();
+        queryExpression.setHashKeyValues(obj);
+        queryExpression.setRangeKeyConditions(rangeConds);
+        queryExpression.withIndexName(index);
+        queryExpression.withConsistentRead(false);
+
+        List<CuratedDO> result = null;
+        try {
+            result = dbMapper.query(CuratedDO.class, queryExpression);
+        } catch (Exception e) {
+            Log.d("ASYNC TASK ERROR Cur: ", e.toString());
+        }
+        return result;
+    }
+
     private List<UserDO> buildUserQuery(String query, String type) {
         UserDO obj = new UserDO();
         obj.setUserId(credentialsProvider.getCachedIdentityId());
@@ -449,8 +476,43 @@ public class DatabaseAccess {
         return result;
     }
 
+    private List<UserDO> buildUserQueryIndex(String query, String type, String index, String attr) {
+        UserDO obj = new UserDO();
+        obj.setType(type);
+
+        Condition rangeKeyCondition = new Condition()
+                .withComparisonOperator(ComparisonOperator.BEGINS_WITH)
+                .withAttributeValueList(new AttributeValue().withS(query));
+
+        Map<String, Condition> rangeConds = new HashMap<>();
+        rangeConds.put(attr, rangeKeyCondition);
+
+        DynamoDBQueryExpression<UserDO> queryExpression = new DynamoDBQueryExpression<>();
+        queryExpression.setHashKeyValues(obj);
+        queryExpression.setRangeKeyConditions(rangeConds);
+        queryExpression.withIndexName(index);
+        queryExpression.withConsistentRead(false);
+
+        List<UserDO> result = null;
+        try {
+            result = dbMapper.query(UserDO.class, queryExpression);
+        } catch (Exception e) {
+            Log.d("ASYNC TASK ERROR Us: ", e.toString());
+        }
+        return result;
+    }
+
     private void populateList(List<Object> memos) {
         this.results = memos;
+        for (int i = 0; i < memos.size(); i++) {
+            if (memos.get(i) instanceof CuratedDO) {
+                CuratedDO result = (CuratedDO) memos.get(i);
+                Log.d("Found Curated Object: ", result.getName());
+            } else {
+                UserDO result = (UserDO) memos.get(i);
+                Log.d("Found User Object: ", result.getName());
+            }
+        }
     }
 
     @SuppressLint("StaticFieldLeak")
@@ -470,8 +532,12 @@ public class DatabaseAccess {
             Optional.ofNullable(buildCuratedQuery(Q, BLUEPRINT_TYPE)).ifPresent(newList::addAll);
             Optional.ofNullable(buildCuratedQuery(Q, CITY_TYPE)).ifPresent(newList::addAll);
             Optional.ofNullable(buildCuratedQuery(Q, NEIGHBORHOOD_TYPE)).ifPresent(newList::addAll);
+            Optional.ofNullable(buildCuratedQueryIndex(Q, LOCATION_TYPE, H_TYPE_R_CITY_INDEX, CITY_TYPE)).ifPresent(newList::addAll);
+            Optional.ofNullable(buildCuratedQueryIndex(Q, BLUEPRINT_TYPE, H_TYPE_R_CITY_INDEX, CITY_TYPE)).ifPresent(newList::addAll);
             Optional.ofNullable(buildUserQuery(Q, BLUEPRINT_TYPE)).ifPresent(newList::addAll);
             Optional.ofNullable(buildUserQuery(Q, LOCATION_TYPE)).ifPresent(newList::addAll);
+            Optional.ofNullable(buildUserQueryIndex(Q, LOCATION_TYPE, H_TYPE_R_CITY_INDEX, CITY_TYPE)).ifPresent(newList::addAll);
+
             return newList;
         }
 

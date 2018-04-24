@@ -4,6 +4,8 @@ import android.arch.persistence.room.Entity;
 
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBAttribute;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBHashKey;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexHashKey;
+import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBIndexRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBRangeKey;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBTable;
 
@@ -58,6 +60,7 @@ public class CuratedDO {
     }
 
     @DynamoDBHashKey(attributeName = "type")
+    @DynamoDBIndexHashKey(attributeName = "type", globalSecondaryIndexName = "HtypeRcity")
     @DynamoDBAttribute(attributeName = "type")
     public String getType() {
         return _type;
@@ -92,6 +95,7 @@ public class CuratedDO {
         this._blueprintList = _blueprintList;
     }
     @DynamoDBAttribute(attributeName = "city")
+    @DynamoDBIndexRangeKey(attributeName = "city", globalSecondaryIndexName = "HtypeRcity")
     public String getCity() {
         return _city;
     }

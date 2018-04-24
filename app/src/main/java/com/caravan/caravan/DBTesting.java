@@ -1,11 +1,8 @@
 package com.caravan.caravan;
 
-import android.graphics.Bitmap;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,11 +12,11 @@ import com.amazonaws.mobileconnectors.dynamodbv2.document.datatype.Document;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.caravan.caravan.DynamoDB.DatabaseAccess;
-import com.caravan.caravan.DynamoDB.UserDO;
-import com.squareup.picasso.Picasso;
-import com.squareup.picasso.Target;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class DBTesting extends AppCompatActivity {
 
@@ -27,7 +24,8 @@ public class DBTesting extends AppCompatActivity {
     List<Document> memos;
     ImageView imageView;
 
-    public DBTesting () {}
+    public DBTesting() {
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +62,7 @@ public class DBTesting extends AppCompatActivity {
                     task.createBlueprint(bpName);
                     Log.d("Creating Blueprint: ", bpName);
                 }*/
-                List<UserDO> result = task.getAllUserBlueprints();
+                /*List<UserDO> result = task.getAllUserBlueprints();
                 //while (result == null) {}
                 if (result != null) {
                     Log.d("In For! ", String.valueOf(result.size()));
@@ -72,7 +70,35 @@ public class DBTesting extends AppCompatActivity {
                         Log.d("Found User BP: ", result.get(i).getName());
                     }
                 }
-                else Log.d("Oh No! Result Set Was Empty! ", "##################");
+                else Log.d("Oh No! Result Set Was Empty! ", "##################");*/
+
+
+                List<Object> curatedResults = new ArrayList<>();
+
+                Future<List<Object>> future = task.Query("Nash");
+                try {
+                    curatedResults = future.get();
+                } catch (ExecutionException e) {
+
+                } catch (InterruptedException e) {
+                    future.cancel(true);
+                }
+                /*Log.d("Found Curated Results: ", String.valueOf(curatedResults.size()));
+                if(curatedResults.size() == 0) {
+                    curatedResults = task.results;
+                    Log.d("Found Curated Results IF: ", String.valueOf(curatedResults.size()));
+                }
+
+                for (int i = 0; i < curatedResults.size(); i++) {
+                    if (curatedResults.get(i) instanceof CuratedDO) {
+                        CuratedDO result = (CuratedDO) curatedResults.get(i);
+                        Log.d("Found Curated Object: ", result.getName());
+                    } else {
+                        UserDO result = (UserDO) curatedResults.get(i);
+                        Log.d("Found User Object: ", result.getName());
+                    }
+                }*/
+
 
                 /*CuratedDO C = new CuratedDO();
                 C.setName("HiThisIsATest1");
@@ -104,42 +130,14 @@ public class DBTesting extends AppCompatActivity {
                 C.setLocationList(new ArrayList<>());
                 task.userSaveBlueprint(C);*/
 
-                task.getImage(getApplicationContext(), imageView,"https://s3.amazonaws.com/caravan-userfiles-mobilehub-2012693532/public/finalSplash-01.png");
+                task.getImage(getApplicationContext(), imageView, "https://s3.amazonaws.com/caravan-userfiles-mobilehub-2012693532/public/finalSplash-01.png");
 
                 //task.Query("Lo");
 
                 //Log.d("Query Results: ", String.valueOf(task.results.size()));
 
-           }
-       });
+            }
+        });
 
     }
-
-    private void initView() {
-        imageView = findViewById(R.id.imageView6675);
-        Log.d("View Initialized: ", "##########");
-    }
-
-private Target target = new Target() {
-@Override
-public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
-
-        imageView.setImageBitmap(bitmap);
-        }
-
-    @Override
-    public void onBitmapFailed(Exception e, Drawable errorDrawable) {
-
-    }
-
-public void onBitmapFailed(Drawable errorDrawable) {
-        imageView.setImageDrawable(errorDrawable);
-        }
-
-@Override
-public void onPrepareLoad(Drawable placeHolderDrawable) {
-        imageView.setImageDrawable(placeHolderDrawable);
-        }
-        };
-
 }
