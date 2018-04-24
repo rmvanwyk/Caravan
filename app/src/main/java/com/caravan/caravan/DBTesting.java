@@ -75,7 +75,7 @@ public class DBTesting extends AppCompatActivity {
 
                 List<Object> curatedResults = new ArrayList<>();
 
-                Future<List<Object>> future = task.Query("Nash");
+                Future<List<Object>> future = task.Query("Lo");
                 try {
                     curatedResults = future.get();
                 } catch (ExecutionException e) {

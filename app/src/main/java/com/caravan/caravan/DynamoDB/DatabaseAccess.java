@@ -534,6 +534,7 @@ public class DatabaseAccess {
             Optional.ofNullable(buildCuratedQuery(Q, NEIGHBORHOOD_TYPE)).ifPresent(newList::addAll);
             Optional.ofNullable(buildCuratedQueryIndex(Q, LOCATION_TYPE, H_TYPE_R_CITY_INDEX, CITY_TYPE)).ifPresent(newList::addAll);
             Optional.ofNullable(buildCuratedQueryIndex(Q, BLUEPRINT_TYPE, H_TYPE_R_CITY_INDEX, CITY_TYPE)).ifPresent(newList::addAll);
+            Optional.ofNullable(buildCuratedQueryIndex(Q, NEIGHBORHOOD_TYPE, H_TYPE_R_CITY_INDEX, CITY_TYPE)).ifPresent(newList::addAll);
             Optional.ofNullable(buildUserQuery(Q, BLUEPRINT_TYPE)).ifPresent(newList::addAll);
             Optional.ofNullable(buildUserQuery(Q, LOCATION_TYPE)).ifPresent(newList::addAll);
             Optional.ofNullable(buildUserQueryIndex(Q, LOCATION_TYPE, H_TYPE_R_CITY_INDEX, CITY_TYPE)).ifPresent(newList::addAll);
