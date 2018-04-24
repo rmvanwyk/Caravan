@@ -28,11 +28,12 @@ public class UserDO {
     private String _type;
     private String _website;
     private int _followerCount;
+    private List<String> _imageList;
 
     public UserDO(){}
 
     public UserDO(String _userId, String _name, String _address, String _city, String _description, String _foodDrinkRecommendation, String _id,
-                  List<String> _locationList, String _phoneNumber, String _pricePoint, String _timeOfDay, String _type, String _website, int followerCount) {
+                  List<String> _locationList, String _phoneNumber, String _pricePoint, String _timeOfDay, String _type, String _website, int _followerCount, List<String> _imageList) {
         this._userId=_userId;
         this._name=_name;
         this._address=_address;
@@ -46,7 +47,8 @@ public class UserDO {
         this._timeOfDay=_timeOfDay;
         this._type=_type;
         this._website=_website;
-        this._followerCount = followerCount;
+        this._followerCount=_followerCount;
+        this._imageList=_imageList;
     }
 
     @DynamoDBHashKey(attributeName = "userId")
@@ -163,5 +165,9 @@ public class UserDO {
     public void setFollowerCount(final int _followerCount) {
         this._followerCount = _followerCount;
     }
+    @DynamoDBAttribute(attributeName = "imageList")
+    public List<String> getImageList() { return _imageList; }
+
+    public void setImageList(List<String> _imageList) { this._imageList = _imageList; }
 
 }

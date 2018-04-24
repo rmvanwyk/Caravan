@@ -28,15 +28,17 @@ public class CuratedDO {
     private String _website;
     private String _phoneNumber;
     private int _followerCount;
+    private List<String> _imageList;
 
     public CuratedDO(){
         this._blueprintList = new ArrayList<>();
         this._locationList = new ArrayList<>();
         this._neighborhoodList = new ArrayList<>();
+        //this._imageList = new ArrayList<>();
     }
 
     public CuratedDO(String _type, String _name, String _address, List<String> _blueprintList, String _city, String _description, String _foodDrinkRecommendation,
-                     String _id, List<String> _locationList, List<String> _neighborhoodList, String _pricePoint, String _timeOfDay, String _website, String _phoneNumber, int followerCount) {
+                     String _id, List<String> _locationList, List<String> _neighborhoodList, String _pricePoint, String _timeOfDay, String _website, String _phoneNumber, int _followerCount, List<String> _imageList) {
         this._type=_type;
         this._name=_name;
         this._address=_address;
@@ -51,7 +53,8 @@ public class CuratedDO {
         this._timeOfDay=_timeOfDay;
         this._website=_website;
         this._phoneNumber=_phoneNumber;
-        this._followerCount = followerCount;
+        this._followerCount = _followerCount;
+        this._imageList = _imageList;
     }
 
     @DynamoDBHashKey(attributeName = "type")
@@ -174,6 +177,10 @@ public class CuratedDO {
     public void setFollowerCount(final int _followerCount) {
         this._followerCount = _followerCount;
     }
+    @DynamoDBAttribute(attributeName = "imageList")
+    public List<String> getImageList() { return _imageList; }
+
+    public void setImageList(List<String> _imageList) { this._imageList = _imageList; }
 
     @Override
     public boolean equals(final Object obj)

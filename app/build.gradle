@@ -73,6 +73,11 @@ dependencies {
     implementation 'com.amazonaws:aws-android-sdk-auth-userpools:2.6.+@aar'
     implementation 'com.amazonaws:aws-android-sdk-cognitoidentityprovider:2.6.+'
     implementation 'com.amazonaws:aws-android-sdk-pinpoint:2.6.+'
+    implementation 'com.amazonaws:aws-android-sdk-s3:2.6.+'
+    implementation 'com.amazonaws:aws-android-sdk-cognito:2.6.+'
+
+    //Picasso Dependency
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     // Amazon DynamoDB for NoSQL tables
     implementation 'com.amazonaws:aws-android-sdk-ddb:2.6.+'

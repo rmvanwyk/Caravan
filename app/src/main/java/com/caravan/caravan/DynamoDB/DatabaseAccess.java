@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
+import android.widget.ImageView;
 
 import com.amazonaws.auth.CognitoCachingCredentialsProvider;
 import com.amazonaws.mobile.client.AWSMobileClient;
@@ -15,6 +16,7 @@ import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
 import com.amazonaws.services.dynamodbv2.model.AttributeValue;
 import com.amazonaws.services.dynamodbv2.model.ComparisonOperator;
 import com.amazonaws.services.dynamodbv2.model.Condition;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,7 +94,8 @@ public class DatabaseAccess {
     public List<Object> results;
     public List<UserDO> userdoResults;
     public List<Object> curateddoResults;
-    protected Object item;
+    public UserDO userDataObject;
+    public CuratedDO curatedDataObject;
 
     /**
      * Creates a new DatabaseAccess instance.
@@ -115,6 +118,14 @@ public class DatabaseAccess {
 
         //Initialize the results List
         this.results = new ArrayList<>();
+        this.userdoResults = new ArrayList<>();
+        this.curateddoResults = new ArrayList<>();
+        this.userDataObject = null;
+        this.curatedDataObject = null;
+
+        Picasso.Builder pb = new Picasso.Builder(context);
+        Picasso P = pb.build();
+        Picasso.setSingletonInstance(P);
     }
 
     public static synchronized DatabaseAccess getInstance(Context context) {
@@ -226,7 +237,7 @@ public class DatabaseAccess {
         }).start();
     }
 
-    public List<CuratedDO> getBlueprintLocations(Object obj) {
+    public List<CuratedDO> getBlueprintLocations(Object obj) throws IllegalAccessException, InstantiationException {
         List<String> locationList = new ArrayList<>();
         List<CuratedDO> results= new ArrayList<>();
         if (obj instanceof CuratedDO) {
@@ -300,12 +311,18 @@ public class DatabaseAccess {
         }
     }
 
-    public Object getItem(String name, String type, String collection) {
+    public Object getItem(String name, String type, String collection) throws InstantiationException, IllegalAccessException {
         GetItemAsyncTask task = new GetItemAsyncTask(name, type, collection);
         task.execute();
-        UserDO u = (UserDO) task.getResult();
-        if (u != null) Log.d("getItem:: ", u.getName());
-        return u;
+        if (userDataObject != null) {
+            Log.d("getItemUDO:: ", userDataObject.getName());
+            return userDataObject;
+        }
+        else if(curatedDataObject != null) {
+            Log.d("getItemCDO:: ", curatedDataObject.getName());
+            return curatedDataObject;
+        }
+        return null;
     }
 
     public Future<CuratedDO> getCuratedItem(String Type, String Name) {
@@ -333,34 +350,43 @@ public class DatabaseAccess {
         });
     }
 
+    private void handleObject(Object U) {
+        if (U.getClass() == UserDO.class) {
+            this.userDataObject = (UserDO) U;
+            this.curatedDataObject = null;
+        }
+        if (U.getClass() == CuratedDO.class) {
+            this.curatedDataObject = (CuratedDO) U;
+            this.userDataObject = null;
+        }
+    }
+
+
     @SuppressLint("StaticFieldLeak")
     private class GetItemAsyncTask extends AsyncTask<Void, Void, Object> {
 
         private final String Name;
         private final String Type;
         private final String Collection;
-        private Object Result;
 
         GetItemAsyncTask (String query, String type, String collection) {
             Name = query;
             Type = type;
             Collection = collection;
-            Result = null;
+            //Result = null;
         }
 
         @Override
         protected Object doInBackground(Void... params) {
             Log.d("doInBackground: ", Name);
-            // Create a table reference
-            Object s = null;
-            if (Collection == CURATED_COLLECTION) s = getCuratedItem(Type, Name);
-            if (Collection == USER_COLLECTION) s = getUserItem(Name);
-            Result = s;
-            return s;
+            if (Collection == CURATED_COLLECTION) { return getCuratedItem(Type, Name); }
+            if (Collection == USER_COLLECTION) { return getUserItem(Name); }
+            return null;
         }
 
-        private Object getResult() {
-            return Result;
+        @Override
+        protected void onPostExecute(Object U) {
+            handleObject(U);
         }
     }
 
@@ -454,6 +480,29 @@ public class DatabaseAccess {
             Log.d("onPostExecute: SOA:", String.valueOf(newList.size()));
             populateList(newList);
 
+        }
+    }
+
+
+    //==============================================================================================
+    // AMAZON S3 IMPLEMENTATION
+    //==============================================================================================
+
+    public void getImage(Context C, ImageView I, String imgURL) {
+        Picasso.get().load(imgURL).fit().into(I);
+    }
+
+    public void getAllLocationImages(Context C, ImageView I, UserDO UDO) {
+        List<String> list= UDO.getImageList();
+        for (int i = 0; i < list.size(); i++) {
+            Picasso.get().load(list.get(i)).fit().into(I);
+        }
+    }
+
+    public void getAllLocationImages(Context C, ImageView I, CuratedDO CDO) {
+        List<String> list= CDO.getImageList();
+        for (int i = 0; i < list.size(); i++) {
+            Picasso.get().load(list.get(i)).fit().into(I);
         }
     }
 }

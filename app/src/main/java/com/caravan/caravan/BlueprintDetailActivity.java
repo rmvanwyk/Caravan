@@ -1,10 +1,7 @@
 package com.caravan.caravan;
 
 import android.app.Activity;
-import android.app.SearchManager;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,6 +10,7 @@ import android.widget.TextView;
 
 import com.caravan.caravan.DynamoDB.CuratedDO;
 import com.caravan.caravan.DynamoDB.DatabaseAccess;
+
 import java.util.List;
 
 /**
