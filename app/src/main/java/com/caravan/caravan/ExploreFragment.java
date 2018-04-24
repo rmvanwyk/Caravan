@@ -1,7 +1,6 @@
 package com.caravan.caravan;
 
 import android.app.Activity;
-import android.database.CursorIndexOutOfBoundsException;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -27,13 +26,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
 public class ExploreFragment extends ListFragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
     private Activity parentActivity;
     private BottomNavigationView bottomNavigationView;
+    final private int cacheSize = 5;
     public ExploreFragment() {
     }
 
@@ -49,7 +47,6 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
         parentActivity = getActivity();
         bottomNavigationView = parentActivity.findViewById(R.id.bottom_navigation);
         setHasOptionsMenu(true);
-        loadRecentSearchHistory();
     }
 
     @Override
@@ -57,6 +54,16 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
         super.onActivityCreated(savedInstanceBundle);
 
         getListView().setOnScrollListener(new OnScrollStateChangedImpl());
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.explore_options_menu, menu);
+        MenuItem item = menu.findItem(R.id.searchActionBarItem);
+        item.setOnActionExpandListener(this);
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(this);
+        super.onCreateOptionsMenu(menu,inflater);
     }
 
     public ArrayList<Object> doMySearch(String query){
@@ -140,16 +147,6 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.explore_options_menu, menu);
-        MenuItem item = menu.findItem(R.id.searchActionBarItem);
-        item.setOnActionExpandListener(this);
-        SearchView searchView = (SearchView) item.getActionView();
-        searchView.setOnQueryTextListener(this);
-        super.onCreateOptionsMenu(menu,inflater);
-    }
-
-    @Override
     public boolean onQueryTextSubmit(String query) {
         return false;
     }
@@ -160,7 +157,7 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
             Log.d("Zero Text", "triggered");
             loadRecentSearchHistory();
         }
-        else {
+        else if (newText.length() > 3){
             setListAdapter(new SearchResultsAdapter(getActivity(), doMySearch(newText)));
         }
         return false;
@@ -176,6 +173,33 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
     public boolean onMenuItemActionCollapse(MenuItem item) {
         bottomNavigationView.setVisibility(View.VISIBLE);
         return true;
+    }
+
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Object clicked = getListView().getItemAtPosition(position);
+        new CacheHistory().execute(clicked);
+        if (clicked instanceof CuratedDO) {
+            CuratedDO recent = (CuratedDO) clicked;
+            switch (recent.getType()) {
+                case "blueprint":
+                    //startActivity(new Intent(this, BlueprintDetailActivity(recent));
+                case "location":
+                    //startActivity(new Intent(this, LocationDetailActivity(recent));
+                case "city":
+                    //startActivity(new Intent(this, DisplayCityDetailActivity(recent));
+                case "neighborhood":
+                    //startActivity(new Intent(this, NeighborhoodDetailActivity(recent));
+            }
+        }
+        else {
+            UserDO recent = (UserDO) clicked;
+            if (recent.getType().equals("location")) {
+                //startActivity(new Intent(this, LocationDetailActivity(recent));
+            } else {
+                //startActivity(new Intent(this, BlueprintDetailActivity(recent));
+            }
+        }
     }
 
     private class CacheHistory extends AsyncTask<Object, Void, Void>{
@@ -194,7 +218,7 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
                 }
                 switch (recent.getType()) {
                     case "blueprint": {
-                        if (dao.getTableSize() < 5){
+                        if (dao.getTableSize() < cacheSize){
                             dao.insertItem(new RecentHistoryItem(recent.getName(), new Date(), Table.blueprint));
                         }
                         else {
@@ -203,7 +227,7 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
                         break;
                     }
                     case "location": {
-                        if (dao.getTableSize() < 5) {
+                        if (dao.getTableSize() < cacheSize) {
                             dao.insertItem(new RecentHistoryItem(recent.getName(), new Date(), Table.location));
                         } else {
                             dao.updateRecentHistory(recent.getName(), new Date(), Table.location);
@@ -211,7 +235,7 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
                         break;
                     }
                     case "city": {
-                        if (dao.getTableSize() < 5) {
+                        if (dao.getTableSize() < cacheSize) {
                             dao.insertItem(new RecentHistoryItem(recent.getName(), new Date(), Table.city));
                         } else {
                             dao.updateRecentHistory(recent.getName(), new Date(), Table.city);
@@ -219,7 +243,7 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
                         break;
                     }
                     case "neighborhood": {
-                        if (dao.getTableSize() < 5) {
+                        if (dao.getTableSize() < cacheSize) {
                             dao.insertItem(new RecentHistoryItem(recent.getName(), new Date(), Table.neighborhood));
                         } else {
                             dao.updateRecentHistory(recent.getName(), new Date(), Table.neighborhood);
@@ -238,14 +262,14 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
                 }
                 if (recent.getType().equals("blueprint")) {
                     RecentHistoryItem item = new RecentHistoryItem(recent.getUserId(), new Date(), Table.userblueprint);
-                    if (dao.getTableSize() < 5) {
+                    if (dao.getTableSize() < cacheSize) {
                         dao.insertItem(item);
                     } else {
                         dao.updateRecentHistory(recent.getUserId(), new Date(), Table.userblueprint);
                     }
                 }
                 else {
-                    if (dao.getTableSize() < 5) {
+                    if (dao.getTableSize() < cacheSize) {
                         dao.insertItem(new RecentHistoryItem(recent.getId(), new Date(), Table.location));
                     } else {
                         dao.updateRecentHistory(recent.getName(), new Date(), Table.location);
@@ -257,98 +281,55 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
         }
     }
 
-    @Override
-    public void onListItemClick(ListView l, View v, int position, long id) {
-         Object clicked = getListView().getItemAtPosition(position);
-         new CacheHistory().execute(clicked);
-         if (clicked instanceof CuratedDO) {
-             CuratedDO recent = (CuratedDO) clicked;
-             switch (recent.getType()) {
-                 case "blueprint":
-                     //startActivity(DisplayBlueprint(recent);
-                 case "location":
-                     //startActivity(DisplayLocation(recent);
-                 case "city":
-                     //startActivity(DisplayCity(recent);
-                 case "neighborhood":
-                     //startActivity(DisplayNeighborhood(recent);
-                 }
-             }
-         else {
-             UserDO recent = (UserDO) clicked;
-             if (recent.getType().equals("location")) {
-                 //startActivity(DisplayLocation(recent);
-             } else {
-                 //startActivity(DisplayBlueprint(recent);
-             }
-         }
-    }
-
     private void loadRecentSearchHistory() {
         Log.d("LRSH", "Top");
         RecentHistoryDatabase database = RecentHistoryDatabase.getInMemoryInstance(getActivity());
         final RecentHistoryDAO dao = database.recentHistoryDAO();
         List<RecentHistoryItem> cached = dao.loadRecentHistory();
-        /*Future<List<RecentHistoryItem>> cached = new LoadHistory().retrieveHistory();
-        List<RecentHistoryItem> cachedResults = new ArrayList<>();
-        try {
-            cachedResults = cached.get();
-
-        }
-        catch (ExecutionException e) {
-
-        }
-        catch (InterruptedException e) {
-            cached.cancel(true);
-        }*/
         if (cached == null) {
-            Log.d("NO CACHED", "RESULTS BITCH");
             return;
         }
-        else {
-            Log.d("ITS LIT:", Integer.toString(cached.size()));
-        }
         ArrayList<Object> displayList = new ArrayList<>();
+        displayList.add("Recently Viewed:");
         DatabaseAccess task = DatabaseAccess.getInstance(getActivity());
-        for (int i = 0; i < cached.size(); i ++) {
+        for (int i = 0; i < cached.size(); i++) {
             Object display = null;
             if (cached.get(i).getTable().equals(Table.blueprint)) {
                 Future<CuratedDO> item = task.getCuratedItem("blueprint", cached.get(i).getId());
                 try {
                     display = (CuratedDO) item.get();
-                }
-                catch (ExecutionException | InterruptedException e) {
+                } catch (ExecutionException | InterruptedException e) {
 
                 }
-            }
-            else if (cached.get(i).getTable().equals(Table.location)) {
+            } else if (cached.get(i).getTable().equals(Table.location)) {
                 Future<CuratedDO> item = task.getCuratedItem("location", cached.get(i).getId());
                 try {
                     display = (CuratedDO) item.get();
-                }
-                catch (ExecutionException | InterruptedException e) {
+                } catch (ExecutionException | InterruptedException e) {
 
                 }
-            }
-            else if (cached.get(i).getTable().equals(Table.city)) {
+            } else if (cached.get(i).getTable().equals(Table.city)) {
                 Future<CuratedDO> item = task.getCuratedItem("city", cached.get(i).getId());
                 try {
                     display = (CuratedDO) item.get();
-                }
-                catch (ExecutionException | InterruptedException e) {
+                } catch (ExecutionException | InterruptedException e) {
 
                 }
-            }
-            else if (cached.get(i).getTable().equals(Table.neighborhood)) {
+            } else if (cached.get(i).getTable().equals(Table.neighborhood)) {
                 Future<CuratedDO> item = task.getCuratedItem("neighborhood", cached.get(i).getId());
                 try {
                     display = (CuratedDO) item.get();
-                }
-                catch (ExecutionException | InterruptedException e) {
+                } catch (ExecutionException | InterruptedException e) {
 
                 }
-            }
-            else if (cached.get(i).getTable().equals(Table.userlocation)) {
+            } else if (cached.get(i).getTable().equals(Table.userlocation)) {
+                Future<UserDO> item = task.getUserItem(cached.get(i).getId());
+                try {
+                    display = (UserDO) item.get();
+                } catch (ExecutionException | InterruptedException e) {
+
+                }
+            } else {
                 Future<UserDO> item = task.getUserItem(cached.get(i).getId());
                 try {
                     display = (UserDO) item.get();
@@ -356,22 +337,15 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
 
                 }
             }
-            else {
-                Future<UserDO> item = task.getUserItem(cached.get(i).getId());
-                try {
-                    display = (UserDO) item.get();
-                }
-                catch (ExecutionException | InterruptedException e) {
-
-                }
-            }
             if (display != null) {
                 displayList.add(display);
-                Log.d("DISPLAY CASH:","item added" );
+                Log.d("DISPLAY CASH:", "item added");
             }
         }
-        setListAdapter(new SearchResultsAdapter(getActivity(), displayList));
+        if (displayList.size() > 1) {
+            setListAdapter(new SearchResultsAdapter(getActivity(), displayList));
         }
+    }
 
     //Created to handle dynamic loading of content when ListView scrolls to bottom
     private class OnScrollStateChangedImpl implements AbsListView.OnScrollListener {
