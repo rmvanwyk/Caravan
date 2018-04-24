@@ -1,20 +1,34 @@
 package com.caravan.caravan;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.amazonaws.mobile.auth.core.IdentityManager;
 import com.caravan.caravan.DynamoCacheDB.DynamoCacheDAO;
 import com.caravan.caravan.DynamoCacheDB.DynamoCacheDatabase;
+import com.caravan.caravan.DynamoCacheDB.Entity.BlueprintLocation;
+import com.caravan.caravan.DynamoCacheDB.Entity.CuratedBlueprint;
+import com.caravan.caravan.DynamoCacheDB.Entity.Location;
+import com.caravan.caravan.DynamoCacheDB.Entity.UserBlueprint;
+import com.caravan.caravan.DynamoDB.CuratedDO;
+import com.caravan.caravan.DynamoDB.UserDO;
 
-public class AccountFragment extends Fragment {
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.annotation.OverridingMethodsMustInvokeSuper;
+
+public class AccountFragment extends ListFragment {
 
     public AccountFragment() {
     }
@@ -23,7 +37,10 @@ public class AccountFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        //loadBlueprintsAndLocations();
+        Activity parentActivity = getActivity();
+        BottomNavigationView bottomNavigationView = parentActivity.findViewById(R.id.bottom_navigation);
+        setHasOptionsMenu(true);
+        loadBlueprintsAndLocations();
     }
 
     @Override
@@ -57,9 +74,85 @@ public class AccountFragment extends Fragment {
         return true;
     }
 
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        Object clicked = getListView().getItemAtPosition(position);
+        if (clicked instanceof CuratedDO) {
+            CuratedDO recent = (CuratedDO) clicked;
+            switch (recent.getType()) {
+                case "blueprint":
+                    //startActivity(new Intent (this, BlueprintDetailActivity(recent, loadLocationsForBlueprintDisplay(recent.getId(), 0));
+                case "location":
+                    //startActivity(new Intent(this, LocationDetailActivity(recent));
+            }
+        }
+        else {
+            UserDO recent = (UserDO) clicked;
+            //startActivity(new Intent(BlueprintDetailActivity(recent, loadLocationsForBlueprintDisplay(recent.getId(), 1)));
+            }
+        }
+
+    private List<CuratedDO> loadLocationsForBlueprintDisplay(String blueprintID, int option) {
+        DynamoCacheDatabase database = DynamoCacheDatabase.getInMemoryInstance(getActivity());
+        final DynamoCacheDAO dao = database.dynamoCacheDAO();
+        if (option == 0) {
+            List<BlueprintLocation> dbLocations = dao.getLocationsFromUserBlueprintId(blueprintID);
+            List<CuratedDO> locationsOfBlueprint = new ArrayList<>();
+            for (int i = 0; i < dbLocations.size(); i++) {
+                locationsOfBlueprint.add(dbLocations.get(i).getCuratedDO());
+            }
+            return locationsOfBlueprint;
+        }
+        else {
+            List<BlueprintLocation> dbLocations = dao.getLocationsFromCuratedBlueprintId(blueprintID);
+            List<CuratedDO> locationsOfBlueprint = new ArrayList<>();
+            for (int i = 0; i < dbLocations.size(); i++) {
+                locationsOfBlueprint.add(dbLocations.get(i).getCuratedDO());
+            }
+            return locationsOfBlueprint;
+        }
+    }
+
     private void loadBlueprintsAndLocations() {
         DynamoCacheDatabase database = DynamoCacheDatabase.getInMemoryInstance(getActivity());
         final DynamoCacheDAO dao = database.dynamoCacheDAO();
-
+        List<UserBlueprint> userBlueprints = dao.getAllUserBlueprints();
+        List<CuratedBlueprint> curatedBlueprints = dao.getAllCuratedBlueprints();
+        List<Location> locations = dao.getAllLocations();
+        ArrayList<Object> resultList = new ArrayList<>();
+        if (!userBlueprints.isEmpty()) {
+            resultList.add("Your Created Blueprints");
+            for (int i = 0; i < userBlueprints.size(); i++) {
+                List<BlueprintLocation> locs = dao.getLocationsFromUserBlueprintId(userBlueprints.get(i).getId());
+                UserDO temp = userBlueprints.get(i).getUserDO();
+                List<String> tempLocList = new ArrayList<>();
+                for (int j = 0; j < locs.size(); j++) {
+                    tempLocList.add(temp.getName());
+                }
+                temp.setLocationList(tempLocList);
+                resultList.add(userBlueprints.get(i).getUserDO());
+            }
+        }
+        if (!curatedBlueprints.isEmpty()) {
+            resultList.add("Your Saved Blueprints");
+            for (int i = 0; i < curatedBlueprints.size(); i++) {
+                List<BlueprintLocation> locs = dao.getLocationsFromCuratedBlueprintId(curatedBlueprints.get(i).getId());
+                CuratedDO temp = curatedBlueprints.get(i).getCuratedDO();
+                List<String> tempLocList = new ArrayList<>();
+                for (int j = 0; j < locs.size(); j++) {
+                    tempLocList.add(temp.getName());
+                }
+                temp.setLocationList(tempLocList);
+                resultList.add(curatedBlueprints.get(i).getCuratedDO());
+            }
+        }
+        if (!locations.isEmpty()) {
+            resultList.add("Your Saved Locations");
+            for (int i = 0; i < locations.size(); i++) {
+                resultList.add(locations.get(i).getCuratedDO());
+            }
+        }
+        Log.d("End of:", "loadBnL");
+        setListAdapter(new SearchResultsAdapter(getActivity(), resultList));
     }
 }
