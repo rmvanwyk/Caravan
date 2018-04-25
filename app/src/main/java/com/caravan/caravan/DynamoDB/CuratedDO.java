@@ -181,7 +181,7 @@ public class CuratedDO {
     public void setFollowerCount(final int _followerCount) {
         this._followerCount = _followerCount;
     }
-    @DynamoDBAttribute(attributeName = "imageList")
+    @DynamoDBAttribute(attributeName = "imgList")
     public List<String> getImageList() { return _imageList; }
 
     public void setImageList(List<String> _imageList) { this._imageList = _imageList; }

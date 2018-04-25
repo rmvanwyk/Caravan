@@ -112,24 +112,26 @@ public class DBTesting extends AppCompatActivity {
                 UserDO U = null;
                 Object obj = null;
                 try {
-                    obj = task.getItem("HiThisIsATest1", "blueprint", "user");
+                    obj = task.getItem("Yazoo Brewery", "location", "curated");
                 } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
                 }
                 if (obj instanceof CuratedDO) {
                     CuratedDO result = CuratedDO.class.cast(obj);
-                    if (result != null) Log.d("Found Curated Object: ", result.getName());
+                    if (result != null) Log.d("Found Curated Object: ", result.toString());
+                    if (result.getType() != null) Log.d("Type: ", result.getType());
+                    if (result.getName() != null) Log.d("Name: ", result.getName());
+                    if (result.getCity() != null) Log.d("City: ", result.getCity());
+                    if (result.getDescription() != null) Log.d("Desc.: ", result.getDescription());
+                    if (result.getImageList() != null && result.getImageList().size() > 0) Log.d("imgList: ", result.getImageList().get(0));
+                    //if (result.getType() == "location") Log.d("Checking imgList: ", result.getImageList().toString());
                 }
                 else {
                     UserDO result = (UserDO) obj;
                     if (result != null) Log.d("Found User Object:17 ", result.getName());
                     U = result;
                 }
-                if (U != null) {
-                    Log.d("GetItem Name: ", U.getName());
-                    task.addLocationToBlueprint(U, "BestLocationEVER");
-                }
-                else Log.d("GetItem Name: ", "##### NULL #####");
+                //else Log.d("GetItem Name: ", "##### NULL #####");
 
                 /*CuratedDO C = new CuratedDO();
 
