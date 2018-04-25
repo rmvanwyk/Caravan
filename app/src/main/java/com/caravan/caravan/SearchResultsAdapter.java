@@ -1,6 +1,7 @@
 package com.caravan.caravan;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -72,14 +73,11 @@ public class SearchResultsAdapter extends BaseAdapter {
         }
         else if (getItem(position) instanceof UserDO) {
             UserDO item = (UserDO) getItem(position);
-            if (item.getType().equals("UserBlueprint")) {
+            if (item.getType().equals("user")) {
                 return TYPE_USERBLUE;
             }
-            else {
-                return TYPE_USERLOC;
-            }
         }
-        else {
+        else if (getItem(position) instanceof String){
              return TYPE_DIVIDER;
         }
         return 0;
@@ -103,9 +101,6 @@ public class SearchResultsAdapter extends BaseAdapter {
                 case TYPE_LOCATION:
                     convertView = inflater.inflate(R.layout.item_location, parent, false);
                     break;
-                case TYPE_USERLOC:
-                    convertView = inflater.inflate(R.layout.item_location, parent, false);
-                    break;
                 case TYPE_CITY:
                     convertView = inflater.inflate(R.layout.item_city, parent, false);
                     break;
@@ -122,17 +117,6 @@ public class SearchResultsAdapter extends BaseAdapter {
         }
         switch (type) {
             case TYPE_LOCATION: {
-                CuratedDO location_obj = (CuratedDO) getItem(position);
-                // Lookup view for data population
-                TextView name = (TextView) convertView.findViewById(R.id.name);
-                TextView city = (TextView) convertView.findViewById(R.id.city);
-                TextView description = (TextView) convertView.findViewById(R.id.description);
-                // Populate the data into the template view using the data object
-                name.setText(location_obj.getName());
-                city.setText(location_obj.getCity());
-                description.setText(location_obj.getDescription());
-                break; }
-            case TYPE_USERLOC: {
                 CuratedDO location_obj = (CuratedDO) getItem(position);
                 // Lookup view for data population
                 TextView name = (TextView) convertView.findViewById(R.id.name);

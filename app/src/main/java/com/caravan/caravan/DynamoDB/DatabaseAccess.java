@@ -422,6 +422,7 @@ public class DatabaseAccess {
         } catch (Exception e) {
             Log.d("ASYNC TASK ERROR Cur: ", e.toString());
         }
+        Log.d("BCQ:", result.getClass().getName());
     return result;
     }
 
@@ -448,6 +449,7 @@ public class DatabaseAccess {
         } catch (Exception e) {
             Log.d("ASYNC TASK ERROR Cur: ", e.toString());
         }
+        Log.d("BCQI:", result.getClass().getName());
         return result;
     }
 
@@ -507,10 +509,10 @@ public class DatabaseAccess {
         for (int i = 0; i < memos.size(); i++) {
             if (memos.get(i) instanceof CuratedDO) {
                 CuratedDO result = (CuratedDO) memos.get(i);
-                Log.d("Found Curated Object: ", result.getName());
+                //Log.d("Found Curated Object: ", result.getName());
             } else {
                 UserDO result = (UserDO) memos.get(i);
-                Log.d("Found User Object: ", result.getName());
+                //Log.d("Found User Object: ", result.getName());
             }
         }
     }

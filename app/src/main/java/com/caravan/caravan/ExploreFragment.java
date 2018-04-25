@@ -100,7 +100,7 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
                 } else if (result.getType().equals("city")) {
                     cityList.add(result);
                     hasCity = true;
-                } else {
+                } else if (result.getType().equals("neighborhood")){
                     neighborhoodList.add(result);
                     hasNeighborhood = true;
                 }
@@ -109,10 +109,10 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
                 if (result.getType().equals("blueprint")) {
                     userBList.add(result);
                     hasUserBlueprint = true;
-                } else if (result.getType().equals("location")) {
-                    userLList.add(result);
-                    hasUserLocation = true;
                 }
+            }
+            if (i > 12) {
+                break;
             }
         }
         ArrayList<Object> resultsList = new ArrayList<>();
@@ -138,7 +138,7 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
             }
         if (hasNeighborhood) {
             resultsList.add("Neighborhoods");
-            resultsList.add(neighborhoodList);
+            resultsList.addAll(neighborhoodList);
         }
         if (resultsList.isEmpty()){
             resultsList.add("Your search returned no results!");
@@ -148,6 +148,13 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
 
     @Override
     public boolean onQueryTextSubmit(String query) {
+        if(query == null || query.length() == 0) {
+            Log.d("Zero Text", "triggered");
+            loadRecentSearchHistory();
+        }
+        else if (query.length() > 0){
+            setListAdapter(new SearchResultsAdapter(getActivity(), doMySearch(query)));
+        }
         return false;
     }
 
@@ -157,7 +164,7 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
             Log.d("Zero Text", "triggered");
             loadRecentSearchHistory();
         }
-        else if (newText.length() > 3){
+        else if (newText.length() > 2){
             setListAdapter(new SearchResultsAdapter(getActivity(), doMySearch(newText)));
         }
         return false;
