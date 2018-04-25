@@ -3,6 +3,7 @@ package com.caravan.caravan;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -11,12 +12,12 @@ import com.amazonaws.mobile.client.AWSMobileClient;
 import com.amazonaws.mobileconnectors.dynamodbv2.document.datatype.Document;
 import com.amazonaws.mobileconnectors.dynamodbv2.dynamodbmapper.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.AmazonDynamoDBClient;
+import com.caravan.caravan.DynamoDB.CuratedDO;
 import com.caravan.caravan.DynamoDB.DatabaseAccess;
+import com.caravan.caravan.DynamoDB.UserDO;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 public class DBTesting extends AppCompatActivity {
 
@@ -73,7 +74,7 @@ public class DBTesting extends AppCompatActivity {
                 else Log.d("Oh No! Result Set Was Empty! ", "##################");*/
 
 
-                List<Object> curatedResults = new ArrayList<>();
+                /*List<Object> curatedResults = new ArrayList<>();
 
                 Future<List<Object>> future = task.Query("Lo");
                 try {
@@ -82,7 +83,7 @@ public class DBTesting extends AppCompatActivity {
 
                 } catch (InterruptedException e) {
                     future.cancel(true);
-                }
+                }*/
                 /*Log.d("Found Curated Results: ", String.valueOf(curatedResults.size()));
                 if(curatedResults.size() == 0) {
                     curatedResults = task.results;
@@ -108,18 +109,27 @@ public class DBTesting extends AppCompatActivity {
                 C.setLocationList(new ArrayList<>());
                 task.userSaveBlueprint(C);*/
 
-                /*UserDO U = null;
+                UserDO U = null;
+                Object obj = null;
                 try {
-                    task.getItem("HiThisIsATest1", "blueprint", "user");
-                    U = task.userDataObject;
-                } catch (InstantiationException | IllegalAccessException e) {
+                    obj = task.getItem("HiThisIsATest1", "blueprint", "user");
+                } catch (ExecutionException | InterruptedException e) {
                     e.printStackTrace();
+                }
+                if (obj instanceof CuratedDO) {
+                    CuratedDO result = CuratedDO.class.cast(obj);
+                    if (result != null) Log.d("Found Curated Object: ", result.getName());
+                }
+                else {
+                    UserDO result = (UserDO) obj;
+                    if (result != null) Log.d("Found User Object:17 ", result.getName());
+                    U = result;
                 }
                 if (U != null) {
                     Log.d("GetItem Name: ", U.getName());
                     task.addLocationToBlueprint(U, "BestLocationEVER");
                 }
-                else Log.d("GetItem Name: ", "##### NULL #####");*/
+                else Log.d("GetItem Name: ", "##### NULL #####");
 
                 /*CuratedDO C = new CuratedDO();
 

@@ -238,7 +238,7 @@ public class DatabaseAccess {
         }).start();
     }
 
-    public List<CuratedDO> getBlueprintLocations(Object obj) throws IllegalAccessException, InstantiationException {
+    public List<CuratedDO> getBlueprintLocations(Object obj) throws IllegalAccessException, InstantiationException, ExecutionException, InterruptedException {
         List<String> locationList = new ArrayList<>();
         List<CuratedDO> results= new ArrayList<>();
         if (obj instanceof CuratedDO) {
@@ -312,18 +312,32 @@ public class DatabaseAccess {
         }
     }
 
-    public Object getItem(String name, String type, String collection) throws InstantiationException, IllegalAccessException {
+    public Object getItem(String name, String type, String collection) throws ExecutionException, InterruptedException {
         GetItemAsyncTask task = new GetItemAsyncTask(name, type, collection);
-        task.execute();
-        if (userDataObject != null) {
-            Log.d("getItemUDO:: ", userDataObject.getName());
-            return userDataObject;
+        task.execute().get();
+        //UserDO u = (UserDO) task.getResult();
+        return this.userDataObject;
+    }
+
+    private CuratedDO getCuratedItemPrivate(String Type, String Name) {
+        CuratedDO s = null;
+        try {
+            s = dbMapper.load(CuratedDO.class, Type, Name);
+        } catch (Exception e) {
+            Log.d("ASYNC TASK ERROR: ", e.toString());
         }
-        else if(curatedDataObject != null) {
-            Log.d("getItemCDO:: ", curatedDataObject.getName());
-            return curatedDataObject;
+        return s;
+    }
+
+    private UserDO getUserItemPrivate(String Name) {
+        UserDO s = null;
+        try {
+            s = dbMapper.load(UserDO.class, credentialsProvider.getCachedIdentityId(), Name);
+        } catch (Exception e) {
+            Log.d("ASYNC TASK ERROR: ", e.toString());
         }
-        return null;
+        Log.d("getItem:: ", s.getName());
+        return s;
     }
 
     public Future<CuratedDO> getCuratedItem(String Type, String Name) {
@@ -352,14 +366,18 @@ public class DatabaseAccess {
     }
 
     private void handleObject(Object U) {
-        if (U.getClass() == UserDO.class) {
+        if (U instanceof UserDO) {
+            Log.d("ObjectClass: ", "UserDO");
             this.userDataObject = (UserDO) U;
             this.curatedDataObject = null;
         }
-        if (U.getClass() == CuratedDO.class) {
+        if (U instanceof CuratedDO) {
+            Log.d("ObjectClass: ", "CuratedDO");
             this.curatedDataObject = (CuratedDO) U;
             this.userDataObject = null;
         }
+        Log.d("ObjectClass: ", "#####################");
+        if (this.userDataObject != null) Log.d("getItem:7: ", this.userDataObject.getName());
     }
 
 
@@ -374,16 +392,22 @@ public class DatabaseAccess {
             Name = query;
             Type = type;
             Collection = collection;
-            //Result = null;
         }
 
         @Override
         protected Object doInBackground(Void... params) {
             Log.d("doInBackground: ", Name);
-            if (Collection == CURATED_COLLECTION) { return getCuratedItem(Type, Name); }
-            if (Collection == USER_COLLECTION) { return getUserItem(Name); }
-            return null;
+            if (Collection == CURATED_COLLECTION) {
+                CuratedDO obj = getCuratedItemPrivate(Type, Name);
+                return obj;
+            }
+            else {
+                UserDO obj = getUserItemPrivate(Name);
+                return obj;
+            }
         }
+
+        //protected Object getResult() { return this.Result2.get(0); }
 
         @Override
         protected void onPostExecute(Object U) {
