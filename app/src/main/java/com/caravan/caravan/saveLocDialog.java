@@ -8,10 +8,19 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import com.caravan.caravan.DynamoCacheDB.DynamoCacheDAO;
+import com.caravan.caravan.DynamoCacheDB.DynamoCacheDatabase;
+import com.caravan.caravan.DynamoCacheDB.Entity.BlueprintLocation;
+import com.caravan.caravan.DynamoCacheDB.Entity.Location;
+import com.caravan.caravan.DynamoCacheDB.Entity.UserBlueprint;
+import com.caravan.caravan.DynamoCacheDB.Entity.UserBlueprintLocationPairing;
 import com.caravan.caravan.DynamoDB.CuratedDO;
 import com.caravan.caravan.DynamoDB.DatabaseAccess;
+import com.caravan.caravan.DynamoDB.UserDO;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /**
  * Created by meaghan on 4/22/18.
@@ -74,4 +83,50 @@ public class saveLocDialog extends DialogFragment {
         }
         return items;
     }*/
+
+    //Used for saving a location to a (User) blueprint
+    private void cacheLocationToUserBlueprint(String locationName, String blueprintName) {
+        DynamoCacheDatabase database = DynamoCacheDatabase.getInMemoryInstance(getActivity());
+        final DynamoCacheDAO dao = database.dynamoCacheDAO();
+        DatabaseAccess task = DatabaseAccess.getInstance(getActivity());
+        Future<CuratedDO> loc = task.getCuratedItem("location", locationName);
+        CuratedDO location = new CuratedDO();
+        try {
+            location = loc.get();
+        } catch (ExecutionException | InterruptedException e) {
+
+        }
+        BlueprintLocation cachedLocation= new BlueprintLocation(locationName, location);
+        if (dao.getLocationById(location.getName()) == null) {
+            dao.insertBlueprintLocation(cachedLocation);
+        }
+        Future<UserDO> blu = task.getUserItem(blueprintName);
+        UserDO blueprint = new UserDO();
+        try {
+            blueprint = blu.get();
+        } catch (ExecutionException | InterruptedException e) {
+
+        }
+        UserBlueprint cachedBlueprint = new UserBlueprint(blueprint.getName(), blueprint);
+        UserBlueprintLocationPairing pair = new UserBlueprintLocationPairing(cachedBlueprint.getId(), cachedLocation.getId());
+        dao.insertUserBlueprintLocationPairing(pair);
+    }
+
+    //Used for saving a location to your account.
+    private void cacheLocation(String locationName) {
+        DatabaseAccess task = DatabaseAccess.getInstance(getActivity());
+        Future<CuratedDO> item = task.getCuratedItem("location", locationName);
+        CuratedDO location = new CuratedDO();
+        try {
+            location = item.get();
+        } catch (ExecutionException | InterruptedException e) {
+
+        }
+        DynamoCacheDatabase database = DynamoCacheDatabase.getInMemoryInstance(getActivity());
+        final DynamoCacheDAO dao = database.dynamoCacheDAO();
+        if (dao.getLocationById(location.getName()) == null) {
+            Location cachedLocation= new Location(locationName, location);
+            dao.insertLocation(cachedLocation);
+        }
+    }
 }
