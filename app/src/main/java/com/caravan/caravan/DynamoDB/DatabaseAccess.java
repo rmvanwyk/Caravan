@@ -314,9 +314,10 @@ public class DatabaseAccess {
 
     public Object getItem(String name, String type, String collection) throws ExecutionException, InterruptedException {
         GetItemAsyncTask task = new GetItemAsyncTask(name, type, collection);
-        task.execute().get();
-        //UserDO u = (UserDO) task.getResult();
-        return this.userDataObject;
+        Object obj = task.execute().get();
+        if (obj instanceof UserDO) return (UserDO) obj;
+        else if (obj instanceof CuratedDO) return (CuratedDO) obj;
+        return null;
     }
 
     private CuratedDO getCuratedItemPrivate(String Type, String Name) {
@@ -336,7 +337,6 @@ public class DatabaseAccess {
         } catch (Exception e) {
             Log.d("ASYNC TASK ERROR: ", e.toString());
         }
-        Log.d("getItem:: ", s.getName());
         return s;
     }
 
@@ -365,22 +365,6 @@ public class DatabaseAccess {
         });
     }
 
-    private void handleObject(Object U) {
-        if (U instanceof UserDO) {
-            Log.d("ObjectClass: ", "UserDO");
-            this.userDataObject = (UserDO) U;
-            this.curatedDataObject = null;
-        }
-        if (U instanceof CuratedDO) {
-            Log.d("ObjectClass: ", "CuratedDO");
-            this.curatedDataObject = (CuratedDO) U;
-            this.userDataObject = null;
-        }
-        Log.d("ObjectClass: ", "#####################");
-        if (this.userDataObject != null) Log.d("getItem:7: ", this.userDataObject.getName());
-    }
-
-
     @SuppressLint("StaticFieldLeak")
     private class GetItemAsyncTask extends AsyncTask<Void, Void, Object> {
 
@@ -398,20 +382,12 @@ public class DatabaseAccess {
         protected Object doInBackground(Void... params) {
             Log.d("doInBackground: ", Name);
             if (Collection == CURATED_COLLECTION) {
-                CuratedDO obj = getCuratedItemPrivate(Type, Name);
-                return obj;
+                return getCuratedItemPrivate(Type, Name);
             }
-            else {
-                UserDO obj = getUserItemPrivate(Name);
-                return obj;
+            else if (Collection == USER_COLLECTION) {
+                return getUserItemPrivate(Name);
             }
-        }
-
-        //protected Object getResult() { return this.Result2.get(0); }
-
-        @Override
-        protected void onPostExecute(Object U) {
-            handleObject(U);
+            return null;
         }
     }
 
