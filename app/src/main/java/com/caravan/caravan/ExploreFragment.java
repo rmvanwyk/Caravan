@@ -1,6 +1,7 @@
 package com.caravan.caravan;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
@@ -188,15 +189,30 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
         new CacheHistory().execute(clicked);
         if (clicked instanceof CuratedDO) {
             CuratedDO recent = (CuratedDO) clicked;
-            switch (recent.getType()) {
-                case "blueprint":
-                    //startActivity(new Intent(this, BlueprintDetailActivity(recent));
-                case "location":
-                    //startActivity(new Intent(this, LocationDetailActivity(recent));
-                case "city":
-                    //startActivity(new Intent(this, DisplayCityDetailActivity(recent));
-                case "neighborhood":
+            Intent i;
+            if(recent.getType().equals("blueprint")) {
+                //startActivity(new Intent(this, BlueprintDetailActivity(recent));
+                i = new Intent(getActivity(), BlueprintDetailActivity.class);
+                i.putExtra("blueprint", (String) recent.getName());
+                startActivity(i);
+            }
+            if(recent.getType().equals("location")) {
+                //startActivity(new Intent(this, LocationDetailActivity(recent));
+                i = new Intent(getActivity(), LocationDetailActivity.class);
+                i.putExtra("location", (String) recent.getName());
+                startActivity(i);
+            }
+            if(recent.getType().equals("city")) {
+                //startActivity(new Intent(this, DisplayCityDetailActivity(recent));
+                i = new Intent(getActivity(), CityDetailActivity.class);
+                i.putExtra("city", (String) recent.getName());
+                startActivity(i);
+            }
+            if(recent.getType().equals("neighborhood")){
                     //startActivity(new Intent(this, NeighborhoodDetailActivity(recent));
+                    i = new Intent(getActivity(), NeighborhoodDetailActivity.class);
+                    i.putExtra("neighborhood", (String) recent.getName());
+                    startActivity(i);
             }
         }
         else {

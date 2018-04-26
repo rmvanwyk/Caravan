@@ -76,7 +76,7 @@ public class BlueprintDetailActivity extends Activity{
                 CuratedDO currentLocation = (CuratedDO) m_db.getItem(locList.get(i), "location", "curated");
                 //locView = (LinearLayout)locContainer.findViewById(R.id.loc_component_container);
                 //LinearLayout locView = (LinearLayout)findViewById(R.id.loc_scroll).findViewById(R.id.loc_detail_container);
-                locView = inflater.inflate(R.layout.item_location_overview, locContainer, false);
+                locView = LayoutInflater.from(this).inflate(R.layout.item_location_overview, locContainer, false);
                 TextView name = (TextView) locView.findViewById(R.id.overview_name);
                 ImageView img = (ImageView) locView.findViewById(R.id.overview_image);
                 TextView description = (TextView) locView.findViewById(R.id.overview_desc);
