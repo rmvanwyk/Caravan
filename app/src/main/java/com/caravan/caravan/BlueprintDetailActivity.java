@@ -4,6 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v7.widget.LinearSnapHelper;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SnapHelper;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +34,7 @@ public class BlueprintDetailActivity extends Activity{
     private CuratedDO c_blueprint = null;
     private UserDO u_blueprint = null;
     private DatabaseAccess m_db;
+    private String m_guideName;
 
     //@Override
     protected void onCreate(Bundle savedInstanceState){
@@ -49,13 +55,19 @@ public class BlueprintDetailActivity extends Activity{
 
             if(c_blueprint ==null){
                 u_blueprint = (UserDO) m_db.getItem(bp, "blueprint", "user");
-
+                m_guideName =u_blueprint.getName();
             }
+            else{
+                m_guideName = c_blueprint.getName();
+            }
+            TextView title = findViewById(R.id.title_blueprint);
+            title.setText(m_guideName);
             this.loadLocations();
         }
             catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
+
     }
     protected void loadLocations () {
         List<String> locList;
@@ -95,8 +107,9 @@ public class BlueprintDetailActivity extends Activity{
                 img.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View image) {
+
                         Intent i = new Intent(BlueprintDetailActivity.this, LocationDetailActivity.class);
-                        i.putExtra("location", (String) name.getText());
+                        i.putExtra("location", (String) currentLocation.getName());
                         startActivity(i);
                     }
                 });
@@ -105,7 +118,20 @@ public class BlueprintDetailActivity extends Activity{
             catch (ExecutionException | InterruptedException e) {
                 e.printStackTrace();
             }
-    }
+
+            ImageView heart = findViewById(R.id.imageView2);
+
+            heart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View image) {
+                    m_db.userSaveBlueprint(c_blueprint);
+                    heart.setImageResource(R.drawable.ic_favorite_white_24px);
+                    heart.setColorFilter(ContextCompat.getColor(BlueprintDetailActivity.this, R.color.Pink));
+
+                }
+            });
+
+        }
 
 
         }

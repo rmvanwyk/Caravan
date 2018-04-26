@@ -149,7 +149,6 @@ public class NeighborhoodDetailActivity extends Activity{
                     Intent i = new Intent(NeighborhoodDetailActivity.this, LocationDetailActivity.class);
                     i.putExtra("location", locations.get(0));
                     startActivity(i);
-
                 }
             });
 

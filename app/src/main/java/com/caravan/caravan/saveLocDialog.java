@@ -46,57 +46,79 @@ public class saveLocDialog extends DialogFragment {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         String[] items = getItems();
-        builder.setTitle("Choose a Blueprint")
-                .setItems(items, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int which) {
-                        // The 'which' argument contains the index position
-                        // of the selected item'
-                        if(which == 0){
-                            try{
-                                CuratedDO loc = (CuratedDO)m_db.getItem(m_loc, "location", "curated");
-                                m_db.userSaveLocation(loc);
-                            }
-                            catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
+        if(items ==null){
+
+            builder.setMessage("Please log in to continue")
+                    .setTitle("Error Saving Location");
+            builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+            final AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+        else {
+            builder.setTitle("Choose a Blueprint")
+                    .setItems(items, new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            // The 'which' argument contains the index position
+                            // of the selected item'
+                            if (which == 0) {
+                                try {
+                                    CuratedDO loc = (CuratedDO) m_db.getItem(m_loc, "location", "curated");
+                                    m_db.userSaveLocation(loc);
+                                    cacheLocation(m_loc);
+                                } catch (ExecutionException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                            } else if (which == 1) {
+                                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                                Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+                                if (prev != null) {
+                                    ft.remove(prev);
+                                }
+                                ft.addToBackStack(null);
+
+                                // Create and show the dialog.
+                                createGuideDialog create = createGuideDialog.newInstance(m_loc);
+                                create.show(ft, "dialog");
+
+                            } else {
+                                try {
+                                    UserDO bp = (UserDO) m_db.getItem(items[which], "blueprint", "user");
+                                    m_db.addLocationToBlueprint(bp, m_loc);
+                                    cacheLocationToUserBlueprint(m_loc, items[which]);
+                                } catch (ExecutionException | InterruptedException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
-
-                        else if (which == 1) {
-                            FragmentTransaction ft = getFragmentManager().beginTransaction();
-                            Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-                            if (prev != null) {
-                                ft.remove(prev);
-                            }
-                            ft.addToBackStack(null);
-
-                            // Create and show the dialog.
-                            createGuideDialog create = createGuideDialog.newInstance(m_loc);
-                            create.show(ft, "dialog");
-
-                        }
-                        else {
-                            try {
-                                UserDO bp = (UserDO)m_db.getItem(items[which], "blueprint","user");
-                                m_db.addLocationToBlueprint(bp, m_loc);
-                            }
-                            catch (ExecutionException | InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                });
+                    });
+            builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+        }
         // Create the AlertDialog object and return it
         return builder.create();
     }
 
 
     private String[] getItems() {
+        String[] items = null;
+        try{
         List<UserDO> userBP = m_db.getAllUserBlueprints();
-        String[] items = new String[userBP.size() + 1];
+        items= new String[userBP.size() + 1];
         items[0] = "Save to Library";
         items[1] = "Create New Blueprint";
         for (int i = 2; i < userBP.size(); i++) {
             items[i] = userBP.get(i).getName();
+        }
+        }
+        catch(NullPointerException e){
+
         }
         return items;
     }

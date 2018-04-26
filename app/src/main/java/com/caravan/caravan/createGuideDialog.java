@@ -61,8 +61,13 @@ public class createGuideDialog extends DialogFragment {
                 public void onClick(DialogInterface dialog, int which) {
                     m_name = input.getText().toString();
                     m_db.createBlueprint(m_name);
-                    //m_db.addLocationToBlueprint(m_name, m_loc);
-                    //cacheBlueprint(m_db, m_loc);
+                    try {
+                        UserDO newBP = (UserDO) m_db.getItem(m_name, "blueprint", "user");
+                        cacheUserBlueprint(newBP, m_loc);
+                    }
+                    catch (ExecutionException | InterruptedException e) {
+                        e.printStackTrace();
+                    }
                 }
             });
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

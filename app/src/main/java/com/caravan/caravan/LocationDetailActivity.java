@@ -3,7 +3,9 @@ package com.caravan.caravan;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -44,23 +46,32 @@ public class LocationDetailActivity extends Activity {
             details.setText((m_location.getTimeOfDay()).concat(" - ").concat(m_location.getPricePoint()));
             description.setText(m_location.getDescription());
             recommendation.setText(m_location.getFoodDrinkRecommendation());
+
+            ImageView save = findViewById(R.id.loc_save);
+
+            save.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View image) {
+
+                    FragmentTransaction ft = getFragmentManager().beginTransaction();
+                    Fragment prev = getFragmentManager().findFragmentByTag("dialog");
+                    if (prev != null) {
+                        ft.remove(prev);
+                    }
+                    ft.addToBackStack(null);
+
+                    // Create and show the dialog.
+                    saveLocDialog newFragment = saveLocDialog.newInstance(m_location.getName());
+                    newFragment.show(ft, "dialog");
+                }
+            });
+
         }
         catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }
     }
 
-    private void saveClick() {
-        FragmentTransaction ft = getFragmentManager().beginTransaction();
-        Fragment prev = getFragmentManager().findFragmentByTag("dialog");
-        if (prev != null) {
-            ft.remove(prev);
-        }
-        ft.addToBackStack(null);
 
-        // Create and show the dialog.
-        saveLocDialog save = saveLocDialog.newInstance(m_location.getName());
-        save.show(ft, "dialog");
-    }
 
 }
