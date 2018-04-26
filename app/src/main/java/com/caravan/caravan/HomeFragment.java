@@ -52,6 +52,11 @@ public class HomeFragment extends Fragment {
                 title.setText(bp.getName());
                 ImageView img = block.findViewById(R.id.home_curated_thumbnailA).findViewById(R.id.home_curated_imageA);
 
+                CuratedDO firstLoc = (CuratedDO) m_db.getItem(bp.getLocationList().get(0), "location", "curated");
+                String image = firstLoc.getImageList().get(0);
+                m_db.getImage(getActivity(), img, image);
+
+
                 img.setOnClickListener(new View.OnClickListener()
                 {
                     @Override
@@ -74,6 +79,12 @@ public class HomeFragment extends Fragment {
                 TextView title = (TextView) block.findViewById(R.id.home_curated_thumbnailB).findViewById(R.id.home_curated_textB);
                 title.setText(bp.getName());
                 ImageView img = block.findViewById(R.id.home_curated_thumbnailB).findViewById(R.id.home_curated_imageB);
+
+                CuratedDO firstLoc = (CuratedDO) m_db.getItem(bp.getLocationList().get(0), "location", "curated");
+                String image = firstLoc.getImageList().get(0);
+                m_db.getImage(getActivity(), img, image);
+
+
 
 
                 img.setOnClickListener(new View.OnClickListener()
@@ -99,6 +110,10 @@ public class HomeFragment extends Fragment {
                 TextView title = (TextView) block.findViewById(R.id.home_curated_thumbnailC).findViewById(R.id.home_curated_textC);
                 title.setText(bp.getName());
                 ImageView img = block.findViewById(R.id.home_curated_thumbnailC).findViewById(R.id.home_curated_imageC);
+
+                CuratedDO firstLoc = (CuratedDO) m_db.getItem(bp.getLocationList().get(0), "location", "curated");
+                String image = firstLoc.getImageList().get(0);
+                m_db.getImage(getActivity(), img, image);
 
                 img.setOnClickListener(new View.OnClickListener()
                 {

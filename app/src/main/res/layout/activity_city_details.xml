@@ -24,6 +24,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@color/Green"
+                android:fontFamily="@font/montserrat"
                 android:text="\n-City-"
                 android:textAlignment="center"
                 android:textColor="@color/Grey"
@@ -34,6 +35,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito"
                 android:text="Popular Neighborhoods"
                 android:textAlignment="center"
                 android:textSize="18sp"
@@ -69,6 +71,7 @@
 
                         <TextView
                             android:id="@+id/city_neighborhood_textA"
+                            android:fontFamily="@font/nunito"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
@@ -99,6 +102,7 @@
                             android:id="@+id/city_neighborhood_textB"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/nunito"
                             android:layout_marginStart="16dp"
                             android:text="neighborhoodB"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -127,6 +131,7 @@
                             android:id="@+id/city_neighborhood_textC"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/nunito"
                             android:layout_marginStart="16dp"
                             android:text="neighborhoodC"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -156,6 +161,7 @@
                             android:id="@+id/city_neighborhood_textD"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/nunito"
                             android:layout_marginStart="16dp"
                             android:text="neighborhood"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -170,6 +176,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito"
                 android:text="Curated Blueprints"
                 android:textAlignment="center"
                 android:textSize="18sp"
@@ -206,6 +213,7 @@
                         <TextView
                             android:id="@+id/city_curated_textA"
                             android:layout_width="wrap_content"
+                            android:fontFamily="@font/nunito"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
                             android:text="BlueprintA"
@@ -235,6 +243,7 @@
                             android:id="@+id/city_curated_textB"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/nunito"
                             android:layout_marginStart="16dp"
                             android:text="BlueprintB"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -264,6 +273,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:fontFamily="@font/nunito"
                             android:text="BlueprintC"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/city_curated_imageC" />
@@ -293,6 +303,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:fontFamily="@font/nunito"
                             android:text="BlueprintD"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/city_curated_imageD" />
@@ -307,6 +318,7 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito"
                 android:text="Featured Locations"
                 android:textAlignment="center"
                 android:textSize="18sp"
@@ -344,6 +356,7 @@
                             android:id="@+id/city_loc_textA"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:fontFamily="@font/nunito"
                             android:layout_marginStart="16dp"
                             android:text="LocationA"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -373,6 +386,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:fontFamily="@font/nunito"
                             android:text="BlueprintB"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/city_loc_imageB" />
@@ -401,6 +415,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:fontFamily="@font/nunito"
                             android:text="BlueprintC"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/neighborhood_loc_imageC" />
@@ -430,6 +445,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="16dp"
+                            android:fontFamily="@font/nunito"
                             android:text="BlueprintD"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintTop_toBottomOf="@+id/city_loc_imageD" />

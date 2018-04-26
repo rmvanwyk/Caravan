@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:backgroundTint="@color/White"
     tools:layout_editor_absoluteY="81dp">
 
     <ImageView
@@ -20,6 +21,7 @@
         android:id="@+id/loc_scroll"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:backgroundTint="@color/White"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -29,6 +31,7 @@
             android:id="@+id/loc_detail_container"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/White"
             android:orientation="vertical">
 
 
@@ -44,11 +47,18 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/Blue"
+                    android:fontFamily="@font/nunito"
                     android:text="\nLocation Name \t\t\t\n"
                     android:textColorLink="@color/Grey"
                     android:textSize="18sp"
+                    android:textStyle="bold"
                     tools:layout_editor_absoluteX="0dp"
                     tools:layout_editor_absoluteY="284dp" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
 
                 <ImageView
                     android:id="@+id/loc_save"
@@ -61,17 +71,26 @@
                     app:srcCompat="@drawable/ic_save_white_24px" />
             </LinearLayout>
 
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
+
             <TextView
                 android:id="@+id/loc_details"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/loc_name"
                 android:background="@color/White"
+                android:fontFamily="@font/nunito"
                 android:text="Time of Day - $$$"
                 android:textColorLink="@color/Grey"
                 android:textSize="18sp"
                 tools:layout_editor_absoluteX="0dp"
                 tools:layout_editor_absoluteY="352dp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="10dp" />
 
             <LinearLayout
                 android:id="@+id/loc_img_icons"
@@ -87,8 +106,8 @@
                     android:layout_below="@id/loc_details"
                     android:layout_marginLeft="48dp"
                     android:layout_toRightOf="@id/site_button"
+                    android:src="@drawable/ic_pin_drop_white_24px"
                     android:tint="@color/Orange"
-                    android:src = "@drawable/ic_pin_drop_white_24px"
                     app:srcCompat="@drawable/ic_pin_drop_white_24px" />
 
                 <ImageView
@@ -100,8 +119,8 @@
                     android:layout_marginLeft="48dp"
                     android:layout_marginRight="48dp"
                     android:layout_weight="1"
-                    android:tint="@color/Orange"
                     android:src="@drawable/ic_web_white_24px"
+                    android:tint="@color/Orange"
                     app:srcCompat="@drawable/ic_web_white_24px" />
 
                 <ImageView
@@ -112,9 +131,9 @@
                     android:layout_marginRight="48dp"
                     android:layout_toLeftOf="@id/site_button"
                     android:layout_weight="1"
+                    android:src="@drawable/ic_phone_white_24px"
                     android:tint="@color/Orange"
-                    app:srcCompat="@drawable/ic_phone_white_24px"
-                    android:src="@drawable/ic_phone_white_24px"/>
+                    app:srcCompat="@drawable/ic_phone_white_24px" />
             </LinearLayout>
 
             <TextView
@@ -124,10 +143,12 @@
                 android:layout_below="@id/site_button"
                 android:layout_centerHorizontal="true"
                 android:background="@color/White"
+                android:fontFamily="@font/montserrat"
                 android:text="\n- Description -\n"
                 android:textAlignment="center"
                 android:textColorLink="@color/Grey"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/loc_desc"
@@ -136,6 +157,7 @@
                 android:layout_below="@id/desc_header"
                 android:layout_centerHorizontal="true"
                 android:background="@color/White"
+                android:fontFamily="@font/nunito"
                 android:text="This is a location description"
                 android:textAlignment="center"
                 android:textColorLink="@color/Grey"
@@ -149,10 +171,12 @@
                 android:layout_below="@id/loc_desc"
                 android:layout_centerHorizontal="true"
                 android:background="@color/White"
+                android:fontFamily="@font/montserrat"
                 android:text="\n- Recommendation -\n"
                 android:textAlignment="center"
                 android:textColorLink="@color/Grey"
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/loc_rec"
@@ -161,10 +185,15 @@
                 android:layout_below="@id/rec_header"
                 android:layout_centerHorizontal="true"
                 android:background="@color/White"
+                android:fontFamily="@font/nunito"
                 android:text="This is a location recommmendation"
                 android:textAlignment="center"
                 android:textColorLink="@color/Grey"
                 android:textSize="15sp" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="20dp" />
 
         </LinearLayout>
     </ScrollView>

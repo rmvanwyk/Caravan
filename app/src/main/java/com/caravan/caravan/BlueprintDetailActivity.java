@@ -92,10 +92,10 @@ public class BlueprintDetailActivity extends Activity{
                 TextView name = (TextView) locView.findViewById(R.id.overview_name);
                 ImageView img = (ImageView) locView.findViewById(R.id.overview_image);
                 TextView description = (TextView) locView.findViewById(R.id.overview_desc);
-
-                name.setText(currentLocation.getName());
-                description.setText(currentLocation.getDescription());
-                locContainer.addView(locView);
+                try {
+                    name.setText(currentLocation.getName());
+                    description.setText(currentLocation.getDescription());
+                    locContainer.addView(locView);
 
                 String image = currentLocation.getImageList().get(0);
 
@@ -113,6 +113,8 @@ public class BlueprintDetailActivity extends Activity{
                         startActivity(i);
                     }
                 });
+                }
+                catch (NullPointerException e ){}
 
             }
             catch (ExecutionException | InterruptedException e) {

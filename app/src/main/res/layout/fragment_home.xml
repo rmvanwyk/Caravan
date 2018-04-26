@@ -13,6 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/Blue"
+        android:fontFamily="@font/montserrat"
         android:text="\n-Nashville-\n"
         android:textAlignment="center"
         android:textSize="24sp" />
@@ -20,6 +21,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/nunito"
         android:text="Curated Blueprints"
         android:textAlignment="center"
         android:textSize="18sp"
@@ -58,6 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:fontFamily="@font/nunito"
                     android:text="BlueprintA"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/home_curated_imageA" />
@@ -86,6 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:fontFamily="@font/nunito"
                     android:text="BlueprintB"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/home_curated_imageB" />
@@ -114,6 +118,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:fontFamily="@font/nunito"
                     android:text="BlueprintC"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/home_curated_imageC" />
@@ -143,6 +148,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:fontFamily="@font/nunito"
                     android:text="BlueprintD"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/home_curated_imageD" />
@@ -168,6 +174,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Featured Locations"
+        android:fontFamily="@font/nunito"
         android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold" />
@@ -205,6 +212,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:fontFamily="@font/nunito"
                     android:text="LocationA"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/home_loc_imageA" />
@@ -232,6 +240,7 @@
                     android:id="@+id/home_loc_textB"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:fontFamily="@font/nunito"
                     android:layout_marginStart="16dp"
                     android:text="BlueprintB"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -261,6 +270,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:fontFamily="@font/nunito"
                     android:text="BlueprintC"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/home_loc_imageC" />
@@ -290,6 +300,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
+                    android:fontFamily="@font/nunito"
                     android:text="BlueprintD"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/home_loc_imageD" />
