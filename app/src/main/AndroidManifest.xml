@@ -44,9 +44,23 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".BlueprintActivity"
-            android:label="BlueprintActivity">
+        <activity android:name=".BlueprintDetailActivity"
+            android:label="BlueprintDetailActivity">
         </activity>
+
+        <activity android:name=".LocationDetailActivity"
+            android:label="LocationDetailActivity">
+        </activity>
+        <activity android:name=".CityDetailActivity"
+            android:label="CityDetailActivity">
+        </activity>
+        <activity android:name=".NeighborhoodDetailActivity"
+            android:label="NeighborhoodDetailActivity">
+        </activity>
+
+
+
+
         <activity
             android:exported="true"
             android:name=".DBTesting"

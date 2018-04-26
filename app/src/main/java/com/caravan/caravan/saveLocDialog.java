@@ -40,19 +40,28 @@ public class saveLocDialog extends DialogFragment {
         return d;
     }
 
-    /*public Dialog onCreateDialog(Bundle savedInstanceState) {
+    public Dialog onCreateDialog(Bundle savedInstanceState) {
         super.onCreateDialog(savedInstanceState);
         m_loc = getArguments().getString("loc");
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        //List<String> userBP = _db.getAllUserBlueprints();
-        //String[] items = getItems();
+        String[] items = getItems();
         builder.setTitle("Choose a Blueprint")
                 .setItems(items, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // The 'which' argument contains the index position
                         // of the selected item'
-                        if (which == 0) {
+                        if(which == 0){
+                            try{
+                                CuratedDO loc = (CuratedDO)m_db.getItem(m_loc, "location", "curated");
+                                m_db.userSaveLocation(loc);
+                            }
+                            catch (ExecutionException | InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                        }
+
+                        else if (which == 1) {
                             FragmentTransaction ft = getFragmentManager().beginTransaction();
                             Fragment prev = getFragmentManager().findFragmentByTag("dialog");
                             if (prev != null) {
@@ -66,7 +75,13 @@ public class saveLocDialog extends DialogFragment {
 
                         }
                         else {
-                            //m_db.addLocationToBlueprint(items[which], m_loc);
+                            try {
+                                UserDO bp = (UserDO)m_db.getItem(items[which], "blueprint","user");
+                                m_db.addLocationToBlueprint(bp, m_loc);
+                            }
+                            catch (ExecutionException | InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
                 });
@@ -74,15 +89,18 @@ public class saveLocDialog extends DialogFragment {
         return builder.create();
     }
 
-   private String[] getItems() {
-        List<String> userBP = m_db.getAllUserBlueprints();
+
+    private String[] getItems() {
+        List<UserDO> userBP = m_db.getAllUserBlueprints();
         String[] items = new String[userBP.size() + 1];
-        items[0] = "Create New Blueprint";
-        for (int i = 1; i < userBP.size(); i++) {
-            items[i] = userBP.get(i);
+        items[0] = "Save to Library";
+        items[1] = "Create New Blueprint";
+        for (int i = 2; i < userBP.size(); i++) {
+            items[i] = userBP.get(i).getName();
         }
         return items;
-    }*/
+    }
+
 
     //Used for saving a location to a (User) blueprint
     private void cacheLocationToUserBlueprint(String locationName, String blueprintName) {
@@ -130,3 +148,6 @@ public class saveLocDialog extends DialogFragment {
         }
     }
 }
+
+
+

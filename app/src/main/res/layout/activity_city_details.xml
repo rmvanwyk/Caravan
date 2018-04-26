@@ -6,25 +6,446 @@
     android:layout_height="match_parent"
     tools:layout_editor_absoluteY="25dp">
 
-    <TextView
-        android:id="@+id/city_name"
-        android:layout_width="0dp"
-        android:layout_height="60dp"
-        android:background="@color/Green"
-        android:text="\n-City-"
-        android:textAlignment="center"
-        android:textColor="@color/Grey"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ScrollView
+        android:id="@+id/vertical_scroll"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
 
-    <LinearLayout
-        android:id="@+id/city_block_container"
-        android:layout_width="368dp"
-        android:layout_height="491dp"
-        android:orientation="vertical"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="68dp"></LinearLayout>
+        <LinearLayout
+            android:id="@+id/vertical_scroll_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="27dp">
+
+            <TextView
+                android:id="@+id/city_name"
+                android:layout_width="match_parent"
+                android:layout_height="60dp"
+                android:background="@color/Green"
+                android:text="\n-City-"
+                android:textAlignment="center"
+                android:textColor="@color/Grey"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Popular Neighborhoods"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:id="@+id/city_neighborhood_block"
+                android:layout_width="match_parent"
+                android:layout_height="140dp">
+
+                <LinearLayout
+                    android:id="@+id/city_neighborhood_block_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/n_thumbnailA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/city_neighborhood_imageA"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginBottom="10dp"
+                            android:clickable="true"
+                            app:layout_constraintBottom_toTopOf="@+id/city_neighborhood_textA"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@color/Green" />
+
+                        <TextView
+                            android:id="@+id/city_neighborhood_textA"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="neighborhoodA"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/city_neighborhood_imageA" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/n_thumbnailB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/city_neighborhood_imageB"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginBottom="10dp"
+                            android:clickable="true"
+                            app:layout_constraintBottom_toTopOf="@+id/city_neighborhood_textB"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@color/Green" />
+
+                        <TextView
+                            android:id="@+id/city_neighborhood_textB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="neighborhoodB"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/city_neighborhood_imageB" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/n_thumbnailC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/city_neighborhood_imageC"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginBottom="10dp"
+                            android:clickable="true"
+                            app:layout_constraintBottom_toTopOf="@+id/city_neighborhood_textC"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@color/Green" />
+
+                        <TextView
+                            android:id="@+id/city_neighborhood_textC"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="neighborhoodC"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/city_neighborhood_imageC" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/n_thumbnailD"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/city_neighborhood_imageD"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginBottom="10dp"
+                            android:clickable="true"
+                            app:layout_constraintBottom_toTopOf="@+id/city_neighborhood_textD"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@color/Green" />
+
+                        <TextView
+                            android:id="@+id/city_neighborhood_textD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="neighborhood"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/city_neighborhood_imageD" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Curated Blueprints"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:id="@+id/city_curated_blockA"
+                android:layout_width="match_parent"
+                android:layout_height="140dp">
+
+                <LinearLayout
+                    android:id="@+id/city_blockA_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/b_thumnailA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/city_curated_imageA"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginBottom="10dp"
+                            android:clickable="true"
+                            app:layout_constraintBottom_toTopOf="@+id/city_curated_textA"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@color/Green" />
+
+                        <TextView
+                            android:id="@+id/city_curated_textA"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="BlueprintA"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/city_curated_imageA" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/b_thumbnailB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/city_curated_imageB"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginBottom="10dp"
+                            android:clickable="true"
+                            app:layout_constraintBottom_toTopOf="@+id/city_curated_textB"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@color/Green" />
+
+                        <TextView
+                            android:id="@+id/city_curated_textB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="BlueprintB"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/city_curated_imageB" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/b_thumbnailC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/city_curated_imageC"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginBottom="10dp"
+                            android:clickable="true"
+                            app:layout_constraintBottom_toTopOf="@+id/city_curated_textC"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@color/Green" />
+
+                        <TextView
+                            android:id="@+id/city_curated_textC"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="BlueprintC"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/city_curated_imageC" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/b_thumbnailD"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/curated_imageD"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginBottom="10dp"
+                            android:clickable="true"
+                            app:layout_constraintBottom_toTopOf="@+id/city_curated_textD"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@color/Green" />
+
+                        <TextView
+                            android:id="@+id/city_curated_textD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="BlueprintD"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/city_curated_imageD" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Featured Locations"
+                android:textAlignment="center"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <HorizontalScrollView
+                android:id="@+id/city_loc_blockA"
+                android:layout_width="match_parent"
+                android:layout_height="140dp">
+
+                <LinearLayout
+                    android:id="@+id/city_loc_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/l_thumbnailA"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/city_loc_imageA"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginBottom="10dp"
+                            android:clickable="true"
+                            app:layout_constraintBottom_toTopOf="@+id/city_loc_textA"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@color/Green" />
+
+                        <TextView
+                            android:id="@+id/city_loc_textA"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="LocationA"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/city_loc_imageA" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/l_thumbnailB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/city_loc_imageB"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginBottom="10dp"
+                            android:clickable="true"
+                            app:layout_constraintBottom_toTopOf="@+id/city_loc_textB"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@color/Green" />
+
+                        <TextView
+                            android:id="@+id/city_loc_textB"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="BlueprintB"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/city_loc_imageB" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/l_thumbnailC"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/neighborhood_loc_imageC"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginBottom="10dp"
+                            android:clickable="true"
+                            app:layout_constraintBottom_toTopOf="@+id/neighborhood_loc_textC"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@color/Green" />
+
+                        <TextView
+                            android:id="@+id/neighborhood_loc_textC"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="BlueprintC"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/neighborhood_loc_imageC" />
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:id="@+id/l_thumbnailD"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/city_loc_imageD"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            android:layout_marginBottom="10dp"
+                            android:clickable="true"
+                            app:layout_constraintBottom_toTopOf="@+id/city_loc_textD"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:srcCompat="@color/Green" />
+
+                        <TextView
+                            android:id="@+id/city_loc_textD"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="16dp"
+                            android:text="BlueprintD"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/city_loc_imageD" />
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </HorizontalScrollView>
+
+
+        </LinearLayout>
+
+
+    </ScrollView>
+
 
 
 </android.support.constraint.ConstraintLayout>
