@@ -1,6 +1,7 @@
 package com.caravan.caravan;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.ListFragment;
@@ -81,7 +82,7 @@ public class AccountFragment extends ListFragment {
             CuratedDO recent = (CuratedDO) clicked;
             switch (recent.getType()) {
                 case "blueprint":
-                    //startActivity(new Intent (this, BlueprintDetailActivity(recent, loadLocationsForBlueprintDisplay(recent.getId(), 0));
+                    //startActivity(new Intent(this, BlueprintDetailActivity(recent, loadLocationsForBlueprintDisplay(recent.getId(), 0)));
                 case "location":
                     //startActivity(new Intent(this, LocationDetailActivity(recent));
             }
