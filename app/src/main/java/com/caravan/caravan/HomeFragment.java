@@ -139,7 +139,7 @@ public class HomeFragment extends Fragment {
         block = (LinearLayout) rootView.findViewById(R.id.home_loc_blockA).findViewById(R.id.home_loc_container);
 
         try {
-            CuratedDO loc = (CuratedDO)m_db.getItem("Her Bookshop", "location", "curated");
+            CuratedDO loc = (CuratedDO)m_db.getItem("Grimey's Too", "location", "curated");
             if(loc!= null){
                 TextView title = (TextView) block.findViewById(R.id.home_loc_thumbnailA).findViewById(R.id.home_loc_textA);
                 title.setText(loc.getName());
@@ -153,7 +153,7 @@ public class HomeFragment extends Fragment {
                     public void onClick(View v)
                     {
                         Intent i = new Intent(getActivity(), LocationDetailActivity.class);
-                        i.putExtra("location", "Her Bookshop");
+                        i.putExtra("location", "Grimey's Too");
                         startActivity(i);
 
                     }
@@ -217,7 +217,7 @@ public class HomeFragment extends Fragment {
             e.printStackTrace();
         }
         try {
-            CuratedDO loc= (CuratedDO)m_db.getItem("Attaboy", "location", "curated");
+            CuratedDO loc= (CuratedDO)m_db.getItem("Legato Gelato", "location", "curated");
             if(loc!= null){
                 TextView title = (TextView) block.findViewById(R.id.home_loc_thumbnailD).findViewById(R.id.home_loc_textD);
                 title.setText(loc.getName());
@@ -231,7 +231,7 @@ public class HomeFragment extends Fragment {
                     public void onClick(View v)
                     {
                         Intent i = new Intent(getActivity(), LocationDetailActivity.class);
-                        i.putExtra("location", "Attaboy");
+                        i.putExtra("location", "Legato Gelato");
                         startActivity(i);
 
                     }

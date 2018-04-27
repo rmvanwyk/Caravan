@@ -116,7 +116,7 @@ public class UserDO {
         return _locationList;
     }
 
-    public void setLocationList(final List<String> _locationList) {
+    public void setLocationList(List<String> _locationList) {
         this._locationList = _locationList;
     }
     @DynamoDBAttribute(attributeName = "phoneNumber")

@@ -58,6 +58,7 @@ public class SearchResultsAdapter extends BaseAdapter {
     public int getItemViewType(int position) {
         if (getItem(position) instanceof CuratedDO) {
             CuratedDO item = (CuratedDO) getItem(position);
+            Log.d("SRA-type:", item.getType());
             if (item.getType().equals("location")) {
                 return TYPE_LOCATION;
             }
@@ -73,7 +74,8 @@ public class SearchResultsAdapter extends BaseAdapter {
         }
         else if (getItem(position) instanceof UserDO) {
             UserDO item = (UserDO) getItem(position);
-            if (item.getType().equals("user")) {
+            Log.d("SRA-type:", item.getType());
+            if (item.getType().equals("blueprint")) {
                 return TYPE_USERBLUE;
             }
         }
@@ -92,6 +94,7 @@ public class SearchResultsAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         // Get the data item for this position
         int type = getItemViewType(position);
+        //Log.d("")
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
             switch (type) {
@@ -147,13 +150,9 @@ public class SearchResultsAdapter extends BaseAdapter {
                 description.setText(blueprint_obj.getDescription());
                 break; }
             case TYPE_USERBLUE: {
-                CuratedDO blueprint_obj = (CuratedDO) getItem(position);
+                UserDO blueprint_obj = (UserDO) getItem(position);
                 TextView name = (TextView) convertView.findViewById(R.id.name);
-                TextView city = (TextView) convertView.findViewById(R.id.city);
-                TextView description = (TextView) convertView.findViewById(R.id.description);
                 name.setText(blueprint_obj.getName());
-                city.setText(blueprint_obj.getCity());
-                description.setText(blueprint_obj.getDescription());
                 break; }
             case TYPE_DIVIDER: {
                 TextView title = (TextView) convertView.findViewById(R.id.headerTitle);

@@ -4,8 +4,10 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
+import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
 import android.text.InputType;
+import android.util.Log;
 import android.widget.EditText;
 
 import com.caravan.caravan.DynamoCacheDB.DynamoCacheDAO;
@@ -19,6 +21,7 @@ import com.caravan.caravan.DynamoDB.CuratedDO;
 import com.caravan.caravan.DynamoDB.DatabaseAccess;
 import com.caravan.caravan.DynamoDB.UserDO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -60,14 +63,15 @@ public class createGuideDialog extends DialogFragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     m_name = input.getText().toString();
-                    m_db.createBlueprint(m_name);
-                    try {
-                        UserDO newBP = (UserDO) m_db.getItem(m_name, "blueprint", "user");
-                        cacheUserBlueprint(newBP, m_loc);
+                    if (m_name.length() == 0) {
+                        m_name = "New Guide";
                     }
-                    catch (ExecutionException | InterruptedException e) {
-                        e.printStackTrace();
-                    }
+                    UserDO newBP = m_db.createBlueprint(m_name);
+                    List<String> first = new ArrayList<>();
+                    first.add(m_loc);
+                    newBP.setLocationList(first);
+                    Log.d("m_name:", newBP.getName());
+                    cacheUserBlueprint(newBP, m_loc);
                 }
             });
             builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
@@ -107,8 +111,17 @@ public class createGuideDialog extends DialogFragment {
         private void cacheUserBlueprint(UserDO blueprint, String firstLoc) {
             DynamoCacheDatabase database = DynamoCacheDatabase.getInMemoryInstance(getActivity());
             final DynamoCacheDAO dao = database.dynamoCacheDAO();
-            UserBlueprint cachedBlueprint = new UserBlueprint(blueprint.getName(),blueprint);
-            dao.insertUserBlueprint(cachedBlueprint);
+            UserBlueprint cachedBlueprint = new UserBlueprint(blueprint.getId(),blueprint);
+            List<UserBlueprint> existing = dao.getAllUserBlueprints();
+            boolean exists = false;
+            for (int i = 0; i < existing.size(); i++) {
+                if (existing.get(i).getId().equals(cachedBlueprint.getId())) {
+                    exists = true;
+                }
+            }
+            if (!exists) {
+                dao.insertUserBlueprint(cachedBlueprint);
+            }
             DatabaseAccess task = DatabaseAccess.getInstance(getActivity());
             Future<CuratedDO> item = task.getCuratedItem("location", firstLoc);
             CuratedDO location = new CuratedDO();
@@ -119,11 +132,23 @@ public class createGuideDialog extends DialogFragment {
             }
 
             BlueprintLocation blueprintLocation = new BlueprintLocation(location.getName(), location);
-            if (dao.getLocationById(location.getName()).equals(null)) {
+            if (dao.getLocationById(location.getName()) == null) {
                 dao.insertBlueprintLocation(blueprintLocation);
             }
             UserBlueprintLocationPairing pair = new UserBlueprintLocationPairing(cachedBlueprint.getId(), blueprintLocation.getId());
-            dao.insertUserBlueprintLocationPairing(pair);
+            List<UserBlueprintLocationPairing> pairExisting =  dao.getAllUserBlueprintLocationPairings();
+            boolean pairExists = false;
+            for (int i = 0; i < pairExisting.size(); i++) {
+                Log.d("SLRcontents:", pairExisting.get(i).getBlueprint_id());
+                Log.d("SLRcontents:", pairExisting.get(i).getLocation_id());
+                if (existing.get(i).equals(pair)) {
+                    Log.d("Pair", "exists");
+                    pairExists = true;
+                }
+            }
+            if (!pairExists) {
+                dao.insertUserBlueprintLocationPairing(pair);
+            }
         }
     }
 

@@ -177,8 +177,8 @@ public class DatabaseAccess {
         }).start();
     }
 
-    public void createBlueprint(String name) {
-        final UserDO blueprint = new UserDO();
+    public UserDO createBlueprint(String name) {
+        UserDO blueprint = new UserDO();
         List<String> locationList = new ArrayList<>();
 
         blueprint.setUserId(credentialsProvider.getCachedIdentityId());
@@ -191,12 +191,20 @@ public class DatabaseAccess {
             dbMapper.save(blueprint);
             // Item saved
         }).start();
+        return blueprint;
     }
 
     public void addLocationToBlueprint(UserDO U, String locationName) {
+        try {
         List<String> newList = U.getLocationList();
-        newList.add(locationName);
-        U.setLocationList(newList);
+            newList.add(locationName);
+            U.setLocationList(newList);
+        } catch (NullPointerException e) {
+            List<String> newList = new ArrayList<>();
+            newList.add(locationName);
+            U.setLocationList(newList);
+        }
+
 
         new Thread(() -> {
             dbMapper.save(U);

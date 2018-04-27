@@ -41,11 +41,31 @@ public class LocationDetailActivity extends Activity {
             ImageView img = findViewById(R.id.loc_image);
             String image = m_location.getImageList().get(0);
             m_db.getImage(this, img, image);
-
-            name.setText("\n".concat(m_location.getName()).concat("\n").concat(m_location.getAddress().concat("\n")));
-            details.setText((m_location.getTimeOfDay()).concat(" - ").concat(m_location.getPricePoint()).concat("\n").concat(m_location.getPhoneNumber()).concat(" | ").concat(m_location.getWebsite()));
-            description.setText(m_location.getDescription());
-            recommendation.setText(m_location.getFoodDrinkRecommendation());
+            String address = "address";
+            String time = "time";
+            String price = "price";
+            String phone = "phone";
+            String website = "website";
+            String desc = "description";
+            String rec = "recommendation";
+            try { address = m_location.getAddress(); }
+            catch (NullPointerException e) { }
+            try { time = m_location.getTimeOfDay(); }
+            catch (NullPointerException e) { }
+            try { price = m_location.getPricePoint(); }
+            catch (NullPointerException e) { }
+            try { phone = m_location.getPhoneNumber(); }
+            catch (NullPointerException e) { }
+            try { website = m_location.getWebsite(); }
+            catch (NullPointerException e) { }
+            try { desc = m_location.getDescription(); }
+            catch (NullPointerException e) { }
+            try { rec = m_location.getFoodDrinkRecommendation(); }
+            catch (NullPointerException e) { }
+            name.setText("\n".concat(m_location.getName()).concat("\n").concat(address.concat("\n")));
+            details.setText((time.concat(" - ").concat(price.concat("\n").concat(phone.concat(" | ").concat(website)))));
+            description.setText(desc);
+            recommendation.setText(rec);
 
             ImageView save = findViewById(R.id.loc_save);
 

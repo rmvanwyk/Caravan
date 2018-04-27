@@ -191,25 +191,21 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
             CuratedDO recent = (CuratedDO) clicked;
             Intent i;
             if(recent.getType().equals("blueprint")) {
-                //startActivity(new Intent(this, BlueprintDetailActivity(recent));
                 i = new Intent(getActivity(), BlueprintDetailActivity.class);
                 i.putExtra("blueprint", (String) recent.getName());
                 startActivity(i);
             }
             if(recent.getType().equals("location")) {
-                //startActivity(new Intent(this, LocationDetailActivity(recent));
                 i = new Intent(getActivity(), LocationDetailActivity.class);
                 i.putExtra("location", (String) recent.getName());
                 startActivity(i);
             }
             if(recent.getType().equals("city")) {
-                //startActivity(new Intent(this, DisplayCityDetailActivity(recent));
                 i = new Intent(getActivity(), CityDetailActivity.class);
                 i.putExtra("city", (String) recent.getName());
                 startActivity(i);
             }
             if(recent.getType().equals("neighborhood")){
-                    //startActivity(new Intent(this, NeighborhoodDetailActivity(recent));
                     i = new Intent(getActivity(), NeighborhoodDetailActivity.class);
                     i.putExtra("neighborhood", (String) recent.getName());
                     startActivity(i);
@@ -217,23 +213,24 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
         }
         else {
             UserDO recent = (UserDO) clicked;
-            if (recent.getType().equals("location")) {
-                //startActivity(new Intent(this, LocationDetailActivity(recent));
-            } else {
-                //startActivity(new Intent(this, BlueprintDetailActivity(recent));
-            }
+            Intent i;
+            i = new Intent(getActivity(), BlueprintDetailActivity.class);
+            i.putExtra("blueprint", (String) recent.getName());
+            startActivity(i);
         }
     }
 
-    private class CacheHistory extends AsyncTask<Object, Void, Void>{
+
+    private class CacheHistory extends AsyncTask<Object, Void, Void> {
         RecentHistoryDatabase database = RecentHistoryDatabase.getInMemoryInstance(getActivity());
         final RecentHistoryDAO dao = database.recentHistoryDAO();
+
         @Override
-        protected Void doInBackground(Object...clicked) {
+        protected Void doInBackground(Object... clicked) {
             List<RecentHistoryItem> existing = dao.loadRecentHistory();
             if (clicked[0] instanceof CuratedDO) {
                 CuratedDO recent = (CuratedDO) clicked[0];
-                for (RecentHistoryItem item : existing){
+                for (RecentHistoryItem item : existing) {
                     if (item.getId().equals(recent.getName())) {
                         Log.d("cached", "REPEATED");
                         return null;
@@ -241,10 +238,9 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
                 }
                 switch (recent.getType()) {
                     case "blueprint": {
-                        if (dao.getTableSize() < cacheSize){
+                        if (dao.getTableSize() < cacheSize) {
                             dao.insertItem(new RecentHistoryItem(recent.getName(), new Date(), Table.blueprint));
-                        }
-                        else {
+                        } else {
                             dao.updateRecentHistory(recent.getName(), new Date(), Table.blueprint);
                         }
                         break;
@@ -275,10 +271,9 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
                     }
                 }
                 Log.d("cached", recent.getName());
-            }
-            else {
+            } else {
                 UserDO recent = (UserDO) clicked[0];
-                for (RecentHistoryItem item : existing){
+                for (RecentHistoryItem item : existing) {
                     if (item.getId().equals(recent.getName())) {
                         return null;
                     }
@@ -290,8 +285,7 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
                     } else {
                         dao.updateRecentHistory(recent.getUserId(), new Date(), Table.userblueprint);
                     }
-                }
-                else {
+                } else {
                     if (dao.getTableSize() < cacheSize) {
                         dao.insertItem(new RecentHistoryItem(recent.getId(), new Date(), Table.location));
                     } else {

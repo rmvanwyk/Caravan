@@ -80,18 +80,25 @@ public class AccountFragment extends ListFragment {
         Object clicked = getListView().getItemAtPosition(position);
         if (clicked instanceof CuratedDO) {
             CuratedDO recent = (CuratedDO) clicked;
+            Intent i;
             switch (recent.getType()) {
                 case "blueprint":
-                    //startActivity(new Intent(this, BlueprintDetailActivity(recent, loadLocationsForBlueprintDisplay(recent.getId(), 0)));
+                    i = new Intent(getActivity(), BlueprintDetailActivity.class);
+                    i.putExtra("blueprint", (String) recent.getName());
+                    startActivity(i);
                 case "location":
-                    //startActivity(new Intent(this, LocationDetailActivity(recent));
+                    i = new Intent(getActivity(), LocationDetailActivity.class);
+                    i.putExtra("location", (String) recent.getName());
+                    startActivity(i);
             }
         }
         else {
             UserDO recent = (UserDO) clicked;
-            //startActivity(new Intent(BlueprintDetailActivity(recent, loadLocationsForBlueprintDisplay(recent.getId(), 1)));
-            }
+            Intent i = new Intent(getActivity(), BlueprintDetailActivity.class);
+            i.putExtra("blueprint", (String) recent.getName());
+            startActivity(i);
         }
+    }
 
     private List<CuratedDO> loadLocationsForBlueprintDisplay(String blueprintID, int option) {
         DynamoCacheDatabase database = DynamoCacheDatabase.getInMemoryInstance(getActivity());
@@ -153,7 +160,16 @@ public class AccountFragment extends ListFragment {
                 resultList.add(locations.get(i).getCuratedDO());
             }
         }
-        Log.d("End of:", "loadBnL");
+        for (int i = 0; i < resultList.size(); i++) {
+            Object item = resultList.get(i);
+            if (item instanceof UserDO) {
+                UserDO newItem = (UserDO) item;
+                Log.d("RL-N:", newItem.getName());
+                Log.d("RL-T", newItem.getType());
+            }
+
+        }
+
         setListAdapter(new SearchResultsAdapter(getActivity(), resultList));
     }
 }

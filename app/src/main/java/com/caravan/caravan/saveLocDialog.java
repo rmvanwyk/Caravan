@@ -7,6 +7,7 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.amazonaws.mobile.auth.core.IdentityManager;
 import com.caravan.caravan.DynamoCacheDB.DynamoCacheDAO;
@@ -133,7 +134,7 @@ public class saveLocDialog extends DialogFragment {
     //Used for saving a location to a (User) blueprint
     private void cacheLocationToUserBlueprint(String locationName, String blueprintName) {
         DynamoCacheDatabase database = DynamoCacheDatabase.getInMemoryInstance(getActivity());
-        final DynamoCacheDAO dao = database.dynamoCacheDAO();
+        DynamoCacheDAO dao = database.dynamoCacheDAO();
         DatabaseAccess task = DatabaseAccess.getInstance(getActivity());
         Future<CuratedDO> loc = task.getCuratedItem("location", locationName);
         CuratedDO location = new CuratedDO();
@@ -150,12 +151,25 @@ public class saveLocDialog extends DialogFragment {
         UserDO blueprint = new UserDO();
         try {
             blueprint = blu.get();
-        } catch (ExecutionException | InterruptedException e) {
-
+        } catch (ExecutionException | InterruptedException | NullPointerException e) {
+            Log.d("SLD155:", e.toString());
         }
         UserBlueprint cachedBlueprint = new UserBlueprint(blueprint.getName(), blueprint);
+        dao.insertUserBlueprint(cachedBlueprint);
         UserBlueprintLocationPairing pair = new UserBlueprintLocationPairing(cachedBlueprint.getId(), cachedLocation.getId());
-        dao.insertUserBlueprintLocationPairing(pair);
+        List<UserBlueprintLocationPairing> existing =  dao.getAllUserBlueprintLocationPairings();
+        boolean pairExists = false;
+        for (int i = 0; i < existing.size(); i++) {
+            Log.d("SLRcontents:", existing.get(i).getBlueprint_id());
+            Log.d("SLRcontents:", existing.get(i).getLocation_id());
+            if (existing.get(i).equals(pair)) {
+                Log.d("Pair", "exists");
+                pairExists = true;
+            }
+        }
+        if (!pairExists) {
+            dao.insertUserBlueprintLocationPairing(pair);
+        }
     }
 
     //Used for saving a location to your account.
