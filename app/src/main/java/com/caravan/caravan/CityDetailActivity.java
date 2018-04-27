@@ -210,10 +210,10 @@ public class CityDetailActivity extends Activity {
 
         //load locations
         List<String>locations = m_city_obj.getLocationList();
-        LinearLayout l_container = (LinearLayout)root.findViewById(R.id.city_curated_blockA).findViewById(R.id.city_blockA_container);
+        LinearLayout l_container = (LinearLayout)root.findViewById(R.id.city_loc_blockA).findViewById(R.id.city_loc_container);
 
         try{
-            View thumbnail = b_container.findViewById(R.id.l_thumbnailA);
+            View thumbnail = l_container.findViewById(R.id.l_thumbnailA);
             ImageView img = thumbnail.findViewById(R.id.city_loc_imageA);
 
             CuratedDO loc = (CuratedDO) m_db.getItem(locations.get(0), "location", "curated");
@@ -236,7 +236,7 @@ public class CityDetailActivity extends Activity {
                 }
             });
 
-            thumbnail = b_container.findViewById(R.id.l_thumbnailB);
+            thumbnail = l_container.findViewById(R.id.l_thumbnailB);
             img = thumbnail.findViewById(R.id.city_loc_imageB);
 
             loc = (CuratedDO) m_db.getItem(locations.get(1), "location", "curated");
@@ -259,7 +259,7 @@ public class CityDetailActivity extends Activity {
                 }
             });
 
-            thumbnail = b_container.findViewById(R.id.l_thumbnailC);
+            thumbnail = l_container.findViewById(R.id.l_thumbnailC);
             img = thumbnail.findViewById(R.id.neighborhood_loc_imageC);
 
             loc = (CuratedDO)m_db.getItem(locations.get(2), "location", "curated");
@@ -282,7 +282,7 @@ public class CityDetailActivity extends Activity {
                 }
             });
 
-            thumbnail = b_container.findViewById(R.id.l_thumbnailD);
+            thumbnail = l_container.findViewById(R.id.l_thumbnailD);
             img = thumbnail.findViewById(R.id.city_loc_imageD);
 
             loc = (CuratedDO)m_db.getItem(locations.get(3), "location", "curated");
@@ -307,6 +307,7 @@ public class CityDetailActivity extends Activity {
 
         }
         catch(IndexOutOfBoundsException e){}
+        catch(NullPointerException e) {}
         catch (ExecutionException | InterruptedException e) {
             e.printStackTrace();
         }

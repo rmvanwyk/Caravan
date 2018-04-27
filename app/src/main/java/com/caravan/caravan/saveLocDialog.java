@@ -124,14 +124,12 @@ public class saveLocDialog extends DialogFragment {
             items = new String[userBP.size() + 2];
             items[0] = "Save to Library";
             items[1] = "Create New Blueprint";
-            for (int i = 2; i < userBP.size(); i++) {
-                items[i] = userBP.get(i).getName();
+            for (int i = 0; i < userBP.size(); i++) {
+                items[i+2] = userBP.get(i).getName();
             }
         }
         return items;
     }
-
-
     //Used for saving a location to a (User) blueprint
     private void cacheLocationToUserBlueprint(String locationName, String blueprintName) {
         DynamoCacheDatabase database = DynamoCacheDatabase.getInMemoryInstance(getActivity());

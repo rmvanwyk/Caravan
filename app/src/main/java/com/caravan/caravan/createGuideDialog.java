@@ -44,15 +44,15 @@ public class createGuideDialog extends DialogFragment {
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the Builder class for convenient dialog construction
             super.onCreateDialog(savedInstanceState);
+            m_db = DatabaseAccess.getInstance(getActivity());
             m_loc = getArguments().getString("loc");
             AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
             builder.setTitle("Create New Blueprint");
 
             // Set up the input
             final EditText input = new EditText(getActivity());
-            input.setText("Enter Blueprint Name");
+            input.setHint("Enter Blueprint Name");
             // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
-            input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
             builder.setView(input);
 
             // Set up the buttons

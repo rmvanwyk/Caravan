@@ -42,8 +42,8 @@ public class LocationDetailActivity extends Activity {
             String image = m_location.getImageList().get(0);
             m_db.getImage(this, img, image);
 
-            name.setText("\n".concat(m_location.getName()).concat("\n"));
-            details.setText((m_location.getTimeOfDay()).concat(" - ").concat(m_location.getPricePoint()));
+            name.setText("\n".concat(m_location.getName()).concat("\n").concat(m_location.getAddress().concat("\n")));
+            details.setText((m_location.getTimeOfDay()).concat(" - ").concat(m_location.getPricePoint()).concat("\n").concat(m_location.getPhoneNumber()).concat(" | ").concat(m_location.getWebsite()));
             description.setText(m_location.getDescription());
             recommendation.setText(m_location.getFoodDrinkRecommendation());
 
