@@ -8,6 +8,7 @@ import android.app.FragmentTransaction;
 import android.content.DialogInterface;
 import android.os.Bundle;
 
+import com.amazonaws.mobile.auth.core.IdentityManager;
 import com.caravan.caravan.DynamoCacheDB.DynamoCacheDAO;
 import com.caravan.caravan.DynamoCacheDB.DynamoCacheDatabase;
 import com.caravan.caravan.DynamoCacheDB.Entity.BlueprintLocation;
@@ -18,6 +19,7 @@ import com.caravan.caravan.DynamoDB.CuratedDO;
 import com.caravan.caravan.DynamoDB.DatabaseAccess;
 import com.caravan.caravan.DynamoDB.UserDO;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -27,7 +29,7 @@ import java.util.concurrent.Future;
  */
 
 public class saveLocDialog extends DialogFragment {
-    private DatabaseAccess m_db;
+    private DatabaseAccess m_db = DatabaseAccess.getInstance(getActivity());
     private String m_loc;
     static saveLocDialog newInstance(String loc) {
         saveLocDialog d= new saveLocDialog();
@@ -46,20 +48,15 @@ public class saveLocDialog extends DialogFragment {
         // Use the Builder class for convenient dialog construction
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         String[] items = getItems();
-        if(items ==null){
-
-            builder.setMessage("Please log in to continue")
-                    .setTitle("Error Saving Location");
-            builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
-                public void onClick(DialogInterface dialog, int id) {
-                    dialog.cancel();
-                }
-            });
-            final AlertDialog dialog = builder.create();
-            dialog.show();
+        final IdentityManager identityManager = IdentityManager.getDefaultIdentityManager();
+        boolean isSignedIn = false;
+        try {
+            isSignedIn = identityManager.isUserSignedIn();
+        } catch (NullPointerException e) {
+            isSignedIn = false;
         }
-        else {
-            builder.setTitle("Choose a Blueprint")
+        if (isSignedIn)  {
+            builder.setTitle("Choose where to save to:")
                     .setItems(items, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             // The 'which' argument contains the index position
@@ -101,24 +98,35 @@ public class saveLocDialog extends DialogFragment {
                 }
             });
         }
+        else {
+            builder.setMessage("Please log in to continue")
+                    .setTitle("Error Saving Location");
+            builder.setNegativeButton("Ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int id) {
+                    dialog.cancel();
+                }
+            });
+            final AlertDialog dialog = builder.create();
+            dialog.show();
+        }
+
         // Create the AlertDialog object and return it
         return builder.create();
     }
 
 
     private String[] getItems() {
-        String[] items = null;
-        try{
-        List<UserDO> userBP = m_db.getAllUserBlueprints();
-        items= new String[userBP.size() + 1];
+        String[] items = new String[2];
         items[0] = "Save to Library";
         items[1] = "Create New Blueprint";
-        for (int i = 2; i < userBP.size(); i++) {
-            items[i] = userBP.get(i).getName();
-        }
-        }
-        catch(NullPointerException e){
-
+        List<UserDO> userBP = m_db.getAllUserBlueprints();
+        if (!userBP.isEmpty())  {
+            items = new String[userBP.size() + 2];
+            items[0] = "Save to Library";
+            items[1] = "Create New Blueprint";
+            for (int i = 2; i < userBP.size(); i++) {
+                items[i] = userBP.get(i).getName();
+            }
         }
         return items;
     }

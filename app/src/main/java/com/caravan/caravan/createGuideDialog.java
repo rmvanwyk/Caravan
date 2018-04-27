@@ -28,7 +28,7 @@ import java.util.concurrent.Future;
  */
 
 public class createGuideDialog extends DialogFragment {
-        private DatabaseAccess m_db;
+        private DatabaseAccess m_db = DatabaseAccess.getInstance(getActivity());
         private String m_name;
         private String m_loc;
         static createGuideDialog newInstance(String loc) {
