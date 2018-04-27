@@ -19,22 +19,19 @@ import java.util.ArrayList;
  * Created by rmvanwyk on 4/2/18.
  */
 
-public class SearchResultsAdapter extends BaseAdapter {
+public class AccountAdapter extends BaseAdapter {
     private ArrayList<Object> display_items;
     private static final int TYPE_LOCATION = 0;
     private static final int TYPE_CURATEDBLUE = 1;
-    private static final int TYPE_CITY = 2;
-    private static final int TYPE_HOOD = 3;
     private static final int TYPE_USERBLUE = 4;
-    private static final int TYPE_USERLOC = 5;
     private static final int TYPE_DIVIDER = 6;
     private LayoutInflater inflater;
 
-    public SearchResultsAdapter(Context context, ArrayList<Object> search_results) {
+    public AccountAdapter(Context context, ArrayList<Object> search_results) {
         //super(context, 0, search_results);
         this.inflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.display_items = search_results;
-        }
+    }
 
     @Override
     public int getCount() {
@@ -67,12 +64,6 @@ public class SearchResultsAdapter extends BaseAdapter {
             else if (item.getType().equals("blueprint")) {
                 return TYPE_CURATEDBLUE;
             }
-            else if (item.getType().equals("city")) {
-                return TYPE_CITY;
-            }
-            else if (item.getType().equals("neighborhood")) {
-                return TYPE_HOOD;
-            }
         }
         else if (getItem(position) instanceof UserDO) {
             UserDO item = (UserDO) getItem(position);
@@ -82,7 +73,7 @@ public class SearchResultsAdapter extends BaseAdapter {
             }
         }
         else if (getItem(position) instanceof String){
-             return TYPE_DIVIDER;
+            return TYPE_DIVIDER;
         }
         return 0;
     }
@@ -94,8 +85,8 @@ public class SearchResultsAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        // Get the data item for this position
         DatabaseAccess m_db = DatabaseAccess.getInstance(parent.getContext());
+        // Get the data item for this position
         int type = getItemViewType(position);
         //Log.d("")
         // Check if an existing view is being reused, otherwise inflate the view
@@ -107,17 +98,11 @@ public class SearchResultsAdapter extends BaseAdapter {
                 case TYPE_LOCATION:
                     convertView = inflater.inflate(R.layout.item_location, parent, false);
                     break;
-                case TYPE_CITY:
-                    convertView = inflater.inflate(R.layout.item_city, parent, false);
-                    break;
-                case TYPE_HOOD:
-                    convertView = inflater.inflate(R.layout.item_city, parent, false);
-                    break;
                 case TYPE_CURATEDBLUE:
                     convertView = inflater.inflate(R.layout.item_blueprint, parent, false);
                     break;
                 case TYPE_USERBLUE:
-                    convertView = inflater.inflate(R.layout.item_blueprint, parent, false);
+                    convertView = inflater.inflate(R.layout.item_city, parent, false);
                     break;
             }
         }
@@ -134,18 +119,6 @@ public class SearchResultsAdapter extends BaseAdapter {
                 String image = location_obj.getImageList().get(0);
                 m_db.getImage(parent.getContext(), img, image);
                 break; }
-            case TYPE_CITY: {
-                CuratedDO city_obj = (CuratedDO) getItem(position);
-                TextView city = (TextView) convertView.findViewById(R.id.name);
-                city.setText(city_obj.getName());
-                break; }
-            case TYPE_HOOD: {
-                CuratedDO city_obj = (CuratedDO) getItem(position);
-                TextView name = (TextView) convertView.findViewById(R.id.name);
-                TextView hood = (TextView) convertView.findViewById(R.id.city);
-                name.setText(city_obj.getName());
-                hood.setText("Neighborhood");
-                break; }
             case TYPE_CURATEDBLUE: {
                 CuratedDO blueprint_obj = (CuratedDO) getItem(position);
                 TextView name = (TextView) convertView.findViewById(R.id.name);
@@ -159,6 +132,8 @@ public class SearchResultsAdapter extends BaseAdapter {
             case TYPE_USERBLUE: {
                 UserDO blueprint_obj = (UserDO) getItem(position);
                 TextView name = (TextView) convertView.findViewById(R.id.name);
+                TextView blueprint = (TextView) convertView.findViewById((R.id.city));
+                blueprint.setText("Blueprint");
                 name.setText(blueprint_obj.getName());
                 break; }
             case TYPE_DIVIDER: {
@@ -171,4 +146,3 @@ public class SearchResultsAdapter extends BaseAdapter {
         return convertView;
     }
 }
-

@@ -86,10 +86,12 @@ public class AccountFragment extends ListFragment {
                     i = new Intent(getActivity(), BlueprintDetailActivity.class);
                     i.putExtra("blueprint", (String) recent.getName());
                     startActivity(i);
+                    break;
                 case "location":
                     i = new Intent(getActivity(), LocationDetailActivity.class);
                     i.putExtra("location", (String) recent.getName());
                     startActivity(i);
+                    break;
             }
         }
         else {
@@ -170,6 +172,6 @@ public class AccountFragment extends ListFragment {
 
         }
 
-        setListAdapter(new SearchResultsAdapter(getActivity(), resultList));
+        setListAdapter(new AccountAdapter(getActivity(), resultList));
     }
 }

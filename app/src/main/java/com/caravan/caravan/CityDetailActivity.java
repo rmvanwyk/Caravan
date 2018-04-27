@@ -81,9 +81,6 @@ public class CityDetailActivity extends Activity {
                 }
             });
 
-
-
-
             thumbnail = n_container.findViewById(R.id.n_thumbnailC);
             img = thumbnail.findViewById(R.id.city_neighborhood_imageC);
             //IMAGE CALL

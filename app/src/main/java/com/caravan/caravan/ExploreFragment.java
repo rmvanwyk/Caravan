@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class ExploreFragment extends ListFragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
+public class ExploreFragment extends ListFragment implements  MenuItem.OnActionExpandListener, SearchView.OnQueryTextListener {
     private Activity parentActivity;
     private BottomNavigationView bottomNavigationView;
     final private int cacheSize = 5;
@@ -154,20 +154,22 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
             loadRecentSearchHistory();
         }
         else if (query.length() > 0){
-            setListAdapter(new SearchResultsAdapter(getActivity(), doMySearch(query)));
+            ArrayList<Object> results = doMySearch(query);
+            setListAdapter(new SearchResultsAdapter(getActivity(), results));
         }
         return false;
     }
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        if(newText == null || newText.length() == 0) {
+        /*if(newText == null || newText.length() == 0) {
             Log.d("Zero Text", "triggered");
             loadRecentSearchHistory();
         }
-        else if (newText.length() > 2){
-            setListAdapter(new SearchResultsAdapter(getActivity(), doMySearch(newText)));
-        }
+        else if (newText.length() > 0){
+            ArrayList<Object> results = doMySearch(newText);
+            setListAdapter(new SearchResultsAdapter(getActivity(), results));
+        }*/
         return false;
     }
 
