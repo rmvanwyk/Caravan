@@ -58,9 +58,9 @@ public class CityDetailActivity extends Activity {
                 @Override
                 public void onClick(View v)
                 {
-                    /*Intent i = new Intent(CityDetailActivity.this, NeighborhoodDetailActivity.class);
+                    Intent i = new Intent(CityDetailActivity.this, NeighborhoodDetailActivity.class);
                     i.putExtra("neighborhood", neighborhoods.get(0));
-                    startActivity(i);*/
+                    startActivity(i);
 
                 }
             });
@@ -74,9 +74,9 @@ public class CityDetailActivity extends Activity {
                 @Override
                 public void onClick(View v)
                 {
-                    /*Intent i = new Intent(CityDetailActivity.this, NeighborhoodDetailActivity.class);
+                    Intent i = new Intent(CityDetailActivity.this, NeighborhoodDetailActivity.class);
                     i.putExtra("neighborhood", neighborhoods.get(1));
-                    startActivity(i);*/
+                    startActivity(i);
 
                 }
             });
@@ -92,9 +92,9 @@ public class CityDetailActivity extends Activity {
                 @Override
                 public void onClick(View v)
                 {
-                    /*Intent i = new Intent(CityDetailActivity.this, NeighborhoodDetailActivity.class);
+                    Intent i = new Intent(CityDetailActivity.this, NeighborhoodDetailActivity.class);
                     i.putExtra("neighborhood", neighborhoods.get(2));
-                    startActivity(i);*/
+                    startActivity(i);
 
                 }
             });
@@ -111,9 +111,9 @@ public class CityDetailActivity extends Activity {
                 @Override
                 public void onClick(View v)
                 {
-                    /*Intent i = new Intent(CityDetailActivity.this, NeighborhoodDetailActivity.class);
+                    Intent i = new Intent(CityDetailActivity.this, NeighborhoodDetailActivity.class);
                     i.putExtra("neighborhood", neighborhoods.get(3));
-                    startActivity(i);*/
+                    startActivity(i);
 
                 }
             });
