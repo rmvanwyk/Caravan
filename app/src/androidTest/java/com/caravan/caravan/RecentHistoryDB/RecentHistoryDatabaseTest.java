@@ -25,7 +25,7 @@ public class RecentHistoryDatabaseTest {
 
     @Before
     public void initializeDatabase() {
-                database = RecentHistoryDatabase.getInMemoryInstance(InstrumentationRegistry.getTargetContext());
+        database = RecentHistoryDatabase.getInMemoryInstance(InstrumentationRegistry.getTargetContext());
         dao = database.recentHistoryDAO();
     }
 

@@ -133,7 +133,7 @@ public class saveLocDialog extends DialogFragment {
     }
     //Used for saving a location to a (User) blueprint
     private void cacheLocationToUserBlueprint(String locationName, String blueprintName) {
-        DynamoCacheDatabase database = DynamoCacheDatabase.getInMemoryInstance(getActivity());
+        DynamoCacheDatabase database = DynamoCacheDatabase.getInstance(getActivity());
         DynamoCacheDAO dao = database.dynamoCacheDAO();
         DatabaseAccess task = DatabaseAccess.getInstance(getActivity());
         Future<CuratedDO> loc = task.getCuratedItem("location", locationName);
@@ -178,7 +178,7 @@ public class saveLocDialog extends DialogFragment {
         } catch (ExecutionException | InterruptedException e) {
 
         }
-        DynamoCacheDatabase database = DynamoCacheDatabase.getInMemoryInstance(getActivity());
+        DynamoCacheDatabase database = DynamoCacheDatabase.getInstance(getActivity());
         final DynamoCacheDAO dao = database.dynamoCacheDAO();
         if (dao.getLocationById(location.getName()) == null) {
             Location cachedLocation= new Location(locationName, location);

@@ -87,7 +87,7 @@ public class createGuideDialog extends DialogFragment {
         }
 
         private void cacheCuratedBlueprint(CuratedDO blueprint, String firstLoc) {
-            DynamoCacheDatabase database = DynamoCacheDatabase.getInMemoryInstance(getActivity());
+            DynamoCacheDatabase database = DynamoCacheDatabase.getInstance(getActivity());
             final DynamoCacheDAO dao = database.dynamoCacheDAO();
             CuratedBlueprint cachedBlueprint = new CuratedBlueprint(blueprint.getName(),blueprint);
             dao.insertCuratedBlueprint(cachedBlueprint);
@@ -117,7 +117,7 @@ public class createGuideDialog extends DialogFragment {
                 location = item.get();
             } catch (ExecutionException | InterruptedException e) {
             }
-            DynamoCacheDAO dao = DynamoCacheDatabase.getInMemoryInstance(getActivity()).dynamoCacheDAO();
+            DynamoCacheDAO dao = DynamoCacheDatabase.getInstance(getActivity()).dynamoCacheDAO();
             if (dao.getUserBlueprintById(blueprint.getName()) == null)
                 dao.insertUserBlueprint(new UserBlueprint(blueprint.getName(), blueprint));
             for (CuratedDO blueprintLocation : m_db.getBlueprintLocations(blueprint)) {

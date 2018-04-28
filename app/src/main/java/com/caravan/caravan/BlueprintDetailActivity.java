@@ -41,7 +41,6 @@ public class BlueprintDetailActivity extends Activity{
     private UserDO u_blueprint = null;
     private DatabaseAccess m_db;
     private String m_guideName;
-    //private DynamoCacheDatabase dao = DynamoCacheDatabase.getInMemoryInstance(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState){
@@ -80,12 +79,9 @@ public class BlueprintDetailActivity extends Activity{
         List<String> locList;
         if (c_blueprint != null){
             locList = c_blueprint.getLocationList();
-
         }
         else {
             locList = u_blueprint.getLocationList();
-
-
         }
         LinearLayout locContainer = (LinearLayout) findViewById(R.id.loc_view).findViewById(R.id.loc_horizontal_container);
         CuratedDO loc;
@@ -135,7 +131,7 @@ public class BlueprintDetailActivity extends Activity{
                 public void onClick(View image) {
                     IdentityManager identityManager = IdentityManager.getDefaultIdentityManager();
                     if(c_blueprint != null && identityManager != null && identityManager.isUserSignedIn() == true) {
-                        DynamoCacheDAO dao = DynamoCacheDatabase.getInMemoryInstance(c).dynamoCacheDAO();
+                        DynamoCacheDAO dao = DynamoCacheDatabase.getInstance(c).dynamoCacheDAO();
                         if (dao.getCuratedBlueprintById(c_blueprint.getName()) == null) {
                             heart.setImageResource(R.drawable.ic_favorite_white_24px);
                             heart.setColorFilter(ContextCompat.getColor(BlueprintDetailActivity.this, R.color.Pink));
@@ -164,51 +160,6 @@ public class BlueprintDetailActivity extends Activity{
             });
 
         }
-/*
-        private void cacheUserBlueprint(UserDO blueprint, String firstLoc) {
-            DynamoCacheDatabase database = DynamoCacheDatabase.getInMemoryInstance(getActivity());
-            final DynamoCacheDAO dao = database.dynamoCacheDAO();
-            UserBlueprint cachedBlueprint = new UserBlueprint(blueprint.getId(),blueprint);
-            List<UserBlueprint> existing = dao.getAllUserBlueprints();
-            boolean exists = false;
-            for (int i = 0; i < existing.size(); i++) {
-                if (existing.get(i).getId().equals(cachedBlueprint.getId())) {
-                    exists = true;
-                }
-            }
-            if (!exists) {
-                dao.insertUserBlueprint(cachedBlueprint);
-            }
-            DatabaseAccess task = DatabaseAccess.getInstance(getActivity());
-            Future<CuratedDO> item = task.getCuratedItem("location", firstLoc);
-            CuratedDO location = new CuratedDO();
-            try {
-                location = item.get();
-            } catch (ExecutionException | InterruptedException e) {
-
-            }
-
-            BlueprintLocation blueprintLocation = new BlueprintLocation(location.getName(), location);
-            if (dao.getLocationById(location.getName()) == null) {
-                dao.insertBlueprintLocation(blueprintLocation);
-            }
-            UserBlueprintLocationPairing pair = new UserBlueprintLocationPairing(cachedBlueprint.getId(), blueprintLocation.getId());
-            List<UserBlueprintLocationPairing> pairExisting =  dao.getAllUserBlueprintLocationPairings();
-            boolean pairExists = false;
-            for (int i = 0; i < pairExisting.size(); i++) {
-                Log.d("SLRcontents:", pairExisting.get(i).getBlueprint_id());
-                Log.d("SLRcontents:", pairExisting.get(i).getLocation_id());
-                if (existing.get(i).equals(pair)) {
-                    Log.d("Pair", "exists");
-                    pairExists = true;
-                }
-            }
-            if (!pairExists) {
-                dao.insertUserBlueprintLocationPairing(pair);
-            }
-        }
- */
-
-        }
     }
+}
 

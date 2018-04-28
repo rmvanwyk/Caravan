@@ -103,7 +103,7 @@ public class AccountFragment extends ListFragment {
     }
 
     private List<CuratedDO> loadLocationsForBlueprintDisplay(String blueprintID, int option) {
-        DynamoCacheDatabase database = DynamoCacheDatabase.getInMemoryInstance(getActivity());
+        DynamoCacheDatabase database = DynamoCacheDatabase.getInstance(getActivity());
         final DynamoCacheDAO dao = database.dynamoCacheDAO();
         if (option == 0) {
             List<BlueprintLocation> dbLocations = dao.getLocationsFromUserBlueprintId(blueprintID);
@@ -124,7 +124,7 @@ public class AccountFragment extends ListFragment {
     }
 
     private void loadBlueprintsAndLocations() {
-        DynamoCacheDatabase database = DynamoCacheDatabase.getInMemoryInstance(getActivity());
+        DynamoCacheDatabase database = DynamoCacheDatabase.getInstance(getActivity());
         final DynamoCacheDAO dao = database.dynamoCacheDAO();
         List<UserBlueprint> userBlueprints = dao.getAllUserBlueprints();
         List<CuratedBlueprint> curatedBlueprints = dao.getAllCuratedBlueprints();

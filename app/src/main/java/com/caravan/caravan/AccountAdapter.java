@@ -14,6 +14,7 @@ import com.caravan.caravan.DynamoDB.DatabaseAccess;
 import com.caravan.caravan.DynamoDB.UserDO;
 
 import java.util.ArrayList;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Created by rmvanwyk on 4/2/18.
@@ -99,7 +100,7 @@ public class AccountAdapter extends BaseAdapter {
                     convertView = inflater.inflate(R.layout.item_location, parent, false);
                     break;
                 case TYPE_CURATEDBLUE:
-                    convertView = inflater.inflate(R.layout.item_blueprint, parent, false);
+                    convertView = inflater.inflate(R.layout.item_city, parent, false);
                     break;
                 case TYPE_USERBLUE:
                     convertView = inflater.inflate(R.layout.item_city, parent, false);
@@ -121,11 +122,8 @@ public class AccountAdapter extends BaseAdapter {
                 CuratedDO blueprint_obj = (CuratedDO) getItem(position);
                 TextView name = (TextView) convertView.findViewById(R.id.name);
                 TextView city = (TextView) convertView.findViewById(R.id.city);
-                ImageView img = (ImageView) convertView.findViewById(R.id.loc_image);
                 name.setText(blueprint_obj.getName());
                 city.setText(blueprint_obj.getCity());
-                String image = blueprint_obj.getImageList().get(0);
-                m_db.getImage(parent.getContext(), img, image);
                 break; }
             case TYPE_USERBLUE: {
                 UserDO blueprint_obj = (UserDO) getItem(position);

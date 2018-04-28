@@ -224,7 +224,7 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
 
 
     private class CacheHistory extends AsyncTask<Object, Void, Void> {
-        RecentHistoryDatabase database = RecentHistoryDatabase.getInMemoryInstance(getActivity());
+        RecentHistoryDatabase database = RecentHistoryDatabase.getInstance(getActivity());
         final RecentHistoryDAO dao = database.recentHistoryDAO();
 
         @Override
@@ -302,7 +302,7 @@ public class ExploreFragment extends ListFragment implements SearchView.OnQueryT
 
     private void loadRecentSearchHistory() {
         Log.d("LRSH", "Top");
-        RecentHistoryDatabase database = RecentHistoryDatabase.getInMemoryInstance(getActivity());
+        RecentHistoryDatabase database = RecentHistoryDatabase.getInstance(getActivity());
         final RecentHistoryDAO dao = database.recentHistoryDAO();
         List<RecentHistoryItem> cached = dao.loadRecentHistory();
         if (cached == null) {
