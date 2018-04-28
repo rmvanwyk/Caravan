@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -29,6 +30,7 @@ public class SearchResultsAdapter extends BaseAdapter {
     private static final int TYPE_USERLOC = 5;
     private static final int TYPE_DIVIDER = 6;
     private LayoutInflater inflater;
+
 
     public SearchResultsAdapter(Context context, ArrayList<Object> search_results) {
         //super(context, 0, search_results);
@@ -126,11 +128,9 @@ public class SearchResultsAdapter extends BaseAdapter {
                 CuratedDO location_obj = (CuratedDO) getItem(position);
                 // Lookup view for data population
                 TextView name = (TextView) convertView.findViewById(R.id.name);
-                TextView city = (TextView) convertView.findViewById(R.id.city);
                 ImageView img = (ImageView) convertView.findViewById(R.id.thumbnail_image);
                 // Populate the data into the template view using the data object
                 name.setText(location_obj.getName());
-                city.setText(location_obj.getCity());
                 String image = location_obj.getImageList().get(0);
                 m_db.getImage(parent.getContext(), img, image);
                 break; }

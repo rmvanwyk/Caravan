@@ -48,13 +48,15 @@ public class ExploreFragment extends ListFragment implements  MenuItem.OnActionE
         parentActivity = getActivity();
         bottomNavigationView = parentActivity.findViewById(R.id.bottom_navigation);
         setHasOptionsMenu(true);
+
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceBundle) {
         super.onActivityCreated(savedInstanceBundle);
-
-        getListView().setOnScrollListener(new OnScrollStateChangedImpl());
+        //getListView().setOnScrollListener(new OnScrollStateChangedImpl());
+        getListView().setAdapter(new SearchResultsAdapter(getActivity(), new ArrayList<>()));
+        loadRecentSearchHistory();
     }
 
     @Override
@@ -89,15 +91,17 @@ public class ExploreFragment extends ListFragment implements  MenuItem.OnActionE
         Log.d("EF results:", Integer.toString(curatedResults.size()));
         boolean hasLocation = false, hasCity = false, hasUserBlueprint = false, hasNeighborhood = false,
         hasCuratedBlueprint = false, hasUserLocation = false;
+        int locationSize = 0;
         for (int i = 0; i < curatedResults.size(); i++) {
             if (curatedResults.get(i) instanceof CuratedDO) {
                 CuratedDO result = (CuratedDO) curatedResults.get(i);
                 if (result.getType().equals("blueprint")) {
                     blueprintList.add(result);
                     hasCuratedBlueprint = true;
-                } else if (result.getType().equals("location")) {
+                } else if (result.getType().equals("location") && locationSize < 11) {
                     locationList.add(result);
                     hasLocation = true;
+                    locationSize++;
                 } else if (result.getType().equals("city")) {
                     cityList.add(result);
                     hasCity = true;
@@ -111,9 +115,6 @@ public class ExploreFragment extends ListFragment implements  MenuItem.OnActionE
                     userBList.add(result);
                     hasUserBlueprint = true;
                 }
-            }
-            if (i > 12) {
-                break;
             }
         }
         ArrayList<Object> resultsList = new ArrayList<>();
@@ -153,7 +154,7 @@ public class ExploreFragment extends ListFragment implements  MenuItem.OnActionE
             Log.d("Zero Text", "triggered");
             loadRecentSearchHistory();
         }
-        else if (query.length() > 0){
+        else if (query.length() > 0) {
             ArrayList<Object> results = doMySearch(query);
             setListAdapter(new SearchResultsAdapter(getActivity(), results));
         }
@@ -162,14 +163,14 @@ public class ExploreFragment extends ListFragment implements  MenuItem.OnActionE
 
     @Override
     public boolean onQueryTextChange(String newText) {
-        /*if(newText == null || newText.length() == 0) {
+        if(newText == null || newText.length() == 0) {
             Log.d("Zero Text", "triggered");
             loadRecentSearchHistory();
         }
         else if (newText.length() > 0){
             ArrayList<Object> results = doMySearch(newText);
             setListAdapter(new SearchResultsAdapter(getActivity(), results));
-        }*/
+        }
         return false;
     }
 
