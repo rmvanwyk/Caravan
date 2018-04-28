@@ -17,6 +17,12 @@ import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.amazonaws.mobile.auth.core.IdentityManager;
+import com.caravan.caravan.DynamoCacheDB.DynamoCacheDAO;
+import com.caravan.caravan.DynamoCacheDB.DynamoCacheDatabase;
+import com.caravan.caravan.DynamoCacheDB.Entity.BlueprintLocation;
+import com.caravan.caravan.DynamoCacheDB.Entity.CuratedBlueprint;
+import com.caravan.caravan.DynamoCacheDB.Entity.CuratedBlueprintLocationPairing;
 import com.caravan.caravan.DynamoDB.CuratedDO;
 import com.caravan.caravan.DynamoDB.DatabaseAccess;
 import com.caravan.caravan.DynamoDB.Table;
@@ -35,8 +41,9 @@ public class BlueprintDetailActivity extends Activity{
     private UserDO u_blueprint = null;
     private DatabaseAccess m_db;
     private String m_guideName;
+    //private DynamoCacheDatabase dao = DynamoCacheDatabase.getInMemoryInstance(this);
 
-    //@Override
+    @Override
     protected void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blueprint_details);
@@ -122,19 +129,85 @@ public class BlueprintDetailActivity extends Activity{
             }
 
             ImageView heart = findViewById(R.id.imageView2);
-
+            Context c = this;
             heart.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View image) {
-                    m_db.userSaveBlueprint(c_blueprint);
-                    heart.setImageResource(R.drawable.ic_favorite_white_24px);
-                    heart.setColorFilter(ContextCompat.getColor(BlueprintDetailActivity.this, R.color.Pink));
-
+                    IdentityManager identityManager = IdentityManager.getDefaultIdentityManager();
+                    if(c_blueprint != null && identityManager != null && identityManager.isUserSignedIn() == true) {
+                        DynamoCacheDAO dao = DynamoCacheDatabase.getInMemoryInstance(c).dynamoCacheDAO();
+                        if (dao.getCuratedBlueprintById(c_blueprint.getName()) == null) {
+                            heart.setImageResource(R.drawable.ic_favorite_white_24px);
+                            heart.setColorFilter(ContextCompat.getColor(BlueprintDetailActivity.this, R.color.Pink));
+                            dao.insertCuratedBlueprint(new CuratedBlueprint(c_blueprint.getName(), c_blueprint));
+                            for (CuratedDO location : m_db.getBlueprintLocations(c_blueprint)) {
+                                if(location != null) {
+                                    if(dao.getBlueprintLocationById(location.getName()) == null)
+                                        dao.insertBlueprintLocation(new BlueprintLocation(location.getName(), location));
+                                    dao.insertCuratedBlueprintLocationPairing(new CuratedBlueprintLocationPairing(c_blueprint.getName(),location.getName()));
+                                }
+                            }
+                            m_db.userSaveBlueprint(c_blueprint);
+                        }
+                        String logTag = "BLUEPRINT_DETAIL_ACTIVITY_CACHE";
+                        Log.d(logTag, "Locations:");
+                        for(BlueprintLocation location: dao.getAllBlueprintLocations())
+                            Log.d(logTag, location.getId());
+                        Log.d(logTag, "Blueprints:");
+                        for(CuratedBlueprint blueprint: dao.getAllCuratedBlueprints())
+                            Log.d(logTag,blueprint.getId());
+                        Log.d(logTag,"Pairings");
+                        for(CuratedBlueprintLocationPairing pairing: dao.getAllCuratedBlueprintLocationPairings())
+                            Log.d(logTag,"BlueprintId: "+pairing.getBlueprint_id()+" LocationId: " + pairing.getLocation_id());
+                    }
                 }
             });
 
         }
+/*
+        private void cacheUserBlueprint(UserDO blueprint, String firstLoc) {
+            DynamoCacheDatabase database = DynamoCacheDatabase.getInMemoryInstance(getActivity());
+            final DynamoCacheDAO dao = database.dynamoCacheDAO();
+            UserBlueprint cachedBlueprint = new UserBlueprint(blueprint.getId(),blueprint);
+            List<UserBlueprint> existing = dao.getAllUserBlueprints();
+            boolean exists = false;
+            for (int i = 0; i < existing.size(); i++) {
+                if (existing.get(i).getId().equals(cachedBlueprint.getId())) {
+                    exists = true;
+                }
+            }
+            if (!exists) {
+                dao.insertUserBlueprint(cachedBlueprint);
+            }
+            DatabaseAccess task = DatabaseAccess.getInstance(getActivity());
+            Future<CuratedDO> item = task.getCuratedItem("location", firstLoc);
+            CuratedDO location = new CuratedDO();
+            try {
+                location = item.get();
+            } catch (ExecutionException | InterruptedException e) {
 
+            }
+
+            BlueprintLocation blueprintLocation = new BlueprintLocation(location.getName(), location);
+            if (dao.getLocationById(location.getName()) == null) {
+                dao.insertBlueprintLocation(blueprintLocation);
+            }
+            UserBlueprintLocationPairing pair = new UserBlueprintLocationPairing(cachedBlueprint.getId(), blueprintLocation.getId());
+            List<UserBlueprintLocationPairing> pairExisting =  dao.getAllUserBlueprintLocationPairings();
+            boolean pairExists = false;
+            for (int i = 0; i < pairExisting.size(); i++) {
+                Log.d("SLRcontents:", pairExisting.get(i).getBlueprint_id());
+                Log.d("SLRcontents:", pairExisting.get(i).getLocation_id());
+                if (existing.get(i).equals(pair)) {
+                    Log.d("Pair", "exists");
+                    pairExists = true;
+                }
+            }
+            if (!pairExists) {
+                dao.insertUserBlueprintLocationPairing(pair);
+            }
+        }
+ */
 
         }
     }

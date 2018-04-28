@@ -137,39 +137,35 @@ public class saveLocDialog extends DialogFragment {
         DynamoCacheDAO dao = database.dynamoCacheDAO();
         DatabaseAccess task = DatabaseAccess.getInstance(getActivity());
         Future<CuratedDO> loc = task.getCuratedItem("location", locationName);
-        CuratedDO location = new CuratedDO();
-        try {
-            location = loc.get();
-        } catch (ExecutionException | InterruptedException e) {
-
-        }
-        BlueprintLocation cachedLocation= new BlueprintLocation(locationName, location);
-        if (dao.getLocationById(location.getName()) == null) {
-            dao.insertBlueprintLocation(cachedLocation);
-        }
         Future<UserDO> blu = task.getUserItem(blueprintName);
+        CuratedDO location = new CuratedDO();
         UserDO blueprint = new UserDO();
         try {
+            location = loc.get();
             blueprint = blu.get();
-        } catch (ExecutionException | InterruptedException | NullPointerException e) {
-            Log.d("SLD155:", e.toString());
+        } catch (ExecutionException | InterruptedException e) {
         }
-        UserBlueprint cachedBlueprint = new UserBlueprint(blueprint.getName(), blueprint);
-        dao.insertUserBlueprint(cachedBlueprint);
-        UserBlueprintLocationPairing pair = new UserBlueprintLocationPairing(cachedBlueprint.getId(), cachedLocation.getId());
-        List<UserBlueprintLocationPairing> existing =  dao.getAllUserBlueprintLocationPairings();
-        boolean pairExists = false;
-        for (int i = 0; i < existing.size(); i++) {
-            Log.d("SLRcontents:", existing.get(i).getBlueprint_id());
-            Log.d("SLRcontents:", existing.get(i).getLocation_id());
-            if (existing.get(i).equals(pair)) {
-                Log.d("Pair", "exists");
-                pairExists = true;
-            }
+        if (dao.getUserBlueprintById(blueprint.getName()) == null)
+            dao.insertUserBlueprint(new UserBlueprint(blueprint.getName(),blueprint));
+        if (dao.getBlueprintLocationById(location.getName()) == null)
+            dao.insertBlueprintLocation(new BlueprintLocation(location.getName(),location));
+        dao.insertUserBlueprintLocationPairing(new UserBlueprintLocationPairing(blueprint.getName(), location.getName()));
+        for(CuratedDO blueprintLocation: task.getBlueprintLocations(blueprint)) {
+            if(dao.getBlueprintLocationById(blueprintLocation.getName()) == null)
+                dao.insertBlueprintLocation(new BlueprintLocation(blueprintLocation.getName(), blueprintLocation));
+            dao.insertUserBlueprintLocationPairing(new UserBlueprintLocationPairing(blueprint.getName(), blueprintLocation.getName()));
         }
-        if (!pairExists) {
-            dao.insertUserBlueprintLocationPairing(pair);
-        }
+
+        String logTag = "SAVE_LOC_DIALOG_CACHE";
+        Log.d(logTag, "Locations:");
+        for(BlueprintLocation location1: dao.getAllBlueprintLocations())
+            Log.d(logTag, location1.getId());
+        Log.d(logTag, "Blueprints:");
+        for(UserBlueprint bp: dao.getAllUserBlueprints())
+            Log.d(logTag,bp.getId());
+        Log.d(logTag,"Pairings:");
+        for(UserBlueprintLocationPairing pairing: dao.getAllUserBlueprintLocationPairings())
+            Log.d(logTag,"BlueprintId: "+pairing.getBlueprint_id()+" LocationId: " + pairing.getLocation_id());
     }
 
     //Used for saving a location to your account.

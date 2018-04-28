@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
-public class ExploreFragment extends ListFragment implements  MenuItem.OnActionExpandListener, SearchView.OnQueryTextListener {
+public class ExploreFragment extends ListFragment implements SearchView.OnQueryTextListener, MenuItem.OnActionExpandListener {
     private Activity parentActivity;
     private BottomNavigationView bottomNavigationView;
     final private int cacheSize = 5;
@@ -54,7 +54,6 @@ public class ExploreFragment extends ListFragment implements  MenuItem.OnActionE
     @Override
     public void onActivityCreated(Bundle savedInstanceBundle) {
         super.onActivityCreated(savedInstanceBundle);
-        //getListView().setOnScrollListener(new OnScrollStateChangedImpl());
         getListView().setAdapter(new SearchResultsAdapter(getActivity(), new ArrayList<>()));
         loadRecentSearchHistory();
     }
@@ -364,21 +363,6 @@ public class ExploreFragment extends ListFragment implements  MenuItem.OnActionE
         }
         if (displayList.size() > 1) {
             setListAdapter(new SearchResultsAdapter(getActivity(), displayList));
-        }
-    }
-
-    //Created to handle dynamic loading of content when ListView scrolls to bottom
-    private class OnScrollStateChangedImpl implements AbsListView.OnScrollListener {
-
-        @Override
-        public void onScrollStateChanged(AbsListView view, int scrollState) {
-        }
-
-        @Override
-        public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-            if (totalItemCount-firstVisibleItem == visibleItemCount) {
-                //Function call to increase length of search suggestions
-            }
         }
     }
 }

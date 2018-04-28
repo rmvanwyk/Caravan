@@ -35,6 +35,7 @@ import java.util.concurrent.TimeoutException;
  * Synchronous implementation for the DynamoDB table access using the Document API.
  */
 public class DatabaseAccess {
+    private static final String LOG_TAG = "DatabaseAccess";
     /**
      * The Amazon Cognito POOL_ID to use for authentication and authorization.
      */
@@ -246,24 +247,29 @@ public class DatabaseAccess {
         }).start();
     }
 
-    public List<CuratedDO> getBlueprintLocations(Object obj) throws IllegalAccessException, InstantiationException, ExecutionException, InterruptedException {
-        List<String> locationList = new ArrayList<>();
-        List<CuratedDO> results= new ArrayList<>();
-        if (obj instanceof CuratedDO) {
-            CuratedDO p = (CuratedDO) obj;
-            locationList = p.getLocationList();
-            for(int i = 0; i < locationList.size(); i++) {
-                results.add((CuratedDO) getItem(locationList.get(i), LOCATION_TYPE, CURATED_COLLECTION));
-            }
-        }
-        else if (obj instanceof UserDO) {
-            UserDO u = (UserDO) obj;
-            locationList = u.getLocationList();
-            for(int i = 0; i < locationList.size(); i++) {
-                results.add((CuratedDO) getItem(locationList.get(i), LOCATION_TYPE, CURATED_COLLECTION));
-            }
-        }
-        return results;
+    public List<CuratedDO> getBlueprintLocations(Object obj) {
+          try {
+              List<String> locationList = new ArrayList<>();
+              List<CuratedDO> results = new ArrayList<>();
+              if (obj instanceof CuratedDO) {
+                  CuratedDO p = (CuratedDO) obj;
+                  locationList = p.getLocationList();
+                  for (int i = 0; i < locationList.size(); i++) {
+                      results.add((CuratedDO) getItem(locationList.get(i), LOCATION_TYPE, CURATED_COLLECTION));
+                  }
+              } else if (obj instanceof UserDO) {
+                  UserDO u = (UserDO) obj;
+                  locationList = u.getLocationList();
+                  for (int i = 0; i < locationList.size(); i++) {
+                      results.add((CuratedDO) getItem(locationList.get(i), LOCATION_TYPE, CURATED_COLLECTION));
+                  }
+              }
+              return results;
+          }
+          catch (ExecutionException | InterruptedException e) {
+              Log.d(LOG_TAG, e.getStackTrace().toString());
+              return null;
+          }
     }
 
     public List<UserDO> getAllUserBlueprints() {

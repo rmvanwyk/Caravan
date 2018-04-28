@@ -6,6 +6,7 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.database.sqlite.SQLiteConstraintException;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.InputType;
 import android.util.Log;
 import android.widget.EditText;
@@ -63,9 +64,9 @@ public class createGuideDialog extends DialogFragment {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     m_name = input.getText().toString();
-                    if (m_name.length() == 0) {
-                        m_name = "New Guide";
-                    }
+                    //if (m_name.length() == 0 || m_db.getCuratedItem("blueprint",m_name) != null) {
+                    //    return;
+                    //}
                     UserDO newBP = m_db.createBlueprint(m_name);
                     List<String> first = new ArrayList<>();
                     first.add(m_loc);
@@ -108,47 +109,39 @@ public class createGuideDialog extends DialogFragment {
         }
 
         //Used to save a newly created User blueprint as well as the (first) location that is added.
+        //May be called if you type the same name of existing blueprint in the dialog
         private void cacheUserBlueprint(UserDO blueprint, String firstLoc) {
-            DynamoCacheDatabase database = DynamoCacheDatabase.getInMemoryInstance(getActivity());
-            final DynamoCacheDAO dao = database.dynamoCacheDAO();
-            UserBlueprint cachedBlueprint = new UserBlueprint(blueprint.getId(),blueprint);
-            List<UserBlueprint> existing = dao.getAllUserBlueprints();
-            boolean exists = false;
-            for (int i = 0; i < existing.size(); i++) {
-                if (existing.get(i).getId().equals(cachedBlueprint.getId())) {
-                    exists = true;
-                }
-            }
-            if (!exists) {
-                dao.insertUserBlueprint(cachedBlueprint);
-            }
-            DatabaseAccess task = DatabaseAccess.getInstance(getActivity());
-            Future<CuratedDO> item = task.getCuratedItem("location", firstLoc);
+            Future<CuratedDO> item = m_db.getCuratedItem("location", firstLoc);
             CuratedDO location = new CuratedDO();
             try {
                 location = item.get();
             } catch (ExecutionException | InterruptedException e) {
-
             }
-
-            BlueprintLocation blueprintLocation = new BlueprintLocation(location.getName(), location);
-            if (dao.getLocationById(location.getName()) == null) {
-                dao.insertBlueprintLocation(blueprintLocation);
-            }
-            UserBlueprintLocationPairing pair = new UserBlueprintLocationPairing(cachedBlueprint.getId(), blueprintLocation.getId());
-            List<UserBlueprintLocationPairing> pairExisting =  dao.getAllUserBlueprintLocationPairings();
-            boolean pairExists = false;
-            for (int i = 0; i < pairExisting.size(); i++) {
-                Log.d("SLRcontents:", pairExisting.get(i).getBlueprint_id());
-                Log.d("SLRcontents:", pairExisting.get(i).getLocation_id());
-                if (existing.get(i).equals(pair)) {
-                    Log.d("Pair", "exists");
-                    pairExists = true;
+            DynamoCacheDAO dao = DynamoCacheDatabase.getInMemoryInstance(getActivity()).dynamoCacheDAO();
+            if (dao.getUserBlueprintById(blueprint.getName()) == null)
+                dao.insertUserBlueprint(new UserBlueprint(blueprint.getName(), blueprint));
+            for (CuratedDO blueprintLocation : m_db.getBlueprintLocations(blueprint)) {
+                if(blueprintLocation != null) {
+                    if(dao.getBlueprintLocationById(blueprintLocation.getName()) == null)
+                        dao.insertBlueprintLocation(new BlueprintLocation(blueprintLocation.getName(), blueprintLocation));
+                    dao.insertUserBlueprintLocationPairing(new UserBlueprintLocationPairing(blueprint.getName(),blueprintLocation.getName()));
                 }
             }
-            if (!pairExists) {
-                dao.insertUserBlueprintLocationPairing(pair);
-            }
+            if(dao.getBlueprintLocationById(location.getName()) == null)
+                dao.insertBlueprintLocation(new BlueprintLocation(location.getName(), location));
+            dao.insertUserBlueprintLocationPairing(new UserBlueprintLocationPairing(blueprint.getName(),location.getName()));
+
+            String logTag = "CREATE_GUIDE_DIALOG";
+            Log.d(logTag, "Locations:");
+            for(BlueprintLocation location1: dao.getAllBlueprintLocations())
+                Log.d(logTag, location1.getId());
+            Log.d(logTag, "Blueprints:");
+            for(UserBlueprint bp: dao.getAllUserBlueprints())
+                Log.d(logTag,bp.getId());
+            Log.d(logTag,"Pairings:");
+            for(UserBlueprintLocationPairing pairing: dao.getAllUserBlueprintLocationPairings())
+                Log.d(logTag,"BlueprintId: "+pairing.getBlueprint_id()+" LocationId: " + pairing.getLocation_id());
+
         }
     }
 
